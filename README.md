@@ -1,2 +1,2 @@
 # PBL---Pengelolaan-surat-peringatan-Mahasiswa
-Project ini digunakan untuk mengelola surat peringatan bagi mahasiswa.
+Project ini bertujuan untuk mengelola surat peringatan untuk mahasiswa
