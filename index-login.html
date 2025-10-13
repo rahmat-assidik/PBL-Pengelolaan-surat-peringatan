@@ -1,18 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style1.css">
-    <title>Login Page</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="stylea.css" />
+  <title>Login Page</title>
 </head>
-<body> 
-    <div class="container">
+<body>
+  <div class="container">
     <h1 id="login">Login</h1>
-    <label for="nim">NIM</label>
-    <input class="nim-input" type="text" autocomplete="off" required>
-    <label for="password">Password</label>
-    <input class="pas-input" type="password" autocomplete="off" required>
-    <button type="submit">Login</button>
+    <form id="loginForm">
+      <label for="email">Email</label>
+      <input id="email" name="email" class="email-input" type="text" placeholder="Masukkan email" autocomplete="off" />
+
+      <label for="password">Password</label>
+      <input id="password" name="password" class="pas-input" type="password" placeholder="Masukkan password" autocomplete="off" />
+
+      <button type="submit">Login</button>
+
+      <p id="error-message" style="color: red; margin-top: 10px;"></p>
+    </form>
+  </div>
 </body>
 </html>
