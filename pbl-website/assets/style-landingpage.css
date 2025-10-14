@@ -1,0 +1,307 @@
+/* Global Styles */
+:root {
+    /* Warna Utama - Bisa disesuaikan */
+    --primary-color: #0d6efd;
+    --primary-hover: #0b5ed7;
+    --secondary-color: #6c757d;
+    --secondary-hover: #5c636a;
+    --success-color: #198754;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #0dcaf0;
+    
+    /* Warna Background */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --bg-dark: #212529;
+    --bg-light: #f8f9fa;
+    
+    /* Warna Teks */
+    --text-primary: #212529;
+    --text-secondary: #6c757d;
+    --text-light: #f8f9fa;
+    --text-dark: #212529;
+    
+    /* Ukuran Font */
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.25rem;
+    --font-size-xl: 1.5rem;
+    --font-size-xxl: 2rem;
+    
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    
+    /* Border Radius */
+    --border-radius-sm: 0.25rem;
+    --border-radius-base: 0.5rem;
+    --border-radius-lg: 1rem;
+    
+    /* Box Shadow */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    
+    /* Transitions */
+    --transition-speed: 0.3s;
+    --transition-timing: ease;
+    
+    /* Logo Sizes */
+    --logo-height: 60px;  /* Diubah dari 40px menjadi 60px */
+    --logo-margin: 15px;  /* Diubah dari 10px menjadi 15px untuk keseimbangan */
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+}
+
+/* Navigation Styles */
+.navbar {
+    box-shadow: var(--shadow-sm);
+    padding: 0.5rem 0;
+    background-color: var(--bg-primary) !important;
+    height: 80px; /* Set fixed height for navbar */
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0;
+}
+
+.skibidi {
+    height: 60px !important; /* Logo height slightly smaller than navbar */
+    width: auto !important;
+    margin-right: 20px;
+    transition: transform var(--transition-speed) var(--transition-timing);
+    object-fit: contain;
+}
+
+.skibidi:hover {
+    transform: scale(1.05);
+}
+
+.brand-container {
+    display: flex;
+    align-items: center;
+}
+
+.brand-container span {
+    font-weight: 600;
+    color: var(--dark-color);
+}
+
+.nav-link {
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--primary-color) !important;
+}
+
+/* Hero Section Styles */
+.hero-section {
+    background-color: var(--bg-primary);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    color: var(--text-primary);
+    position: relative;
+    padding: var(--spacing-xl) 0;
+    overflow: hidden;
+}
+
+.hero-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: float 6s ease-in-out infinite;
+}
+
+.hero-image {
+    max-width: 100%;
+    height: auto;
+    filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.hero-section h1 {
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero-section .lead {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.hero-section .btn {
+    padding: 0.8rem 2rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: transform 0.3s ease;
+}
+
+.hero-section .btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Features Section Styles */
+.feature-icon {
+    width: 50px;  /* Ukuran */
+    height: 50px; /* Ukuran */
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--spacing-md);
+    transition: transform var(--transition-speed) var(--transition-timing);
+}
+
+.feature-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.feature-icon:hover {
+    transform: scale(1.1);
+}
+
+.features h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--dark-color);
+}
+
+/* Contact Section Styles */
+.contact-section {
+    background-color: var(--light-color);
+}
+
+.form-control {
+    padding: 0.8rem;
+    border-radius: 0.5rem;
+    border: 1px solid #dee2e6;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Login Modal Styles */
+.modal-content {
+    border-radius: 0.5rem;
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+    border-bottom: 2px solid #eee;
+    padding: 1.5rem;
+}
+
+.modal-title {
+    font-weight: 600;
+    color: var(--dark-color);
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+/* Button Styles */
+.btn {
+    border-radius: 0.5rem;
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    transform: translateY(-1px);
+}
+
+/* Footer Styles */
+footer {
+    background-color: var(--dark-color);
+    color: white;
+    padding: 2rem 0;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    :root {
+        --logo-height: 45px;  /* Ukuran logo untuk mobile */
+        --logo-margin: 10px;  /* Margin yang lebih kecil untuk mobile */
+    }
+
+    .hero-section {
+        padding-top: calc(var(--spacing-xl) * 2);
+    }
+
+    .hero-section h1 {
+        font-size: var(--font-size-xxl);
+    }
+
+    .hero-image {
+        max-width: 80%;
+        margin-top: var(--spacing-xl);
+    }
+
+    .brand-container span {
+        font-size: var(--font-size-sm);
+    }
+    
+    .hero-image-container {
+        margin-top: var(--spacing-xl);
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.feature-icon, .hero-section h1, .hero-section .lead {
+    animation: fadeIn 1s ease-out;
+}

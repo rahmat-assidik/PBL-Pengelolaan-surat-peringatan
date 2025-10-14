@@ -11,7 +11,16 @@ body {
     justify-content: center;
     padding: 20px; /* Add padding for mobile responsiveness */
 }
+.logo-login {
+    height: 80px !important; /* Logo height slightly smaller than navbar */
+    width: auto !important;
+    transition: transform var(--transition-speed) var(--transition-timing);
+    object-fit: contain;
+}
 
+.logo-login:hover {
+    transform: scale(1.05);
+}
 .container {
     display: flex;
     flex-direction:  column;
