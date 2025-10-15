@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - Pengelolaan Surat Peringatan</title>
+  <link rel="stylesheet" href="assets/style-dashboard.css" />
+  <!-- Chart.js untuk grafik -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="sidebar">
+    <img src="assets/img/logo polibatam.png" class="logo-sidebar" alt="Logo" />
+    <h2>Pengelolaan Surat Peringatan</h2>
+    <ul>
+      <li><a href="#" class="active">Dashboard</a></li>
+      <li><a href="#">Data Mahasiswa</a></li>
+      <li><a href="#">Kelola Surat Peringatan</a></li>
+    </ul>
+  </div>
+
+  <div class="main-content">
+    <header>
+      <nav>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <a href="login.html">Logout</a>
+      </nav>
+    </header>
+
+    <section class="dashboard">
+      <h1>DASHBOARD</h1>
+
+      <div class="cards">
+        <div class="card">
+          <h3>Total Mahasiswa</h3>
+          <p id="totalMahasiswa">1.000</p>
+        </div>
+        <div class="card">
+          <h3>Total Surat Peringatan Aktif</h3>
+          <p id="totalSP">50</p>
+        </div>
+        <div class="card">
+          <h3>Jumlah SP Akademik Bulan Ini</h3>
+          <p id="spAkademik">50</p>
+        </div>
+        <div class="card">
+          <h3>Jumlah SP Disiplin Bulan Ini</h3>
+          <p id="spDisiplin">50</p>
+        </div>
+      </div>
+
+      <div class="charts">
+        <div class="chart-container">
+          <h3>Distribusi SP</h3>
+          <canvas id="distribusiSP"></canvas>
+        </div>
+
+        <div class="chart-container">
+          <h3>Tren Surat Peringatan per Semester</h3>
+          <canvas id="trenSP"></canvas>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="assets/dashboard.js"></script>
+</body>
+</html>

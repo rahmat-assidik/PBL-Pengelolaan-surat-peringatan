@@ -11,6 +11,7 @@ body {
     justify-content: center;
     padding: 20px; /* Add padding for mobile responsiveness */
 }
+
 .logo-login {
     height: 80px !important; /* Logo height slightly smaller than navbar */
     width: auto !important;
@@ -61,7 +62,7 @@ label {
     width: 100%;
 }
 
-.email-input,
+.username-input,
 .pas-input {
     padding: 12px 16px; /* More padding for touch-friendly inputs */
     border: 2px solid #e1e5e9; /* Thicker border for visibility */
@@ -73,7 +74,7 @@ label {
     background-color: #f8f9fa; /* Light background for inputs */
 }
 
-.email-input:focus,
+.username-input:focus,
 .pas-input:focus {
     border-color: #4CAF50; /* Green focus border to match button */
     background-color: white;
@@ -81,7 +82,7 @@ label {
     transform: translateY(-2px); /* Slight lift on focus for feedback */
 }
 
-.email-input::placeholder,
+.username-input::placeholder,
 .pas-input::placeholder {
     color: #999; /* Subtle placeholder text */
     font-style: italic;
@@ -147,4 +148,17 @@ button:disabled {
     button {
         transition: none; /* Respect user motion preferences */
     }
+}
+
+/* effect error */
+.input-error {
+  border: 2px solid red !important;
+  animation: shake 0.3s ease-in-out;
+}
+
+/* animation shake for error */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
 }
