@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const passwordInput = document.getElementById("password");
   const errorMessage = document.getElementById("error-message");
 
-  //  Daftar akun valid (sesuai permintaanmu)
+  // Daftar akun valid
   const validAccounts = [
     { username: "admin",   password: "admin123" },
     { username: "admin",   password: "admin12"  },
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const username = usernameInput.value.trim();
     const password = passwordInput.value.trim();
 
-    //  Cek apakah username & password cocok
+    // Cek apakah username & password cocok
     const matched = validAccounts.find(
       acc => acc.username === username && acc.password === password
     );
@@ -28,15 +28,18 @@ document.addEventListener("DOMContentLoaded", function() {
       errorMessage.textContent = "";
       usernameInput.classList.remove("input-error");
       passwordInput.classList.remove("input-error");
+      
+      // Simpan status login ke localStorage
+      localStorage.setItem('loggedIn', 'true');
+      
+      // Redirect ke dashboard
       window.location.href = "dashboard.html";
     } else {
       errorMessage.textContent = "Username atau Password Salah";
 
-      //  Tambahkan efek merah + shake
       usernameInput.classList.add("input-error");
       passwordInput.classList.add("input-error");
 
-      //  Hapus efek setelah animasi selesai (supaya bisa muncul lagi kalau salah dua kali)
       setTimeout(() => {
         usernameInput.classList.remove("input-error");
         passwordInput.classList.remove("input-error");
