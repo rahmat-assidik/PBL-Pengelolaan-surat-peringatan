@@ -1,9 +1,9 @@
-// 🔒 Proteksi halaman: pastikan user sudah login
+//  Proteksi halaman: pastikan user sudah login
 document.addEventListener("DOMContentLoaded", function() {
     const loggedIn = localStorage.getItem("loggedIn");
     if (!loggedIn || loggedIn !== "true") {
         alert("⚠️ Anda harus login terlebih dahulu!");
-        window.location.href = "login.html";
+        window.location.href = "login-page.html";
         return;
     }
 
