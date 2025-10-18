@@ -8,6 +8,9 @@
         <link
             href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
             rel="stylesheet">
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     </head>
     <body>
         <!-- HEADER -->
@@ -16,7 +19,10 @@
                 <img src="assets/img/logo polibatam.png" class="logo-dashboard" alt="Logo">
                 <h1 class="header-text">Dashboard Pengelolaan Surat Peringatan</h1>
             </div>
-            <button id="logoutButton">Logout</button>
+            <button id="logoutButton">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+            </button>
         </header>
 
         <!-- SIDEBAR -->
@@ -28,16 +34,19 @@
                 <div class="main">
                     <div class="list-item">
                         <a href="#" data-target="dashboard" class="active">
+                            <i class="fas fa-home"></i>
                             <span class="description">Dashboard</span>
                         </a>
                     </div>
                     <div class="list-item">
                         <a href="#" data-target="mahasiswa">
+                            <i class="fas fa-user-graduate"></i>
                             <span class="description">Data Mahasiswa</span>
                         </a>
                     </div>
                     <div class="list-item">
                         <a href="#" data-target="surat">
+                            <i class="fas fa-file-circle-exclamation"></i>
                             <span class="description">Kelola Surat Peringatan</span>
                         </a>
                     </div>
