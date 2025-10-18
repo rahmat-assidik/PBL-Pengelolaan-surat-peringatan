@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   /* ========================================
-     1️⃣ CEK STATUS LOGIN
+      CEK STATUS LOGIN
   ======================================== */
   const isLoggedIn = localStorage.getItem("loggedIn");
   if (isLoggedIn !== "true") {
@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ========================================
-     2️⃣ LOGIKA SIDEBAR (navigasi konten)
+      LOGIKA SIDEBAR (navigasi konten)
   ======================================== */
   const links = document.querySelectorAll(".sidebar a");
   const sections = document.querySelectorAll(".content-section");
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ========================================
-     3️⃣ FITUR LOGOUT
+      FITUR LOGOUT
   ======================================== */
   const logoutButton = document.getElementById("logoutButton");
 
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ========================================
-     4️⃣ TAMPILKAN NAMA USER DI DASHBOARD
+      TAMPILKAN NAMA USER DI DASHBOARD
   ======================================== */
   const user = localStorage.getItem("username");
   const userElement = document.getElementById("userName");
