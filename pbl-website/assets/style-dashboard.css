@@ -1,11 +1,5 @@
-<<<<<<< HEAD
 /* === RESET DAN TIPOGRAFI DASAR === */
 * {
-=======
-* {
-  font-family: 'Inter', sans-serif;
-  padding: 0;
->>>>>>> cd76f5871d3886c01ece4ac60491834506648cd4
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -90,7 +84,6 @@ body {
   flex-direction: column;
 }
 
-<<<<<<< HEAD
 .sidebar-header {
   text-transform: uppercase;
   font-size: 0.75rem;
@@ -102,20 +95,6 @@ body {
 
 .list-item {
   margin-bottom: 4px;
-=======
-.main-content {
-  background-color: #eeeeee;
-  flex-grow: 1;
-}
-
-.sidebar .description-header {
-  font-style: normal;
-  font-weight: 700;
-  font-size: 18px;
-  line-height: 16px;
-  text-align: center;
-  color: #ffffff;
->>>>>>> cd76f5871d3886c01ece4ac60491834506648cd4
 }
 
 .list-item a {
@@ -157,46 +136,6 @@ body {
   animation: fadeIn 0.3s ease both;
 }
 
-<<<<<<< HEAD
-.content-section.active {
-  display: block;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* === RESPONSIVE === */
-@media (max-width: 768px) {
-  .header-container {
-    padding: 0 1rem;
-  }
-
-  .sidebar-container {
-    width: 200px;
-    padding: 16px;
-  }
-
-  .content {
-    margin-left: 220px;
-    padding: 24px;
-  }
-
-  .header-text {
-    font-size: 1rem;
-  }
-
-  .logo-dashboard {
-    width: 40px;
-  }
-=======
 .sidebar .main .list-item {
   display: flex;
   flex-direction: row;
@@ -211,5 +150,4 @@ body {
 .sidebar .main .list-item:hover {
   background: #ff9900;
   transition: all ease-in 0.2s;
->>>>>>> cd76f5871d3886c01ece4ac60491834506648cd4
 }
