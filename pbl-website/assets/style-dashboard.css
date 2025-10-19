@@ -319,14 +319,16 @@ body {
     flex-direction: column;
 }
 .card-title {
-  font-size: 0.95rem;
-  color: #6b7280; /* abu muda */
-  margin-bottom: 6px;
+    font-size: 0.95rem;
+    color: #6b7280;
+    /* abu muda */
+    margin-bottom: 6px;
 }
 .card-value {
     font-size: 1.0rem;
     font-weight: 700;
-    color: #111827; /* abu tua */
+    color: #111827;
+    /* abu tua */
 }
 .card-container:hover,
 .stat-card:hover {
@@ -335,12 +337,33 @@ body {
 }
 
 #mahasiswaChange {
-  color: var(--success);
+    color: var(--success);
 }
 #suratPeringatanChange {
-  color: var(--success);
+    color: var(--success);
 }
 
+/* Style Chart */
+.chart-container {    
+  height: 250px;       
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 1px solid var(--gray-300);
+}
+.chart-container:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+.chart-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1.5rem;
+}
 /* Icon Background Colors */
 .bg-primary-light {
     background-color: rgba(13, 110, 253, 0.1);

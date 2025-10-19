@@ -11,6 +11,8 @@
         <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <!--Import chart.js dari CDN-->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
     <body>
         <!-- HEADER -->
@@ -75,8 +77,7 @@
                         <i class="fas fa-users card-icon"></i>
                         <h3 class="card-title">Total Mahasiswa</h3>
                         <p class="card-value" id="totalMahasiswa">0</p>
-                        <i class="fas fa-arrow-up">
-                        </i>
+                        <i class="fas fa-arrow-up"></i>
                         <span id="mahasiswaChange">+0 bulan ini</span>
                     </div>
                     <div class="card-container">
@@ -93,19 +94,33 @@
                         <i class="fas fa-arrow-up"></i>
                         <span id="suratPeringatanChange">+0 bulan ini</span>
                     </div>
-                </section>
-
-                <section id="mahasiswa" class="content-section">
-                    <h2>Data Mahasiswa</h2>
-                    <p>Halaman ini menampilkan daftar data mahasiswa yang terdaftar dalam sistem.</p>
-                </section>
-
-                <section id="surat" class="content-section">
-                    <h2>Kelola Surat Peringatan</h2>
-                    <p>Fitur untuk mengelola dan memonitor surat peringatan mahasiswa.</p>
                 </div>
+                <div class="chart-grid">
+                    <!-- Chart 1: Distribusi -->
+                    <div class="chart-container">
+                        <canvas id="suratPeringatanChart" class="distribusi-sp"></canvas>
+                    </div>
+
+                    <!-- Chart 2: Tren per Semester -->
+                    <div class="chart-container">
+                        <canvas id="trenSuratSemester" class="surat-semester"></canvas>
+                    </div>
+                </div>
+
             </section>
-        </main>
-        <script src="assets/dashboard.js"></script>
-    </body>
+
+            <section id="mahasiswa" class="content-section">
+                <h2>Data Mahasiswa</h2>
+                <p>Halaman ini menampilkan daftar data mahasiswa yang terdaftar dalam sistem.</p>
+            </section>
+
+            <section id="surat" class="content-section">
+                <h2>Kelola Surat Peringatan</h2>
+                <p>Fitur untuk mengelola dan memonitor surat peringatan mahasiswa.</p>
+            </div>
+        </section>
+    </main>
+    <script src="assets/dashboard.js"></script>
+    <script src="assets/chart-dashboard.js"></script>
+</body>
 </html>
