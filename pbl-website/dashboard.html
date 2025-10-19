@@ -70,21 +70,40 @@
                     Selamat datang,
                     <strong id="userName">User</strong>! Ini adalah halaman Dashboard utama.
                 </p>
+                <div class="card-grid">
+                    <div class="card-container">
+                        <i class="fas fa-users card-icon"></i>
+                        <h3 class="card-title">Total Mahasiswa</h3>
+                        <p class="card-value" id="totalMahasiswa">0</p>
+                        <i class="fas fa-arrow-up">
+                        </i>
+                        <span id="mahasiswaChange">+0 bulan ini</span>
+                    </div>
+                    <div class="card-container">
+                        <i class="fas fa-file-circle-exclamation card-icon"></i>
+                        <h3 class="card-title">Total surat peringatan aktif</h3>
+                        <p class="card-value" id="totalSuratPeringatanAktif">0</p>
+                        <i class="fas fa-arrow-up"></i>
+                        <span id="suratPeringatanChange">+0 bulan ini</span>
+                    </div>
+                    <div class="card-container">
+                        <i class="fas fa-calendar-alt card-icon"></i>
+                        <h3 class="card-title">Jumlah surat peringatan bulan ini</h3>
+                        <p class="card-value" id="jumlahSuratPeringatanBulanIni">0</p>
+                        <i class="fas fa-arrow-up"></i>
+                        <span id="suratPeringatanChange">+0 bulan ini</span>
+                    </div>
+                </section>
 
-                <div class="card">
-                    <h3 style="margin-bottom: 0.5rem;">Informasi Sistem</h3>
-                    <p class="text-muted">Dashboard pengelolaan surat peringatan mahasiswa Polibatam.</p>
+                <section id="mahasiswa" class="content-section">
+                    <h2>Data Mahasiswa</h2>
+                    <p>Halaman ini menampilkan daftar data mahasiswa yang terdaftar dalam sistem.</p>
+                </section>
+
+                <section id="surat" class="content-section">
+                    <h2>Kelola Surat Peringatan</h2>
+                    <p>Fitur untuk mengelola dan memonitor surat peringatan mahasiswa.</p>
                 </div>
-            </section>
-
-            <section id="mahasiswa" class="content-section">
-                <h2 style="margin-bottom: 1rem; color: var(--gray-900);">Data Mahasiswa</h2>
-                <p style="color: var(--gray-600);">Halaman ini menampilkan daftar data mahasiswa yang terdaftar dalam sistem.</p>
-            </section>
-
-            <section id="surat" class="content-section">
-                <h2 style="margin-bottom: 1rem; color: var(--gray-900);">Kelola Surat Peringatan</h2>
-                <p style="color: var(--gray-600);">Fitur untuk mengelola dan memonitor surat peringatan mahasiswa.</p>
             </section>
         </main>
         <script src="assets/dashboard.js"></script>
