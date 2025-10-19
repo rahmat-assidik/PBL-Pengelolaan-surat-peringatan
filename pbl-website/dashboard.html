@@ -15,37 +15,45 @@
     <body>
         <!-- HEADER -->
         <header class="header-container">
-            <div class="logo-text">
-                <img src="assets/img/logo polibatam.png" class="logo-dashboard" alt="Logo">
-                <h1 class="header-text">Dashboard Pengelolaan Surat Peringatan</h1>
+            <div class="header-left">
+                <button class="toggle-sidebar" id="toggleSidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="logo-text">
+                    <img src="assets/img/logo polibatam.png" class="logo-dashboard" alt="Logo">
+                    <h1 class="header-text">Dashboard Pengelolaan Surat Peringatan</h1>
+                </div>
             </div>
             <button id="logoutButton">
                 <i class="fas fa-sign-out-alt"></i>
-                Logout
+                <span>Logout</span>
             </button>
         </header>
 
+        <!-- SIDEBAR OVERLAY (Mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
         <!-- SIDEBAR -->
-        <div class="sidebar-container">
+        <div class="sidebar-container" id="sidebar">
             <div class="sidebar">
                 <div class="sidebar-header">
                     <span class="description-header">Menu</span>
                 </div>
                 <div class="main">
                     <div class="list-item">
-                        <a href="#" data-target="dashboard" class="active">
+                        <a href="#" data-target="dashboard" data-tooltip="Dashboard" class="active">
                             <i class="fas fa-home"></i>
                             <span class="description">Dashboard</span>
                         </a>
                     </div>
                     <div class="list-item">
-                        <a href="#" data-target="mahasiswa">
+                        <a href="#" data-target="mahasiswa" data-tooltip="Data Mahasiswa">
                             <i class="fas fa-user-graduate"></i>
                             <span class="description">Data Mahasiswa</span>
                         </a>
                     </div>
                     <div class="list-item">
-                        <a href="#" data-target="surat">
+                        <a href="#" data-target="surat" data-tooltip="Kelola Surat Peringatan">
                             <i class="fas fa-file-circle-exclamation"></i>
                             <span class="description">Kelola Surat Peringatan</span>
                         </a>
@@ -55,20 +63,28 @@
         </div>
 
         <!-- CONTENT AREA -->
-        <main class="content">
+        <main class="content" id="content">
             <section id="dashboard" class="content-section active">
-                <h2>Dashboard</h2>
-                <p>Selamat datang di Dashboard utama.</p>
+                <h2 style="margin-bottom: 1rem; color: var(--gray-900);">Dashboard</h2>
+                <p style="color: var(--gray-600); margin-bottom: 2rem;">
+                    Selamat datang,
+                    <strong id="userName">User</strong>! Ini adalah halaman Dashboard utama.
+                </p>
+
+                <div class="card">
+                    <h3 style="margin-bottom: 0.5rem;">Informasi Sistem</h3>
+                    <p class="text-muted">Dashboard pengelolaan surat peringatan mahasiswa Polibatam.</p>
+                </div>
             </section>
 
             <section id="mahasiswa" class="content-section">
-                <h2>Data Mahasiswa</h2>
-                <p>Berisi daftar data mahasiswa yang terdaftar.</p>
+                <h2 style="margin-bottom: 1rem; color: var(--gray-900);">Data Mahasiswa</h2>
+                <p style="color: var(--gray-600);">Halaman ini menampilkan daftar data mahasiswa yang terdaftar dalam sistem.</p>
             </section>
 
             <section id="surat" class="content-section">
-                <h2>Kelola Surat Peringatan</h2>
-                <p>Fitur pengelolaan surat peringatan mahasiswa.</p>
+                <h2 style="margin-bottom: 1rem; color: var(--gray-900);">Kelola Surat Peringatan</h2>
+                <p style="color: var(--gray-600);">Fitur untuk mengelola dan memonitor surat peringatan mahasiswa.</p>
             </section>
         </main>
         <script src="assets/dashboard.js"></script>
