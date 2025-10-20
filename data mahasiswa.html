@@ -1,0 +1,317 @@
+<!-- === MAIN CONTENT START === -->
+<div class="main-content" style="padding: 20px;">
+
+  <!-- Pencarian Mahasiswa -->
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Cari nama atau NIM mahasiswa..." onkeyup="searchMahasiswa()">
+    <button>🔍</button>
+  </div>
+
+  <!-- Profil Mahasiswa -->
+  <div class="profile-card">
+    <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Profile">
+    <div class="profile-info">
+      <table>
+        <tr><td>Nama</td><td>:</td><td>-</td></tr>
+        <tr><td>NIM</td><td>:</td><td>-</td></tr>
+        <tr><td>Jurusan</td><td>:</td><td>-</td></tr>
+        <tr><td>Prodi</td><td>:</td><td>-</td></tr>
+        <tr><td>Semester</td><td>:</td><td>-</td></tr>
+        <tr><td>Status Akademik</td><td>:</td><td>Aktif / Cuti / Nonaktif</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- CRUD Data Mahasiswa -->
+  <div class="crud-section">
+    <h2>Data Mahasiswa</h2>
+    <button class="btn" onclick="toggleForm()">+ Tambah Mahasiswa</button>
+
+    <div class="form-container" id="formContainer">
+      <h3 id="formTitle">Tambah Mahasiswa</h3>
+      <input type="hidden" id="editIndex">
+      <label>Nama:</label>
+      <input type="text" id="nama" placeholder="Masukkan nama">
+      <label>NIM:</label>
+      <input type="text" id="nim" placeholder="Masukkan NIM">
+      <label>Jurusan:</label>
+      <input type="text" id="jurusan" placeholder="Masukkan jurusan">
+      <label>Prodi:</label>
+      <input type="text" id="prodi" placeholder="Masukan prodi">
+      <label>Semester</label>
+      <input type="text" id="semester" placeholder="Masukan semester">
+      <button class="btn" onclick="saveMahasiswa()">Simpan</button>
+    </div>
+
+    <div class="cards" id="cardsContainer"></div>
+  </div>
+
+</div>
+<!-- === MAIN CONTENT END === -->
+
+<!-- CSS UNTUK MAIN CONTENT -->
+<style>
+  .search-box {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+
+  .search-box input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .search-box button {
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    cursor: pointer;
+  }
+
+  .profile-card {
+    display: flex;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    align-items: center;
+  }
+
+  .profile-card img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    margin-right: 20px;
+  }
+
+  .profile-info table {
+    width: 100%;
+  }
+
+  .profile-info td {
+    padding: 4px 8px;
+    font-size: 14px;
+  }
+
+  .activity {
+    background: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 25px;
+  }
+
+  .crud-section h2 {
+    margin-top: 30px;
+  }
+
+  .btn {
+    display: inline-block;
+    background: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+    margin: 10px 0;
+  }
+
+  .btn:hover {
+    background: #0056b3;
+  }
+
+  .form-container {
+    display: none;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+  }
+
+  .form-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+  }
+
+  .card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  }
+
+  .card h3 {
+    margin: 0;
+    color: #007bff;
+  }
+
+  .actions {
+    margin-top: 10px;
+  }
+
+  .actions button {
+    margin-right: 5px;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: white;
+  }
+
+  .edit { background: #28a745; }
+  .delete { background: #dc3545; }
+  .edit:hover { background: #1e7e34; }
+  .delete:hover { background: #b02a37; }
+</style>
+
+<!-- SCRIPT CRUD + FITUR PENCARIAN TERHUBUNG -->
+<script>
+  let mahasiswa = JSON.parse(localStorage.getItem("mahasiswa")) || [];
+
+  function renderCards(filteredData = mahasiswa) {
+    const container = document.getElementById("cardsContainer");
+    container.innerHTML = "";
+
+    filteredData.forEach((mhs, index) => {
+      container.innerHTML += `
+        <div class="card" onclick="updateProfile(mahasiswa[${index}])">
+          <h3>${mhs.nama}</h3>
+          <p><strong>NIM:</strong> ${mhs.nim}</p>
+          <p><strong>Jurusan:</strong> ${mhs.jurusan}</p>
+          <p><strong>Semester:</strong> ${mhs.semester}</p>
+          <div class="actions">
+            <button class="edit" onclick="event.stopPropagation(); editMahasiswa(${index})">Edit</button>
+            <button class="delete" onclick="event.stopPropagation(); deleteMahasiswa(${index})">Hapus</button>
+          </div>
+        </div>
+      `;
+    });
+
+    localStorage.setItem("mahasiswa", JSON.stringify(mahasiswa));
+  }
+
+  function toggleForm() {
+    const form = document.getElementById("formContainer");
+    form.style.display = form.style.display === "block" ? "none" : "block";
+    document.getElementById("formTitle").innerText = "Tambah Mahasiswa";
+    document.getElementById("editIndex").value = "";
+    document.getElementById("nama").value = "";
+    document.getElementById("nim").value = "";
+    document.getElementById("jurusan").value = "";
+    document.getElementById("prodi").value = "";
+    document.getElementById("semester").value = "";
+  }
+
+  function saveMahasiswa() {
+    const nama = document.getElementById("nama").value;
+    const nim = document.getElementById("nim").value;
+    const jurusan = document.getElementById("jurusan").value;
+    const prodi = document.getElementById("prodi").value;
+    const semester = document.getElementById("semester").value;
+    const editIndex = document.getElementById("editIndex").value;
+
+    if (!nama || !nim || !jurusan || !prodi || !semester) {
+      alert("Semua field harus diisi!");
+      return;
+    }
+
+    const data = { nama, nim, jurusan, prodi, semester };
+
+    if (editIndex) {
+      mahasiswa[editIndex] = data;
+      alert("Data berhasil diperbarui!");
+    } else {
+      mahasiswa.push(data);
+      alert("Mahasiswa berhasil ditambahkan!");
+    }
+
+    toggleForm();
+    renderCards();
+  }
+
+  function editMahasiswa(index) {
+    const mhs = mahasiswa[index];
+    document.getElementById("formContainer").style.display = "block";
+    document.getElementById("formTitle").innerText = "Edit Mahasiswa";
+    document.getElementById("nama").value = mhs.nama;
+    document.getElementById("nim").value = mhs.nim;
+    document.getElementById("jurusan").value = mhs.jurusan;
+    document.getElementById("prodi").value = mhs.prodi;
+    document.getElementById("semester").value = mhs.semester;
+    document.getElementById("editIndex").value = index;
+  }
+
+  function deleteMahasiswa(index) {
+    if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
+      mahasiswa.splice(index, 1);
+      renderCards();
+      localStorage.setItem("mahasiswa", JSON.stringify(mahasiswa));
+      clearProfile();
+    }
+  }
+
+  // FITUR PENCARIAN TERHUBUNG DENGAN PROFIL
+  function searchMahasiswa() {
+    const keyword = document.getElementById("searchInput").value.toLowerCase();
+    const filtered = mahasiswa.filter(mhs =>
+      mhs.nama.toLowerCase().includes(keyword) || mhs.nim.toLowerCase().includes(keyword)
+    );
+    console.log(filtered); // tampilkan hasil pencarian
+    renderCards(filtered);
+
+    if (filtered.length === 1 && keyword !== "") {
+      updateProfile(filtered[0]);
+    } else if (filtered.length === 0 || keyword === "") {
+      clearProfile();
+    }
+  }
+
+  function updateProfile(mhs) {
+    const table = document.querySelector(".profile-info table");
+    table.innerHTML = `
+      <tr><td>Nama</td><td>:</td><td>${mhs.nama}</td></tr>
+      <tr><td>NIM</td><td>:</td><td>${mhs.nim}</td></tr>
+      <tr><td>Jurusan</td><td>:</td><td>${mhs.jurusan}</td></tr>
+      <tr><td>Prodi</td><td>:</td><td>${mhs.prodi}</td></tr>
+      <tr><td>Semester</td><td>:</td><td>${mhs.semester}</td></tr>
+      <tr><td>Status Akademik</td><td>:</td><td>Aktif</td></tr>
+    `;
+  }
+
+  function clearProfile() {
+    const table = document.querySelector(".profile-info table");
+    table.innerHTML = `
+      <tr><td>Nama</td><td>:</td><td>-</td></tr>
+      <tr><td>NIM</td><td>:</td><td>-</td></tr>
+      <tr><td>Jurusan</td><td>:</td><td>-</td></tr>
+      <tr><td>Prodi</td><td>:</td><td>-</td></tr>
+      <tr><td>Semester</td><td>:</td><td>-</td></tr>
+      <tr><td>Status Akademik</td><td>:</td><td>Aktif / Cuti / Nonaktif</td></tr>
+    `;
+  }
+
+  renderCards();
+</script>
