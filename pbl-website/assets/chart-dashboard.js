@@ -42,12 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (existingMsg) existingMsg.remove();
     });
 
-    // Jika belum ada data surat peringatan
-    if (suratPeringatan.length === 0) {
-      showNoDataMessage(ctxDistribusi.parentElement, "Belum ada data surat peringatan");
-      showNoDataMessage(ctxTren.parentElement, "Belum ada data surat peringatan");
-      return;
-    }
 
     // 4️⃣ Chart Distribusi SP (Pie)
     const spCount = { SP1: 0, SP2: 0, SP3: 0 };
