@@ -224,7 +224,9 @@ body {
 .list-item a i {
     width: 18px;
     text-align: center;
-    position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 16px;
     flex-shrink: 0;
 }
@@ -312,24 +314,40 @@ body {
     padding: 1.5rem;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.75rem;
     transition: all 0.3s ease;
     cursor: pointer;
-    align-items: center;
     box-sizing: border-box;
     flex-direction: column;
+    text-align: center;
+}
+.card-icon {
+    font-size: 2.5rem;
+    height: 42px;
+    width: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+#iconTotalMahasiswa {
+    position: relative;
+    margin-right: 25px;
 }
 .card-title {
-    font-size: 0.95rem;
-    color: #6b7280;
-    /* abu muda */
-    margin-bottom: 6px;
+    font-size: 0.9rem;
+    color: var(--gray-600);
+    margin-bottom: 8px;
+    text-align: center;
 }
 .card-value {
-    font-size: 1.0rem;
+    font-size: 1.5rem;
     font-weight: 700;
-    color: #111827;
-    /* abu tua */
+    color: var(--gray-900);
+    margin-bottom: 4px;
 }
 .card-container:hover,
 .stat-card:hover {
@@ -346,28 +364,28 @@ body {
 
 /* Style Chart */
 .chart-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 20px;
-  margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
 }
 .no-data-msg {
-  text-align: center;
-  color: #999;
-  font-style: italic;
-  font-size: 14px;
-  padding: 40px 0;
+    text-align: center;
+    color: #999;
+    font-style: italic;
+    font-size: 14px;
+    padding: 40px 0;
 }
 
-.chart-container {    
-  height: 250px;       
-  background: white;
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
-  cursor: pointer;
-  border: 1px solid var(--gray-300);
+.chart-container {
+    height: 250px;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid var(--gray-300);
 }
 .chart-container:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
