@@ -4,56 +4,124 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Dashboard - Pengelolaan Surat Peringatan</title>
-        <!-- Fonts Google -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="stylesheet" href="assets/style-dashboard.css">
         <link
-            rel="preconnect"
-            href="https://fonts.gstatic.com"
-            crossorigin="crossorigin">
-        <link
-            href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
             rel="stylesheet">
-            <!-- My Style -->
-             <link rel="stylesheet" href="assets/style-dashboard.css">
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <!--Import chart.js dari CDN-->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
     <body>
-      <div class="container">
-        <div class="sidebar">
-          <div class="header">
-            <div class="list-item">
-              <a href="">
-              <img src="assets/img/logo polibatam.png" alt="" class="Icon-polbat" height="50px">
-              </a>
-              <span class="description-header">Pengelolaan Surat Peringatan</span>
+        <!-- HEADER -->
+        <header class="header-container">
+            <div class="header-left">
+                <button class="toggle-sidebar" id="toggleSidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="logo-text">
+                    <img src="assets/img/logo polibatam.png" class="logo-dashboard" alt="Logo">
+                    <h1 class="header-text">Dashboard Pengelolaan Surat Peringatan</h1>
+                </div>
             </div>
-            <div class="ilustration">
-              <img src="" alt="">
+            <button id="logoutButton">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </header>
+
+        <!-- SIDEBAR OVERLAY (Mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- SIDEBAR -->
+        <div class="sidebar-container" id="sidebar">
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <span class="description-header">Menu</span>
+                </div>
+                <div class="main">
+                    <div class="list-item">
+                        <a href="#" data-target="dashboard" data-tooltip="Dashboard" class="active">
+                            <i class="fas fa-home"></i>
+                            <span class="description">Dashboard</span>
+                        </a>
+                    </div>
+                    <div class="list-item">
+                        <a href="#" data-target="mahasiswa" data-tooltip="Data Mahasiswa">
+                            <i class="fas fa-user-graduate"></i>
+                            <span class="description">Data Mahasiswa</span>
+                        </a>
+                    </div>
+                    <div class="list-item">
+                        <a href="#" data-target="surat" data-tooltip="Kelola Surat Peringatan">
+                            <i class="fas fa-file-circle-exclamation"></i>
+                            <span class="description">Kelola Surat Peringatan</span>
+                        </a>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="main">
-            <div class="list-item">
-              <a href="#">
-                <img src="assets/img/business-report_3408591.png" alt="" class="Icon" height="15px">
-                <span class="description">Dashboard</span>
-              </a>
-            </div>
-            <div class="list-item">
-              <a href="#">
-                <img src="" alt="" class="Icon">
-                <span class="description">Data Mahasiswa</span>
-              </a>
-            </div>
-            <div class="list-item">
-              <a href="#">
-                <img src="" alt="" class="Icon">
-                <span class="description">Kelola Surat Peringatan</span>
-              </a>
-            </div>
-          </div>
         </div>
-        <div class="main-content">
-          
-        </div>
-      <script src="assets/dashboard.js"></script>
-    </body>
+
+        <!-- CONTENT AREA -->
+        <main class="content" id="content">
+            <section id="dashboard" class="content-section active">
+                <h2 style="margin-bottom: 1rem; color: var(--gray-900);">Dashboard</h2>
+                <p style="color: var(--gray-600); margin-bottom: 2rem;">
+                    Selamat datang,
+                    <strong id="userName">User</strong>! Ini adalah halaman Dashboard utama.
+                </p>
+                <div class="card-grid">
+                    <div class="card-container">
+                        <i class="fas fa-users card-icon"></i>
+                        <h3 class="card-title">Total Mahasiswa</h3>
+                        <p class="card-value" id="totalMahasiswa">0</p>
+                        <i class="fas fa-arrow-up"></i>
+                        <span id="mahasiswaChange">+0 bulan ini</span>
+                    </div>
+                    <div class="card-container">
+                        <i class="fas fa-file-circle-exclamation card-icon"></i>
+                        <h3 class="card-title">Total surat peringatan aktif</h3>
+                        <p class="card-value" id="totalSuratPeringatanAktif">0</p>
+                        <i class="fas fa-arrow-up"></i>
+                        <span id="suratPeringatanChange">+0 bulan ini</span>
+                    </div>
+                    <div class="card-container">
+                        <i class="fas fa-calendar-alt card-icon"></i>
+                        <h3 class="card-title">Jumlah surat peringatan bulan ini</h3>
+                        <p class="card-value" id="jumlahSuratPeringatanBulanIni">0</p>
+                        <i class="fas fa-arrow-up"></i>
+                        <span id="suratPeringatanChange">+0 bulan ini</span>
+                    </div>
+                </div>
+                <div class="chart-grid">
+                    <!-- Chart 1: Distribusi -->
+                    <div class="chart-container">
+                        <canvas id="suratPeringatanChart" class="distribusi-sp"></canvas>
+                    </div>
+
+                    <!-- Chart 2: Tren per Semester -->
+                    <div class="chart-container">
+                        <canvas id="trenSuratSemester" class="surat-semester"></canvas>
+                    </div>
+                </div>
+
+            </section>
+
+            <section id="mahasiswa" class="content-section">
+                <h2>Data Mahasiswa</h2>
+                <p>Halaman ini menampilkan daftar data mahasiswa yang terdaftar dalam sistem.</p>
+            </section>
+
+            <section id="surat" class="content-section">
+                <h2>Kelola Surat Peringatan</h2>
+                <p>Fitur untuk mengelola dan memonitor surat peringatan mahasiswa.</p>
+            </div>
+        </section>
+    </main>
+    <script src="assets/dashboard.js"></script>
+    <script src="assets/chart-dashboard.js"></script>
+    <script src="assets/dashboard-display-card.js"></script>
+</body>
 </html>

@@ -1,86 +1,149 @@
-// Login redirect handling
-document
-    .getElementById('loginButton')
-    .addEventListener('click', function (e) {
-        e.preventDefault();
-        // Ganti URL_LOGIN_PAGE dengan URL halaman login yang akan dibuat
-        window.location.href = "login-page.html";
+// =============================
+// LOGIN BUTTON REDIRECT
+// =============================
+document.getElementById("loginButton").addEventListener("click", function (e) {
+  e.preventDefault();
+  window.location.href = "login-page.html";
+});
+
+// =============================
+// MOCK DATA (contoh data mahasiswa)
+// =============================
+const mockData = [
+  {
+    nim: "4311901015",
+    name: "John Doe",
+    kelas: "TI-3A",
+    Walidosen: "Dr. Ahmad Fauzi",
+    programStudy: "Informatics Engineering",
+    status: "Active",
+    sp: "SP1",
+  },
+  {
+    nim: "4311901016",
+    name: "Jane Smith",
+    programStudy: "Information Systems",
+    status: "Warning",
+  },
+  {
+    nim: "4311901020",
+    name: "Ayu Lestari",
+    programStudy: "Multimedia",
+    status: "Active",
+  },
+  {
+    nim: "4311901033",
+    name: "Rizky Ramadhan",
+    programStudy: "Design Graphics",
+    status: "Inactive",
+  },
+];
+
+// =============================
+// SEARCH PREVIEW REALTIME
+// =============================
+const searchInput = document.getElementById("searchInput");
+const searchPreview = document.getElementById("searchPreview");
+const searchForm = document.getElementById("searchForm");
+
+searchInput.addEventListener("keyup", function () {
+  const query = this.value.trim().toLowerCase();
+  searchPreview.innerHTML = "";
+
+  if (query.length < 1) return;
+
+  const results = mockData.filter(
+    (student) =>
+      student.nim.toLowerCase().includes(query) ||
+      student.name.toLowerCase().includes(query)
+  );
+
+  if (results.length > 0) {
+    results.forEach((student) => {
+      const item = document.createElement("button");
+      item.type = "button";
+      item.classList.add("list-group-item", "list-group-item-action");
+      item.innerHTML = `
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <strong>${student.name}</strong><br>
+            <small class="text-muted">${student.nim} - ${
+        student.programStudy
+      }</small>
+          </div>
+          <span class="badge ${
+            student.status === "Warning"
+              ? "bg-warning"
+              : student.status === "Inactive"
+              ? "bg-secondary"
+              : "bg-success"
+          }">
+            ${student.status}
+          </span>
+        </div>
+      `;
+
+      item.addEventListener("click", function () {
+        searchInput.value = `${student.name} (${student.nim})`;
+        searchPreview.innerHTML = "";
+        showStudentProfile(student); // <== tampilkan card profil
+      });
+
+      searchPreview.appendChild(item);
     });
+  } else {
+    searchPreview.innerHTML = `<div class="list-group-item text-muted">Tidak ditemukan</div>`;
+  }
+});
 
-// Search form handling
-document
-    .getElementById('searchForm')
-    .addEventListener('submit', function (e) {
-        e.preventDefault();
-        const searchQuery = document
-            .getElementById('searchInput')
-            .value
-            .trim();
+// Tutup preview jika klik di luar
+document.addEventListener("click", function (e) {
+  if (!e.target.closest(".position-relative")) {
+    searchPreview.innerHTML = "";
+  }
+});
 
-        if (searchQuery === '') {
-            alert('Please enter a NIM or Name to search');
-            return;
-        }
+// =============================
+// SEARCH FORM (BUTTON SUBMIT)
+// =============================
+searchForm.addEventListener("submit", function (e) {
+  e.preventDefault();
+  const searchQuery = searchInput.value.trim();
 
-        // Here you would typically make an API call to your backend For demonstration,
-        // we'll simulate a search with mock data
-        searchStudents(searchQuery);
-    });
+  if (searchQuery === "") {
+    alert("Masukkan NIM atau Nama untuk mencari");
+    return;
+  }
 
-function searchStudents(query) {
-    // This is mock data - replace with actual API call
-    const mockData = [
-        {
-            nim: '4311901015',
-            name: 'John Doe',
-            programStudy: 'Informatics Engineering',
-            status: 'Active'
-        }, {
-            nim: '4311901016',
-            name: 'Jane Smith',
-            programStudy: 'Information Systems',
-            status: 'Warning'
-        }
-    ];
+  const results = mockData.filter(
+    (student) =>
+      student.nim.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      student.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
-    // Simulate search filtering
-    const results = mockData.filter(
-        student => student.nim.toLowerCase().includes(query.toLowerCase()) || student.name.toLowerCase().includes(query.toLowerCase())
-    );
+  displaySearchResults(results);
+});
 
-    displaySearchResults(results);
-}
+// =============================
+// TAMPILKAN KARTU PROFIL MAHASISWA
+// =============================
+function showStudentProfile(student) {
+  const profileCard = document.getElementById('studentProfile');
+  document.getElementById('profileName').textContent = student.name;
+  document.getElementById('profileNIM').textContent = student.nim;
+  document.getElementById('profileKelas').textContent = student.kelas || '-';
+  document.getElementById('profileProdi').textContent = student.programStudy;
+  document.getElementById('profileWaliDosen').textContent = student.Walidosen || '-';
+  document.getElementById('profileSP').textContent = student.sp || '-';
+  document.getElementById('profileStatus').textContent = student.status;
 
-function displaySearchResults(results) {
-    const tbody = document.getElementById('searchResultsBody');
-    const noResults = document.getElementById('noResultsMessage');
-    tbody.innerHTML = '';
+  // Ganti warna status otomatis
+  const statusSpan = document.getElementById('profileStatus');
+  statusSpan.classList.remove('text-primary', 'text-warning', 'text-danger', 'text-success');
+  if (student.status === 'Active') statusSpan.classList.add('text-success');
+  else if (student.status === 'Warning') statusSpan.classList.add('text-warning');
+  else statusSpan.classList.add('text-danger');
 
-    if (results.length === 0) {
-        noResults
-            .classList
-            .remove('d-none');
-    } else {
-        noResults
-            .classList
-            .add('d-none');
-        results.forEach(student => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${student.nim}</td>
-                <td>${student.name}</td>
-                <td>${student.programStudy}</td>
-                <td><span class="badge ${student.status === 'Warning'
-                ? 'bg-warning'
-                : 'bg-success'}">${student.status}</span></td>
-            `;
-            tbody.appendChild(row);
-        });
-    }
-
-    // Show the modal
-    const searchResultsModal = new bootstrap.Modal(
-        document.getElementById('searchResultsModal')
-    );
-    searchResultsModal.show();
+  // Tampilkan card
+  profileCard.classList.remove('d-none');
 }
