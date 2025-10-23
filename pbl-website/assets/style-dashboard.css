@@ -1,3 +1,104 @@
+/* === PASSWORD INPUT EYE ICON === */
+.input-password-group {
+    margin-bottom: 1rem;
+}
+.input-password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.input-password-wrapper input[type="password"],
+.input-password-wrapper input[type="text"] {
+    width: 100%;
+    padding-right: 2.5rem;
+}
+.toggle-password-visibility {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--gray-600);
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 0 0.3rem;
+    z-index: 2;
+    outline: none;
+    transition: color 0.2s;
+}
+.toggle-password-visibility:active,
+.toggle-password-visibility:focus {
+    color: var(--primary);
+}
+/* === PASSWORD MANAGER === */
+.password-card {
+    background: var(--white);
+    border: 1px solid var(--gray-300);
+    border-radius: 14px;
+    max-width: 400px;
+    margin: 2rem auto 0 auto;
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+.password-card form > div {
+    margin-bottom: 1rem;
+}
+.password-card label {
+    display: block;
+    font-size: 0.95rem;
+    color: var(--gray-700);
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+}
+.password-card input[type="password"],
+.password-card input[type="text"] {
+    width: 100%;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid var(--gray-200);
+    border-radius: 7px;
+    font-size: 1rem;
+    background: var(--gray-50);
+    color: var(--gray-900);
+    transition: border 0.2s;
+}
+.password-card input[type="password"]:focus,
+.password-card input[type="text"]:focus {
+    border-color: var(--primary);
+    outline: none;
+    background: var(--white);
+}
+.password-card button[type="submit"] {
+    width: 100%;
+    padding: 0.7rem 0;
+    background: var(--primary);
+    color: var(--white);
+    border: none;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 0.5rem;
+}
+.password-card button[type="submit"]:hover {
+    background: #0b5ed7;
+}
+.password-card #passwordMessage {
+    font-size: 0.97rem;
+    min-height: 1.2em;
+    margin-top: 0.7rem;
+    text-align: center;
+}
+@media (max-width: 600px) {
+    .password-card {
+        padding: 1.2rem 0.7rem 1.2rem 0.7rem;
+        max-width: 98vw;
+    }
+}
 /* === VARIABLES === */
 :root {
     --sidebar-width: 250px;

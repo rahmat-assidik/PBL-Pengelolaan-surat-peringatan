@@ -1,0 +1,107 @@
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('changePasswordForm');
+  const currentEl = document.getElementById('currentPassword');
+  const newEl = document.getElementById('newPassword');
+  const confirmEl = document.getElementById('confirmPassword');
+  const msgEl = document.getElementById('passwordMessage');
+
+  if (!form) return;
+
+  // Ensure accounts exist in localStorage
+  function seedAccountsIfMissing() {
+    const accounts = JSON.parse(localStorage.getItem('accounts')) || null;
+    if (!accounts) {
+      const defaultAccounts = [
+        { username: 'admin', password: 'admin123' },
+        { username: 'admin00', password: 'admin12' }
+      ];
+      localStorage.setItem('accounts', JSON.stringify(defaultAccounts));
+      return defaultAccounts;
+    }
+    return accounts;
+  }
+
+  seedAccountsIfMissing();
+
+  function getCurrentUsername() {
+    try {
+      return sessionStorage.getItem('username') || localStorage.getItem('username');
+    } catch (e) {
+      return localStorage.getItem('username');
+    }
+  }
+
+  // Toggle show/hide password
+  document.querySelectorAll('.input-password-wrapper').forEach(wrapper => {
+    const input = wrapper.querySelector('input');
+    const btn = wrapper.querySelector('.toggle-password-visibility');
+    if (input && btn) {
+      btn.addEventListener('click', () => {
+        if (input.type === 'password') {
+          input.type = 'text';
+          btn.querySelector('i').classList.remove('fa-eye');
+          btn.querySelector('i').classList.add('fa-eye-slash');
+        } else {
+          input.type = 'password';
+          btn.querySelector('i').classList.remove('fa-eye-slash');
+          btn.querySelector('i').classList.add('fa-eye');
+        }
+      });
+    }
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    msgEl.textContent = '';
+
+    const username = getCurrentUsername();
+    if (!username) {
+      msgEl.style.color = 'red';
+      msgEl.textContent = 'Tidak ada user yang terdeteksi. Silakan login ulang.';
+      return;
+    }
+
+    const current = currentEl.value.trim();
+    const next = newEl.value.trim();
+    const confirm = confirmEl.value.trim();
+
+    if (next.length < 6) {
+      msgEl.style.color = 'red';
+      msgEl.textContent = 'Kata sandi baru harus minimal 6 karakter.';
+      return;
+    }
+    if (next !== confirm) {
+      msgEl.style.color = 'red';
+      msgEl.textContent = 'Konfirmasi kata sandi tidak cocok.';
+      return;
+    }
+
+    const accounts = JSON.parse(localStorage.getItem('accounts')) || [];
+    const idx = accounts.findIndex(a => a.username === username);
+    if (idx === -1) {
+      msgEl.style.color = 'red';
+      msgEl.textContent = 'Akun tidak ditemukan.';
+      return;
+    }
+
+    if (accounts[idx].password !== current) {
+      msgEl.style.color = 'red';
+      msgEl.textContent = 'Kata sandi saat ini salah.';
+      return;
+    }
+
+    // update password
+    accounts[idx].password = next;
+    localStorage.setItem('accounts', JSON.stringify(accounts));
+
+    msgEl.style.color = 'green';
+    msgEl.textContent = 'Kata sandi berhasil diubah. Silakan login ulang.';
+
+    // clear session and force re-login after short delay
+    setTimeout(() => {
+      try { sessionStorage.removeItem('username'); } catch (e) {}
+      localStorage.removeItem('loggedIn');
+      window.location.href = 'login-page.html';
+    }, 1200);
+  });
+});

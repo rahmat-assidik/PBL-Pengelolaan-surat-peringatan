@@ -4,13 +4,20 @@ document.addEventListener("DOMContentLoaded", function () {
   const passwordInput = document.getElementById("password");
   const errorMessage = document.getElementById("error-message");
 
-  // Daftar akun valid
-  const validAccounts = [
-    { username: "admin", password: "admin123" },
-    { username: "admin", password: "admin12" },
-    { username: "admin00", password: "admin123" },
-    { username: "admin00", password: "admin12" }
-  ];
+  // Ambil akun dari localStorage (seed default jika belum ada)
+  function seedAccountsIfMissing() {
+    const raw = localStorage.getItem('accounts');
+    if (!raw) {
+      const defaults = [
+        { username: 'admin', password: 'admin123' },
+        { username: 'admin00', password: 'admin12' }
+      ];
+      localStorage.setItem('accounts', JSON.stringify(defaults));
+      return defaults;
+    }
+    try { return JSON.parse(raw); } catch (e) { return []; }
+  }
+  const validAccounts = seedAccountsIfMissing();
 
   form.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -29,6 +36,8 @@ document.addEventListener("DOMContentLoaded", function () {
       // Simpan status login ke localStorage
       localStorage.setItem("loggedIn", "true");
       localStorage.setItem("username", username);
+      // simpan ke session agar dashboard menampilkan user sesi saat ini
+      try { sessionStorage.setItem('username', username); } catch (e) {}
 
       // Redirect ke dashboard
       window.location.href = "dashboard.html";

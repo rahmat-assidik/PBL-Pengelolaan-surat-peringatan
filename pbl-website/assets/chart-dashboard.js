@@ -83,18 +83,59 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // 5️⃣ Chart Tren SP per Semester (Line)
-    const trenData = {};
+    // Hitung jumlah per semester, lalu pastikan semua semester antara min->max ada (isi 0 jika kosong)
+    const trenDataRaw = {};
     suratPeringatan.forEach(sp => {
       const tgl = new Date(sp.tanggal);
       const semester = `Semester ${tgl.getFullYear()}-${tgl.getMonth() < 6 ? "1" : "2"}`;
-      trenData[semester] = (trenData[semester] || 0) + 1;
+      trenDataRaw[semester] = (trenDataRaw[semester] || 0) + 1;
     });
 
+    // Jika tidak ada data, buat label kosong agar chart tidak crash
+    let trenLabels = [];
+    let trenValues = [];
+
+    if (suratPeringatan.length === 0) {
+      trenLabels = [];
+      trenValues = [];
+    } else {
+      // Tentukan rentang semester berdasarkan tanggal terawal dan terakhir
+      const dates = suratPeringatan.map(sp => new Date(sp.tanggal).getTime());
+      const minT = Math.min(...dates);
+      const maxT = Math.max(...dates);
+      const minD = new Date(minT);
+      const maxD = new Date(maxT);
+
+      const semIndex = d => (d.getFullYear() * 2) + (d.getMonth() < 6 ? 0 : 1);
+      const indexToKey = idx => {
+        const year = Math.floor(idx / 2);
+        const sem = (idx % 2 === 0) ? 1 : 2;
+        return { key: `Semester ${year}-${sem}`, year, sem };
+      };
+
+      let startIdx = semIndex(minD);
+      let endIdx = semIndex(maxD);
+
+      // ensure at least a couple semesters for better visualization
+      if (startIdx === endIdx) {
+        startIdx = Math.max(0, startIdx - 1);
+        endIdx = endIdx + 1;
+      }
+
+      for (let idx = startIdx; idx <= endIdx; idx++) {
+        const { key, year, sem } = indexToKey(idx);
+        // nicer label e.g. "2024 S1 (Jan–Jun)"
+        const niceLabel = `${year} S${sem} (${sem === 1 ? 'Jan–Jun' : 'Jul–Dec'})`;
+        trenLabels.push(niceLabel);
+        trenValues.push(trenDataRaw[key] || 0);
+      }
+    }
+
     const trenChartData = {
-      labels: Object.keys(trenData),
+      labels: trenLabels,
       datasets: [{
         label: "Jumlah Surat per Semester",
-        data: Object.values(trenData),
+        data: trenValues,
         borderColor: "#4BC0C0",
         backgroundColor: "rgba(75, 192, 192, 0.15)",
         tension: 0.4,

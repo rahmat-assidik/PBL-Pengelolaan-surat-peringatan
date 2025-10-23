@@ -63,7 +63,7 @@
                     <div class="list-item">
                         <a href="#" data-target="password" data-tooltip="Manajemen Password">
                             <i id="iconPassword" class="fas fa-eye-slash"></i>
-                            <span class="description">Manajemen Password</span>
+                            <span class="description">Ubah Kata Sandi</span>
                         </a>
                     </div>
                 </div>
@@ -118,19 +118,50 @@
             <section id="mahasiswa" class="content-section">
                 <h2>Data Mahasiswa</h2>
                 <p>Halaman ini menampilkan daftar data mahasiswa yang terdaftar dalam sistem.</p>
+                <div class="placeholder-box">(Tabel/list mahasiswa akan tampil di sini)</div>
             </section>
 
             <section id="surat" class="content-section">
                 <h2>Kelola Surat Peringatan</h2>
                 <p>Fitur untuk mengelola dan memonitor surat peringatan mahasiswa.</p>
-            </div>
+                <div class="placeholder-box">(Daftar surat peringatan akan tampil di sini)</div>
+            </section>
+
             <section id="password" class="content-section">
                 <h2>Manajemen Password</h2>
-                <p>Fitur untuk mengubah dan mengelola password pengguna.</p>
-        </section>
+                <p>Ubah kata sandi akun Anda di sini.</p>
+                <div class="password-card">
+                    <form id="changePasswordForm">
+                        <div class="input-password-group">
+                            <label for="currentPassword">Kata sandi saat ini</label>
+                            <div class="input-password-wrapper">
+                                <input id="currentPassword" type="password" required />
+                                <button type="button" class="toggle-password-visibility" tabindex="-1" aria-label="Tampilkan/Sembunyikan sandi"><i class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="input-password-group">
+                            <label for="newPassword">Kata sandi baru</label>
+                            <div class="input-password-wrapper">
+                                <input id="newPassword" type="password" required minlength="6" />
+                                <button type="button" class="toggle-password-visibility" tabindex="-1" aria-label="Tampilkan/Sembunyikan sandi"><i class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="input-password-group">
+                            <label for="confirmPassword">Konfirmasi kata sandi baru</label>
+                            <div class="input-password-wrapper">
+                                <input id="confirmPassword" type="password" required minlength="6" />
+                                <button type="button" class="toggle-password-visibility" tabindex="-1" aria-label="Tampilkan/Sembunyikan sandi"><i class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <button type="submit">Ubah Kata Sandi</button>
+                        <p id="passwordMessage" style="margin-top:8px;color:var(--gray-800);"></p>
+                    </form>
+                </div>
+            </section>
     </main>
     <script src="assets/dashboard.js"></script>
     <script src="assets/chart-dashboard.js"></script>
     <script src="assets/dashboard-display-card.js"></script>
+    <script src="assets/password-manager.js"></script>
 </body>
 </html>
