@@ -1,0 +1,387 @@
+:root {
+  --primary-color: #0d6efd;
+  --transition-speed: 0.3s;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 1rem;
+  background-color: white !important;
+  height: 80px;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0;
+}
+
+.skibidi {
+  height: 60px !important;
+  width: auto !important;
+  margin-right: 20px;
+  transition: transform 0.3s ease;
+  object-fit: contain;
+}
+
+.skibidi:hover {
+  transform: scale(1.05);
+}
+
+.brand-container {
+  display: flex;
+  align-items: center;
+}
+
+.brand-container span {
+  font-weight: 600;
+  color: #212529;
+}
+
+/* Navbar Container */
+.navbar-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: auto;
+}
+
+/* ===== HAMBURGER BUTTON ===== */
+.hamburger-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 44px;
+  height: 36px;
+  position: relative;
+}
+
+.hamburger-btn:hover {
+  background-color: rgba(13, 110, 253, 0.1);
+}
+
+.hamburger-btn:active {
+  transform: scale(0.95);
+}
+
+.hamburger-line {
+  width: 100%;
+  height: 3.2px;
+  background-color: #333;
+  border-radius: 2px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+/* === LOGIN BUTTON === */
+.login-btn-nav {
+  font-size: 0.9rem; /* perkecil ukuran font */
+  padding: 6px 14px; /* kurangi padding */
+  border-radius: 8px;
+  margin-left: 12px;
+}
+
+/* ===== MENU OVERLAY ===== */
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 998;
+  backdrop-filter: blur(0px);
+}
+
+.menu-overlay.active {
+  background-color: rgba(0, 0, 0, 0.4);
+  opacity: 1;
+  visibility: visible;
+  backdrop-filter: blur(2px);
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border: none;
+  padding: auto 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #0b5ed7;
+  transform: translateY(-2px);
+}
+
+/* ===== MOBILE MENU ===== */
+.mobile-menu {
+  position: fixed;
+  top: 80px;
+  right: -100%;
+  width: 70%;
+  max-width: 320px;
+  max-height: calc(100vh - 80px);
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.15);
+  transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 999;
+  overflow-y: auto;
+  border-radius: 12px 0 0 12px;
+}
+
+.mobile-menu.active {
+  right: 0;
+}
+
+.mobile-menu-nav {
+  list-style: none;
+  padding: 1.5rem 0;
+  margin: 0;
+}
+
+.mobile-menu-nav li {
+  padding: 0;
+  margin: 0;
+}
+
+.mobile-menu-nav a {
+  display: block;
+  padding: 0.875rem 1.75rem;
+  color: #212529;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-left: 4px solid transparent;
+  font-weight: 500;
+  font-size: 1rem;
+  position: relative;
+}
+
+.mobile-menu-nav a::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 0;
+  background: rgba(13, 110, 253, 0.08);
+}
+
+.mobile-menu-nav a:hover {
+  color: var(--primary-color);
+  border-left-color: var(--primary-color);
+  padding-left: 2rem;
+}
+
+.mobile-menu-nav a:hover::before {
+  height: 100%;
+}
+
+/* ===== MENU OVERLAY ===== */
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 998;
+  backdrop-filter: blur(0px);
+}
+
+.menu-overlay.active {
+  background-color: rgba(0, 0, 0, 0.4);
+  opacity: 1;
+  visibility: visible;
+  backdrop-filter: blur(2px);
+}
+
+/* ===== DESKTOP NAVIGATION ===== */
+.navbar-nav {
+  display: none;
+}
+
+.nav-link {
+  font-weight: 500;
+  padding: 0.5rem 1rem !important;
+  transition: color 0.3 ease;
+  color: #212529 !important;
+}
+
+.nav-link:hover {
+  color: var(--primary-color) !important;
+}
+
+/* Style ilustrasi */
+.hero-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: float 6s ease-in-out infinite;
+}
+
+.hero-image {
+  max-width: 100%;
+  height: auto;
+  filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
+}
+
+/* Reuse the same float animation */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Search Section */
+.search-page {
+  padding: 120px 0 80px;
+  background-color: #f8f9fa;
+}
+
+.search-preview {
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  position: absolute;
+  width: 100%;
+  max-height: 250px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+.search-preview div {
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.search-preview div:hover {
+  background-color: #e9ecef;
+}
+
+.student-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+}
+.student-card h4 {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+#clearBtn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  color: #888;
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+}
+#clearBtn:hover {
+  color: #dc3545;
+  transform: translateY(-50%) scale(1.2);
+  transition: all 0.2s ease;
+}
+
+/* Animation */
+.fade-in {
+  animation: fadeIn 0.4s ease;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Footer */
+footer {
+  background-color: #212529;
+  color: white;
+  padding: 2rem 0;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+  .skibidi {
+    height: 50px !important;
+  }
+}
+
+/* ===== CARI MAHASISWA PAGE ===== */
+.search-page {
+  background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+  padding: 100px 0 80px;
+}
+
+/* Reuse hero styles */
+.hero-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: float 6s ease-in-out infinite;
+}
+
+.hero-image {
+  max-width: 100%;
+  height: auto;
+  filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Scroll animation */
+.fade-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
