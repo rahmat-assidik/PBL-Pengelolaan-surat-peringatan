@@ -834,13 +834,14 @@ input[type="date"]:hover {
     position: fixed;
     inset: 0;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
     z-index: 1000;
-    padding: 4rem 1rem;
+    padding: 1rem;
     background-color: rgba(0, 0, 0, 0);
     visibility: hidden;
     transition: visibility 0s linear 0.2s, background-color 0.2s ease;
+    overflow-y: auto;
 }
 
 .modal.open {
@@ -851,7 +852,7 @@ input[type="date"]:hover {
 }
 
 .modal-backdrop {
-    position: absolute;
+    position: fixed;
     inset: 0;
     background: transparent;
 }
@@ -860,7 +861,7 @@ input[type="date"]:hover {
     position: relative;
     width: 100%;
     max-width: 32rem;
-    margin: 0 auto;
+    margin: 1rem auto;
     background: var(--white);
     border-radius: 12px;
     padding: 1.5rem;
@@ -869,6 +870,8 @@ input[type="date"]:hover {
     opacity: 0;
     transform: scale(0.95) translateY(-1rem);
     transition: transform 0.2s ease, opacity 0.2s ease;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
 }
 
 .modal.open .modal-content {
@@ -1060,10 +1063,56 @@ input[type="date"]:hover {
 
     .modal-content {
         max-width: 28rem;
+        margin: 0.5rem;
     }
 
     .toolbar {
         padding: 1.25rem 1rem;
         margin: -1.5rem -1rem 1.5rem;
+    }
+
+    .row {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .col-sm-3,
+    .col-sm-9 {
+        width: 100%;
+    }
+
+    .col-form-label {
+        padding: 0;
+        margin-bottom: 0.25rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .modal {
+        padding: 0;
+        align-items: flex-end;
+    }
+
+    .modal-content {
+        margin: 0;
+        border-radius: 12px 12px 0 0;
+        max-height: 90vh;
+    }
+
+    .modal-header {
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .modal-actions {
+        padding-top: 1rem;
+        margin-top: 1rem;
+    }
+
+    .form-control,
+    input.form-control,
+    select.form-control,
+    textarea.form-control {
+        font-size: 16px; /* Prevents iOS zoom on focus */
     }
 }

@@ -149,6 +149,48 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Dummy data for testing
+  const dummyMahasiswa = [
+    {
+      nim: "2241720001",
+      nama: "Ahmad Firdaus",
+      prodi: "D4 Teknik Informatika",
+      semester: "3",
+      wali: "Drs. Imam Fahrur Rozi, M.T"
+    },
+    {
+      nim: "2241720002",
+      nama: "Siti Aminah",
+      prodi: "D4 Teknik Informatika",
+      semester: "3",
+      wali: "Septian Enggar Sukmana, S.Pd., M.T"
+    },
+    {
+      nim: "2241720003",
+      nama: "Muhammad Rizky",
+      prodi: "D4 Teknik Informatika",
+      semester: "1",
+      wali: "Drs. Adi Putra, M.Kom"
+    },
+    {
+      nim: "2241720004",
+      nama: "Anisa Putri",
+      prodi: "D4 Sistem Informasi Bisnis",
+      semester: "5",
+      wali: "Dr. Eko Sutrisno, S.Kom., M.Sc"
+    },
+    {
+      nim: "2241720005",
+      nama: "Budi Santoso",
+      prodi: "D4 Sistem Informasi Bisnis",
+      semester: "3",
+      wali: "Dra. Maya Indah, M.M"
+    }
+  ];
+
+  // Load dummy data
+  dummyMahasiswa.forEach(student => addRowToTable(student));
+
   // init empty state on load
   updateEmptyState();
 });
