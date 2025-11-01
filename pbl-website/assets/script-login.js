@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (matched) {
       // Generate auth token dan set expiry
-      const authToken = generateAuthToken();
+      const authToken = Math.random().toString(36).substring(2) + Date.now().toString(36);
       const expiryTime = new Date().getTime() + (30 * 60 * 1000); // 30 menit
 
       // Simpan data autentikasi
@@ -46,14 +46,21 @@ document.addEventListener("DOMContentLoaded", function () {
         sessionStorage.setItem('authToken', authToken);
       } catch (e) {}
 
-      // Redirect ke dashboard
-      window.location.href = "dashboard.html";
+      // Redirect ke dashboard dengan path yang benar
+      const currentPath = window.location.pathname;
+      const basePath = currentPath.substring(0, currentPath.lastIndexOf('/') + 1);
+      window.location.href = basePath + "dashboard.html";
     } else {
-      errorMessage.textContent = "Username atau Password Salah";
-
+      // Tampilkan pesan error
+      errorMessage.textContent = "Username atau password salah!";
+      // Reset form
+      passwordInput.value = "";
+      
+      // Tambah class error untuk animasi
       usernameInput.classList.add("input-error");
       passwordInput.classList.add("input-error");
 
+      // Hapus class error setelah 400ms
       setTimeout(() => {
         usernameInput.classList.remove("input-error");
         passwordInput.classList.remove("input-error");
