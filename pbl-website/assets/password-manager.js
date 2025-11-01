@@ -77,18 +77,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const accounts = JSON.parse(localStorage.getItem('accounts')) || [];
-    const idx = accounts.findIndex(a => a.username === username);
-    if (idx === -1) {
+    const account = accounts.find(a => a.username === username);
+    
+    if (!account) {
       msgEl.style.color = 'red';
       msgEl.textContent = 'Akun tidak ditemukan.';
       return;
     }
 
-    if (accounts[idx].password !== current) {
+    if (account.password !== current) {
       msgEl.style.color = 'red';
       msgEl.textContent = 'Kata sandi saat ini salah.';
       return;
     }
+
+    const idx = accounts.findIndex(a => a.username === username);
 
     // update password
     accounts[idx].password = next;
