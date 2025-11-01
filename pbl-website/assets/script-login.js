@@ -31,13 +31,20 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
     if (matched) {
-      alert("Berhasil Login");
+      // Generate auth token dan set expiry
+      const authToken = generateAuthToken();
+      const expiryTime = new Date().getTime() + (30 * 60 * 1000); // 30 menit
 
-      // Simpan status login ke localStorage
+      // Simpan data autentikasi
       localStorage.setItem("loggedIn", "true");
       localStorage.setItem("username", username);
-      // simpan ke session agar dashboard menampilkan user sesi saat ini
-      try { sessionStorage.setItem('username', username); } catch (e) {}
+      localStorage.setItem("authToken", authToken);
+      localStorage.setItem("tokenExpiry", expiryTime.toString());
+      
+      try { 
+        sessionStorage.setItem('username', username);
+        sessionStorage.setItem('authToken', authToken);
+      } catch (e) {}
 
       // Redirect ke dashboard
       window.location.href = "dashboard.html";
