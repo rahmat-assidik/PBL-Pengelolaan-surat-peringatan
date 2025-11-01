@@ -66,11 +66,25 @@ document.addEventListener('DOMContentLoaded', () => {
     tr.appendChild(createCell(sp.alasan));
 
     const actionTd = document.createElement('td');
-    // edit button
+    actionTd.className = 'table-actions';
+
+    // View/Detail button
+    const viewBtn = document.createElement('button');
+    viewBtn.className = 'action-btn view';
+    viewBtn.type = 'button';
+    viewBtn.title = 'Lihat Detail';
+    viewBtn.innerHTML = '<i class="ri-file-text-line"></i>';
+    viewBtn.addEventListener('click', () => {
+      // View logic here
+      alert('Detail Surat Peringatan:\n\nNIM: ' + sp.nim + '\nNama: ' + sp.nama + '\nTingkatan: ' + sp.tingkatan);
+    });
+
+    // Edit button
     const editBtn = document.createElement('button');
     editBtn.className = 'action-btn edit';
     editBtn.type = 'button';
-    editBtn.innerHTML = '<i class="ri-edit-line"></i> Ubah';
+    editBtn.title = 'Edit';
+    editBtn.innerHTML = '<i class="ri-edit-2-line"></i>';
     editBtn.addEventListener('click', () => {
       // populate form and open modal
       document.getElementById('spNimInput').value = sp.nim;
@@ -85,11 +99,23 @@ document.addEventListener('DOMContentLoaded', () => {
       openModal(idx);
     });
 
-    // delete
+    // Download PDF button
+    const downloadBtn = document.createElement('button');
+    downloadBtn.className = 'action-btn download';
+    downloadBtn.type = 'button';
+    downloadBtn.title = 'Unduh PDF';
+    downloadBtn.innerHTML = '<i class="ri-download-2-line"></i>';
+    downloadBtn.addEventListener('click', () => {
+      // Download logic here
+      alert('Mengunduh surat peringatan dalam format PDF...');
+    });
+
+    // Delete button
     const delBtn = document.createElement('button');
     delBtn.className = 'action-btn delete';
     delBtn.type = 'button';
-    delBtn.innerHTML = '<i class="ri-delete-bin-line"></i> Hapus';
+    delBtn.title = 'Hapus';
+    delBtn.innerHTML = '<i class="ri-delete-bin-5-line"></i>';
     delBtn.addEventListener('click', () => {
       if (confirm('Hapus surat peringatan ini?')) {
         // Remove from localStorage
@@ -103,7 +129,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // Menambahkan semua tombol ke dalam actionTd
+    actionTd.appendChild(viewBtn);
+    actionTd.appendChild(document.createTextNode(' '));
     actionTd.appendChild(editBtn);
+    actionTd.appendChild(document.createTextNode(' '));
+    actionTd.appendChild(downloadBtn);
     actionTd.appendChild(document.createTextNode(' '));
     actionTd.appendChild(delBtn);
     tr.appendChild(actionTd);

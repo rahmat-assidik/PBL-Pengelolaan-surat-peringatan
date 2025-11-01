@@ -62,11 +62,25 @@ document.addEventListener('DOMContentLoaded', () => {
     tr.appendChild(createCell(student.wali || ''));
 
     const actionTd = document.createElement('td');
-    // edit
+    actionTd.className = 'table-actions';
+
+    // View/Detail button
+    const viewBtn = document.createElement('button');
+    viewBtn.className = 'action-btn view';
+    viewBtn.type = 'button';
+    viewBtn.title = 'Lihat Detail';
+    viewBtn.innerHTML = '<i class="ri-file-text-line"></i>';
+    viewBtn.addEventListener('click', () => {
+      // View logic here
+      alert('Detail Mahasiswa:\n\nNIM: ' + student.nim + '\nNama: ' + student.nama + '\nProdi: ' + student.prodi + '\nSemester: ' + student.semester + '\nDosen Wali: ' + student.wali);
+    });
+
+    // Edit button
     const editBtn = document.createElement('button');
     editBtn.className = 'action-btn edit';
     editBtn.type = 'button';
-    editBtn.innerHTML = '<i class="ri-edit-line"></i> Ubah';
+    editBtn.title = 'Edit';
+    editBtn.innerHTML = '<i class="ri-edit-2-line"></i>';
     editBtn.addEventListener('click', () => {
       // populate form and open modal
       const cells = tr.querySelectorAll('td');
@@ -81,11 +95,12 @@ document.addEventListener('DOMContentLoaded', () => {
       openModal(idx);
     });
 
-    // delete
+    // Delete button
     const delBtn = document.createElement('button');
     delBtn.className = 'action-btn delete';
     delBtn.type = 'button';
-    delBtn.innerHTML = '<i class="ri-delete-bin-line"></i> Hapus';
+    delBtn.title = 'Hapus';
+    delBtn.innerHTML = '<i class="ri-delete-bin-5-line"></i>';
     delBtn.addEventListener('click', () => {
       if (confirm('Hapus data mahasiswa ini?')) {
         tr.remove();
@@ -93,6 +108,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // Menambahkan semua tombol ke dalam actionTd
+    actionTd.appendChild(viewBtn);
+    actionTd.appendChild(document.createTextNode(' '));
     actionTd.appendChild(editBtn);
     actionTd.appendChild(document.createTextNode(' '));
     actionTd.appendChild(delBtn);
