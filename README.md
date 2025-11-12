@@ -40,7 +40,7 @@ Sistem ini memiliki beberapa tujuan utama:
 
 1. **Mengkloning Repository**
 ```bash
-git clone https://github.com/rahmat-assidik/PBL---Pengelolaan-surat-peringatan-mahasiswa.git
+git clone https://github.com/rahmat-assidik/PBL-Pengelolaan-surat-peringatan-mahasiswa.git
 cd nama-repo
 ```
 
