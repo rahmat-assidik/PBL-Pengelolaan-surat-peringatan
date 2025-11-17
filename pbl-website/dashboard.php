@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../login.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -14,13 +21,15 @@
         <!-- Remix Icons -->
         <link href="https://cdn.jsdelivr.net/npm/remixicon@3.6.0/fonts/remixicon.css" rel="stylesheet">
         <link rel="stylesheet" href="assets/style-data-mahasiswa.css">
-            
+
         <!--Import chart.js dari CDN-->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <!-- Authentication Script -->
-        <script src="assets/authentication.js"></script>
+        <script>
+            localStorage.setItem('loggedIn', 'true');
+            localStorage.setItem('username', '<?php echo htmlspecialchars($_SESSION['username']); ?>');
+        </script>
     </head>
-    <body onload="checkLoginStatus()">
+    <body>
         <!-- HEADER -->
         <header class="header-container">
             <div class="header-left">
@@ -36,6 +45,11 @@
                 <i class="fas fa-sign-out-alt"></i>
                 <span>Logout</span>
             </button>
+            <script>
+                document.getElementById('logoutButton').addEventListener('click', function() {
+                    window.location.href = '../logout.php';
+                });
+            </script>
         </header>
 
         <!-- SIDEBAR OVERLAY (Mobile) -->
@@ -79,11 +93,13 @@
         <!-- CONTENT AREA -->
         <main class="content" id="content">
             <section id="dashboard" class="content-section active">
-                <h2 style="margin-bottom: 1rem; color: var(--gray-900);">Dashboard</h2>
-                <p style="color: var(--gray-600); margin-bottom: 2rem;">
-                    Selamat datang,
-                    <strong id="userName">User</strong>! Ini adalah halaman Dashboard utama.
-                </p>
+                <div style="margin-bottom: var(--space-2xl);">
+                    <h2 style="margin-bottom: var(--space-sm); color: var(--gray-900); font-size: 1.875rem; font-weight: 700; letter-spacing: -0.025em;">Dashboard</h2>
+                    <p style="color: var(--gray-600); margin: 0; font-size: 1rem; line-height: 1.5;">
+                        Selamat datang,
+                        <strong id="userName" style="color: var(--gray-800);">User</strong>! Ini adalah halaman Dashboard utama.
+                    </p>
+                </div>
                 <div class="card-grid">
                     <div class="card-container">
                         <i id="iconTotalMahasiswa" class="fas fa-users card-icon"></i>
@@ -125,8 +141,8 @@
                 <div class="content-data-mahasiswa">
                     <div class="mahasiswa-header">
                         <div>
-                            <h4 class="form-title" style="margin:0; font-size: 1.5rem; font-weight: 600; color: var(--gray-900);">Data Mahasiswa</h4>
-                            <p style="color:var(--gray-600);margin:0.25rem 0 0 0; font-size: 0.875rem;">Manajemen Data Mahasiswa, anda dapat menambahkan, mengubah, dan menghapus data mahasiswa.</p>
+                            <h4 class="form-title" style="margin:0; font-size: 1.875rem; font-weight: 700; color: var(--gray-900); letter-spacing: -0.025em;">Data Mahasiswa</h4>
+                            <p style="color:var(--gray-600);margin:var(--space-sm) 0 0 0; font-size: 1rem; line-height: 1.5;">Manajemen Data Mahasiswa, anda dapat menambahkan, mengubah, dan menghapus data mahasiswa.</p>
                         </div>
                         <div class="mahasiswa-actions">
                             <div class="search-input">
@@ -212,8 +228,8 @@
                 <div class="content-data-mahasiswa">
                     <div class="mahasiswa-header">
                         <div>
-                            <h4 class="form-title" style="margin:0; font-size: 1.5rem; font-weight: 600; color: var(--gray-900);">Kelola Surat Peringatan</h4>
-                            <p style="color:var(--gray-600);margin:0.25rem 0 0 0; font-size: 0.875rem;">Manajemen surat peringatan mahasiswa, anda dapat menambahkan, mengubah, dan menghapus surat peringatan.</p>
+                            <h4 class="form-title" style="margin:0; font-size: 1.875rem; font-weight: 700; color: var(--gray-900); letter-spacing: -0.025em;">Kelola Surat Peringatan</h4>
+                            <p style="color:var(--gray-600);margin:var(--space-sm) 0 0 0; font-size: 1rem; line-height: 1.5;">Manajemen surat peringatan mahasiswa, anda dapat menambahkan, mengubah, dan menghapus surat peringatan.</p>
                         </div>
                         <div class="mahasiswa-actions">
                             <div class="search-input">
@@ -310,8 +326,10 @@
             </section>
 
             <section id="password" class="content-section">
-                <h2>Manajemen Password</h2>
-                <p>Ubah kata sandi akun Anda di sini.</p>
+                <div style="margin-bottom: var(--space-2xl);">
+                    <h2 style="margin-bottom: var(--space-sm); color: var(--gray-900); font-size: 1.875rem; font-weight: 700; letter-spacing: -0.025em;">Manajemen Password</h2>
+                    <p style="color: var(--gray-600); margin: 0; font-size: 1rem; line-height: 1.5;">Ubah kata sandi akun Anda di sini.</p>
+                </div>
                 <div class="password-card">
                     <form id="changePasswordForm">
                         <div class="input-password-group">

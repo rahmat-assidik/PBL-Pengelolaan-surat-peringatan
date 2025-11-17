@@ -15,6 +15,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const mahasiswa = JSON.parse(localStorage.getItem("dataMahasiswa")) || [];
     const suratPeringatan = JSON.parse(localStorage.getItem("dataSP")) || [];
 
+    // Clear any existing dummy data on load
+    if (mahasiswa.length > 0 && mahasiswa.some(m => m.id)) {
+      localStorage.setItem("dataMahasiswa", JSON.stringify([]));
+    }
+    if (suratPeringatan.length > 0 && suratPeringatan.some(sp => sp.id)) {
+      localStorage.setItem("dataSP", JSON.stringify([]));
+    }
+
     // 1️⃣ Hitung total
     const totalMahasiswa = mahasiswa.length;
     const totalSuratAktif = suratPeringatan.filter(sp => sp.status === "Aktif").length;

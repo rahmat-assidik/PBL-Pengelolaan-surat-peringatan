@@ -2,12 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     /* ========================================
                 CEK STATUS LOGIN
             ======================================== */
-    const isLoggedIn = localStorage.getItem("loggedIn");
-    if (isLoggedIn !== "true") {
-        // Jika belum login, paksa kembali ke halaman login
-        window.location.href = "login-page.html";
-        return;
-    }
+    // Session check is now handled by PHP, but keep localStorage for UI state
 
     /* ========================================
                 TOGGLE SIDEBAR
@@ -130,30 +125,10 @@ document.addEventListener("DOMContentLoaded", () => {
     /* ========================================
                 FITUR LOGOUT
             ======================================== */
-    const logoutButton = document.getElementById("logoutButton");
-
-    if (logoutButton) {
-        logoutButton.addEventListener("click", () => {
-            const confirmLogout = confirm("Apakah Anda yakin ingin logout?");
-            if (!confirmLogout) 
-                return;
-            
-            // Hapus status login dari localStorage
-            localStorage.removeItem("loggedIn");
-            localStorage.removeItem("username");
-            localStorage.removeItem("sidebarCollapsed");
-
-            // Redirect ke halaman login
-            window.location.href = "login-page.html";
-        });
-    }
+    // Logout is now handled by PHP script, no need for JavaScript confirmation here
 
     /* ========================================
                 TAMPILKAN NAMA USER DI DASHBOARD
             ======================================== */
-    const user = localStorage.getItem("username");
-    const userElement = document.getElementById("userName");
-    if (user && userElement) {
-        userElement.textContent = user;
-    }
+    // Username is now set via PHP in the head script
 });

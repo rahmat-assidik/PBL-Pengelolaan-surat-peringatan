@@ -236,39 +236,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Dummy data for testing
-  const dummyMahasiswa = [
-    {
-      nim: "2241720001",
-      nama: "Ahmad Firdaus",
-      kaprodi: "Ariadi Retno Tri Hayati Ririd, S.Kom., M.Kom.",
-      wali: "Drs. Imam Fahrur Rozi, M.T",
-      tingkatan: "SP1",
-      alasan: "Tidak mengikuti perkuliahan selama 3 minggu berturut-turut tanpa keterangan"
-    },
-    {
-      nim: "2241720004",
-      nama: "Anisa Putri",
-      kaprodi: "Dr. Tri Hadiah Muliawati, S.ST., M.Kom.",
-      wali: "Dr. Eko Sutrisno, S.Kom., M.Sc",
-      tingkatan: "SP2",
-      alasan: "Nilai akademik di bawah standar untuk 3 mata kuliah"
-    },
-    {
-      nim: "2241720005",
-      nama: "Budi Santoso",
-      kaprodi: "Dr. Tri Hadiah Muliawati, S.ST., M.Kom.",
-      wali: "Dra. Maya Indah, M.M",
-      tingkatan: "SP1",
-      alasan: "Melanggar tata tertib kampus dengan membuat keributan di kelas"
-    }
-  ];
-    dummyMahasiswa.forEach(student => addRowToTable(student));
-
-  // Load dummy data if no data in localStorage
-  if (!localStorage.getItem('spData')) {
-    localStorage.setItem('spData', JSON.stringify(dummyMahasiswa));
-  }
+  // Clear all dummy data completely
+  localStorage.removeItem('spData');
+  localStorage.setItem('spData', JSON.stringify([]));
 
   // Initialize table and load saved data
   updateEmptyState();

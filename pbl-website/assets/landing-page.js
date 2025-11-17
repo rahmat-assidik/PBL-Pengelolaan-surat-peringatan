@@ -27,5 +27,5 @@ menuLinks.forEach((link) => {
 // ===== LOGIN BUTTON =====
 document.getElementById("loginButton").addEventListener("click", function (e) {
   e.preventDefault();
-  window.location.href = "login-page.html";
+  window.location.href = "../login.php";
 });

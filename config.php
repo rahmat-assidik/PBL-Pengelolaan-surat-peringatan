@@ -3,7 +3,7 @@
 $host = 'localhost'; // Alamat server database
 $username = 'root';  // Username MySQL (sesuaikan dengan pengaturan Anda)
 $password = '';      // Password MySQL (kosong jika tidak ada)
-$dbname = 'login_db'; // Nama database
+$dbname = 'pengelolaan_sp'; // Nama database
 
 // Membuat koneksi
 $conn = mysqli_connect($host, $username, $password, $dbname);

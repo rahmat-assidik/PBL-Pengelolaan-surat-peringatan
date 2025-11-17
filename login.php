@@ -1,3 +1,4 @@
+<?php include ('login_proc.php'); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,12 +35,6 @@ body {
     border-radius: 16px;
     box-shadow: 0 10px 40px rgba(120, 53, 149, 0.15);
     padding: 3rem 2.5rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.login-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 50px rgba(120, 53, 149, 0.25);
 }
 
 .login-header {
@@ -48,7 +43,7 @@ body {
 }
 
 .login-header h2 {
-    color: #783595;
+    color: #451f56ff;
     font-weight: 700;
     font-size: 2rem;
     margin-bottom: 0.5rem;
@@ -147,7 +142,7 @@ body {
 .btn-login {
     width: 100%;
     padding: 0.875rem;
-    background-color: #783595;
+    background-color: #471d5aff;
     color: white;
     font-size: 1.05rem;
     font-weight: 600;
@@ -160,7 +155,7 @@ body {
 }
 
 .btn-login:hover {
-    background-color: #6a2d84;
+    background-color: #732a90ff;
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(120, 53, 149, 0.3);
 }
@@ -187,10 +182,19 @@ body {
             <h2>Login</h2>
             <p>Silakan masuk ke akun Anda</p>
         </div>
+
+        <!-- Error Message - tampilkan dengan class 'show' jika ada error -->
+        <?php if(isset($error_message) && !empty($error_message)): ?>
+        <div class="msg show">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <span><?php echo $error_message; ?></span>
+        </div>
+        <?php endif; ?>
+
         <form action="" method="post">
             <div class="form-group">
                 <label class="form-label">Username</label>
-                <input type="text" name="username" placeholder="Masukkan username anda" class="form-control" required>
+                <input type="text" name="username" id="username" placeholder="Masukkan username anda" class="form-control" required>
             </div>
             
             <div class="form-group">

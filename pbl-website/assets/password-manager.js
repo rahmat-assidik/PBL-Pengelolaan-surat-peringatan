@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!form) return;
 
-  // Ensure accounts exist in localStorage
+
   function seedAccountsIfMissing() {
     const accounts = JSON.parse(localStorage.getItem('accounts')) || null;
     if (!accounts) {
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Toggle show/hide password
+
   document.querySelectorAll('.input-password-wrapper').forEach(wrapper => {
     const input = wrapper.querySelector('input');
     const btn = wrapper.querySelector('.toggle-password-visibility');
@@ -93,18 +93,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const idx = accounts.findIndex(a => a.username === username);
 
-    // update password
+
     accounts[idx].password = next;
     localStorage.setItem('accounts', JSON.stringify(accounts));
 
     msgEl.style.color = 'green';
     msgEl.textContent = 'Kata sandi berhasil diubah. Silakan login ulang.';
 
-    // clear session and force re-login after short delay
+
     setTimeout(() => {
       try { sessionStorage.removeItem('username'); } catch (e) {}
       localStorage.removeItem('loggedIn');
-      window.location.href = 'login-page.html';
+      window.location.href = 'login.php';
     }, 1200);
   });
 });
