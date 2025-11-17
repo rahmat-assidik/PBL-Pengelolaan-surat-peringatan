@@ -43,11 +43,16 @@ Sistem ini memiliki beberapa tujuan utama:
 git clone https://github.com/rahmat-assidik/PBL-Pengelolaan-surat-peringatan-mahasiswa.git
 cd nama-repo
 ```
-
 ---
 
 ## Lisensi
-Dokumen dan kode sumber ini dirilis di bawah MIT License. © 2025 Rahmat Assidik
+
+Proyek ini dibuat oleh **Kelompok 4** sebagai bagian dari tugas PBL di **Pengantar proyek perangkat lunak / Teknik Informatika**.  
+Penggunaan, penyalinan, atau modifikasi kode sumber diperbolehkan untuk keperluan belajar atau penelitian, dengan ketentuan tetap mencantumkan kredit kepada para kontributor.
+
+Hak cipta © 2025 **Rahmat Assidik (3312501073)**
+                 **Martini Angel Theresia Tambuna (3312501074)**
+                 **Darren Hafidz Najendra (3312501075)**
 
 ---
 
