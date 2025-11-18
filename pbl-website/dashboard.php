@@ -47,7 +47,9 @@ if (!isset($_SESSION['user_id'])) {
             </button>
             <script>
                 document.getElementById('logoutButton').addEventListener('click', function() {
-                    window.location.href = '../logout.php';
+                    if (confirm('Apakah Anda yakin ingin logout?')) {
+                        window.location.href = '../logout.php';
+                    }
                 });
             </script>
         </header>

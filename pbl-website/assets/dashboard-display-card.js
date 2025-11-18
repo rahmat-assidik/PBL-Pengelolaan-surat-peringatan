@@ -1,48 +1,48 @@
 /*
-  Dashboard card updater.
-  - Updates dashboard card DOM values from localStorage data
-  - Provides simple helper functions to add/remove SP and trigger a dashboard refresh
+  Dashboard card updater with database integration.
+  - Updates dashboard card DOM values from database via API
+  - Provides simple helper functions to refresh dashboard data
  */
 
-// Clear all dummy data completely
-localStorage.removeItem('dataMahasiswa');
-localStorage.removeItem('dataSP');
-localStorage.removeItem('spData');
-localStorage.setItem('dataMahasiswa', JSON.stringify([]));
-localStorage.setItem('dataSP', JSON.stringify([]));
-localStorage.setItem('spData', JSON.stringify([]));
+// Function to refresh dashboard cards from database
+async function refreshCardsFromDatabase() {
+  try {
+    const response = await fetch('../api/dashboard_stats.php');
+    const stats = await response.json();
 
-// Helper to compute and update the DOM cards directly (chart script runs earlier
-// and listens to storage events; we'll trigger a storage event after updating)
-function refreshCardsFromLocalStorage() {
-  const mahasiswa = JSON.parse(localStorage.getItem('dataMahasiswa')) || [];
-  const suratPeringatan = JSON.parse(localStorage.getItem('dataSP')) || [];
+    const totalMahasiswaEl = document.getElementById('totalMahasiswa');
+    const totalSuratAktifEl = document.getElementById('totalSuratPeringatanAktif');
+    const jumlahSuratBulanIniEl = document.getElementById('jumlahSuratPeringatanBulanIni');
+    const userEl = document.getElementById('userName');
 
-  const totalMahasiswa = mahasiswa.length;
-  const totalSuratAktif = suratPeringatan.filter(s => s.status === 'Aktif').length;
+    if (totalMahasiswaEl) totalMahasiswaEl.textContent = stats.totalMahasiswa;
+    if (totalSuratAktifEl) totalSuratAktifEl.textContent = stats.totalSPAktif;
+    if (jumlahSuratBulanIniEl) jumlahSuratBulanIniEl.textContent = stats.spBulanIni;
+    if (userEl) userEl.textContent = localStorage.getItem('username') || 'User';
 
-  const currentMonth = new Date().getMonth();
-  const suratBulanIni = suratPeringatan.filter(sp => {
-    const t = new Date(sp.tanggal);
-    return t.getMonth() === currentMonth && t.getFullYear() === new Date().getFullYear();
-  }).length;
+    // Update change indicators
+    const suratChangeNodes = document.querySelectorAll('#suratPeringatanChange');
+    suratChangeNodes.forEach(n => n.textContent = `+${stats.spBulanIni} bulan ini`);
+    const mahasiswaChangeNodes = document.querySelectorAll('#mahasiswaChange');
+    mahasiswaChangeNodes.forEach(n => n.textContent = `+${stats.totalMahasiswa} total`);
 
-  const totalMahasiswaEl = document.getElementById('totalMahasiswa');
-  const totalSuratAktifEl = document.getElementById('totalSuratPeringatanAktif');
-  const jumlahSuratBulanIniEl = document.getElementById('jumlahSuratPeringatanBulanIni');
-  const userEl = document.getElementById('userName');
+    // Trigger chart update
+    if (window.updateCharts) {
+      window.updateCharts(stats);
+    }
 
-  if (totalMahasiswaEl) totalMahasiswaEl.textContent = totalMahasiswa;
-  if (totalSuratAktifEl) totalSuratAktifEl.textContent = totalSuratAktif;
-  if (jumlahSuratBulanIniEl) jumlahSuratBulanIniEl.textContent = suratBulanIni;
-  if (userEl) userEl.textContent = localStorage.getItem('username') || 'User';
+  } catch (error) {
+    console.error('Error refreshing dashboard cards:', error);
+    // Fallback to empty values
+    const totalMahasiswaEl = document.getElementById('totalMahasiswa');
+    const totalSuratAktifEl = document.getElementById('totalSuratPeringatanAktif');
+    const jumlahSuratBulanIniEl = document.getElementById('jumlahSuratPeringatanBulanIni');
 
-  // Update any change-span text (there are a couple duplicated ids in markup)
-  const suratChangeNodes = document.querySelectorAll('#suratPeringatanChange');
-  suratChangeNodes.forEach(n => n.textContent = `+${suratBulanIni} bulan ini`);
-  const mahasiswaChangeNodes = document.querySelectorAll('#mahasiswaChange');
-  mahasiswaChangeNodes.forEach(n => n.textContent = `+${Math.max(0, totalMahasiswa - 0)} bulan ini`);
+    if (totalMahasiswaEl) totalMahasiswaEl.textContent = '0';
+    if (totalSuratAktifEl) totalSuratAktifEl.textContent = '0';
+    if (jumlahSuratBulanIniEl) jumlahSuratBulanIniEl.textContent = '0';
+  }
 }
 
-// Do initial refresh so the page reflects the empty values immediately
-refreshCardsFromLocalStorage();
+// Do initial refresh so the page reflects the database values immediately
+refreshCardsFromDatabase();

@@ -1,4 +1,4 @@
-// Surat Peringatan management
+// Surat Peringatan management with database integration
 // Features: open/close modal, add row, edit row, delete row, empty placeholder toggle
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -13,17 +13,27 @@ document.addEventListener('DOMContentLoaded', () => {
   const emptyPlaceholder = document.getElementById('emptyPlaceholderSP');
   const searchInput = document.getElementById('searchSP');
 
-  function openModal(editIndex) {
+  let spData = [];
+  let rowCounter = 1;
+
+  function openModal(editData) {
     if (!modal) return;
     modal.classList.add('open');
     modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden'; // Prevent background scrolling
-    
-    // store edit index if editing
-    if (typeof editIndex === 'number') {
-      form.dataset.editIndex = String(editIndex);
+
+    // store edit data if editing
+    if (editData) {
+      form.dataset.editId = String(editData.id);
+      // populate form
+      document.getElementById('spNimInput').value = editData.nim;
+      document.getElementById('spNamaInput').value = editData.nama;
+      document.getElementById('spKaprodiInput').value = editData.ketua_prodi || '';
+      document.getElementById('spWaliInput').value = editData.wali_dosen || '';
+      document.getElementById('spTingkatanInput').value = editData.tingkatan_sp;
+      document.getElementById('spAlasanInput').value = editData.alasan_sp;
     } else {
-      form.removeAttribute('data-edit-index');
+      form.removeAttribute('data-edit-id');
       form.reset();
     }
     // focus pertama
@@ -38,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.classList.remove('open');
     modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = ''; // Restore background scrolling
-    form.removeAttribute('data-edit-index');
+    form.removeAttribute('data-edit-id');
     form.reset();
   }
 
@@ -56,14 +66,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function addRowToTable(sp) {
     const tr = document.createElement('tr');
-    const rows = tableBody.querySelectorAll('tr').length + 1;
-    tr.appendChild(createCell(rows)); // No urut
+    tr.dataset.id = sp.id;
+    tr.appendChild(createCell(rowCounter++)); // No urut
     tr.appendChild(createCell(sp.nim));
     tr.appendChild(createCell(sp.nama));
-    tr.appendChild(createCell(sp.kaprodi));
-    tr.appendChild(createCell(sp.wali));
-    tr.appendChild(createCell(sp.tingkatan));
-    tr.appendChild(createCell(sp.alasan));
+    tr.appendChild(createCell(sp.ketua_prodi));
+    tr.appendChild(createCell(sp.wali_dosen));
+    tr.appendChild(createCell(sp.tingkatan_sp));
+    tr.appendChild(createCell(sp.alasan_sp));
 
     const actionTd = document.createElement('td');
     actionTd.className = 'table-actions';
@@ -76,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     viewBtn.innerHTML = '<i class="ri-file-text-line"></i>';
     viewBtn.addEventListener('click', () => {
       // View logic here
-      alert('Detail Surat Peringatan:\n\nNIM: ' + sp.nim + '\nNama: ' + sp.nama + '\nTingkatan: ' + sp.tingkatan);
+      alert('Detail Surat Peringatan:\n\nNIM: ' + sp.nim + '\nNama: ' + sp.nama + '\nTingkatan: ' + sp.tingkatan_sp + '\nAlasan: ' + sp.alasan_sp);
     });
 
     // Edit button
@@ -86,17 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
     editBtn.title = 'Edit';
     editBtn.innerHTML = '<i class="ri-edit-2-line"></i>';
     editBtn.addEventListener('click', () => {
-      // populate form and open modal
-      document.getElementById('spNimInput').value = sp.nim;
-      document.getElementById('spNamaInput').value = sp.nama;
-      document.getElementById('spKaprodiInput').value = sp.kaprodi;
-      document.getElementById('spWaliInput').value = sp.wali;
-      document.getElementById('spTingkatanInput').value = sp.tingkatan;
-      document.getElementById('spAlasanInput').value = sp.alasan;
-
-      // set edit index
-      const idx = Array.from(tableBody.children).indexOf(tr);
-      openModal(idx);
+      openModal(sp);
     });
 
     // Download PDF button
@@ -118,14 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
     delBtn.innerHTML = '<i class="ri-delete-bin-5-line"></i>';
     delBtn.addEventListener('click', () => {
       if (confirm('Hapus surat peringatan ini?')) {
-        // Remove from localStorage
-        const spData = JSON.parse(localStorage.getItem('spData') || '[]');
-        const idx = Array.from(tableBody.children).indexOf(tr);
-        spData.splice(idx, 1);
-        localStorage.setItem('spData', JSON.stringify(spData));
-        
-        tr.remove();
-        updateEmptyState();
+        deleteSP(sp.id);
       }
     });
 
@@ -143,6 +136,93 @@ document.addEventListener('DOMContentLoaded', () => {
     updateEmptyState();
   }
 
+  // API functions
+  async function loadSP(search = '') {
+    try {
+      const url = search ? `../api/surat_peringatan.php?search=${encodeURIComponent(search)}` : '../api/surat_peringatan.php';
+      const response = await fetch(url);
+      const data = await response.json();
+      spData = data;
+      renderTable();
+    } catch (error) {
+      console.error('Error loading SP:', error);
+      alert('Gagal memuat data surat peringatan');
+    }
+  }
+
+  async function saveSP(spData) {
+    try {
+      const response = await fetch('../api/surat_peringatan.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(spData),
+      });
+      const result = await response.json();
+      if (result.success) {
+        await loadSP();
+        return true;
+      } else {
+        alert('Gagal menyimpan data: ' + result.error);
+        return false;
+      }
+    } catch (error) {
+      console.error('Error saving SP:', error);
+      alert('Gagal menyimpan data surat peringatan');
+      return false;
+    }
+  }
+
+  async function updateSP(id, spData) {
+    try {
+      const data = { id, ...spData };
+      const response = await fetch('../api/surat_peringatan.php', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      const result = await response.json();
+      if (result.success) {
+        await loadSP();
+        return true;
+      } else {
+        alert('Gagal mengupdate data: ' + result.error);
+        return false;
+      }
+    } catch (error) {
+      console.error('Error updating SP:', error);
+      alert('Gagal mengupdate data surat peringatan');
+      return false;
+    }
+  }
+
+  async function deleteSP(id) {
+    try {
+      const response = await fetch(`../api/surat_peringatan.php?id=${id}`, {
+        method: 'DELETE',
+      });
+      const result = await response.json();
+      if (result.success) {
+        await loadSP();
+      } else {
+        alert('Gagal menghapus data: ' + result.error);
+      }
+    } catch (error) {
+      console.error('Error deleting SP:', error);
+      alert('Gagal menghapus data surat peringatan');
+    }
+  }
+
+  function renderTable() {
+    tableBody.innerHTML = '';
+    rowCounter = 1;
+    spData.forEach(sp => addRowToTable(sp));
+  }
+
+  // Event listeners
   if (addBtn) addBtn.addEventListener('click', () => openModal());
   if (closeBtn) closeBtn.addEventListener('click', closeModal);
   if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
@@ -157,21 +237,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Search functionality
   if (searchInput) {
+    let searchTimeout;
     searchInput.addEventListener('input', (e) => {
-      const searchTerm = e.target.value.toLowerCase();
-      const rows = tableBody.querySelectorAll('tr');
-      
-      rows.forEach(row => {
-        const text = row.textContent.toLowerCase();
-        row.style.display = text.includes(searchTerm) ? '' : 'none';
-      });
-      
-      updateEmptyState();
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        loadSP(e.target.value);
+      }, 300);
     });
   }
 
   if (form) {
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const nim = (document.getElementById('spNimInput') || {}).value?.trim();
       const nama = (document.getElementById('spNamaInput') || {}).value?.trim();
@@ -196,51 +272,29 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      const sp = { nim, nama, kaprodi, wali, tingkatan, alasan };
+      const sp = {
+        nim,
+        nama,
+        ketua_prodi: kaprodi,
+        wali_dosen: wali,
+        tingkatan_sp: tingkatan,
+        alasan_sp: alasan
+      };
 
-      const editIndex = form.getAttribute('data-edit-index');
-      if (editIndex !== null && editIndex !== undefined) {
-        const idx = Number(editIndex);
-        const row = tableBody.children[idx];
-        if (row) {
-          row.children[1].textContent = sp.nim; // index 1 karena index 0 adalah nomor urut
-          row.children[2].textContent = sp.nama;
-          row.children[3].textContent = sp.kaprodi;
-          row.children[4].textContent = sp.wali;
-          row.children[5].textContent = sp.tingkatan;
-          row.children[6].textContent = sp.alasan;
-          
-          // Save to localStorage
-          const spData = JSON.parse(localStorage.getItem('spData') || '[]');
-          spData[idx] = sp;
-          localStorage.setItem('spData', JSON.stringify(spData));
-        }
+      const editId = form.getAttribute('data-edit-id');
+      let success = false;
+      if (editId) {
+        success = await updateSP(editId, sp);
       } else {
-        addRowToTable(sp);
-        // Save to localStorage
-        const spData = JSON.parse(localStorage.getItem('spData') || '[]');
-        spData.push(sp);
-        localStorage.setItem('spData', JSON.stringify(spData));
+        success = await saveSP(sp);
       }
 
-      closeModal();
+      if (success) {
+        closeModal();
+      }
     });
   }
 
-  // Load saved data from localStorage
-  function loadSavedData() {
-    const savedData = localStorage.getItem('spData');
-    if (savedData) {
-      const spData = JSON.parse(savedData);
-      spData.forEach(sp => addRowToTable(sp));
-    }
-  }
-
-  // Clear all dummy data completely
-  localStorage.removeItem('spData');
-  localStorage.setItem('spData', JSON.stringify([]));
-
-  // Initialize table and load saved data
-  updateEmptyState();
-  loadSavedData();
+  // Load initial data
+  loadSP();
 });

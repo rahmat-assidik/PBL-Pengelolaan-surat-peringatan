@@ -1,6 +1,3 @@
-/* Styles khusus Data Mahasiswa - Modern Academic Style */
-
-/* Modern Container Style */
 .data-section {
     display: flex;
     flex-direction: column;
@@ -440,7 +437,7 @@ input[type="date"]:hover {
     pointer-events: none;
 }
 
-/* Modern Table Styles */
+/* Table style */
 .table-container {
     width: 100%;
     overflow-x: auto;

@@ -8,20 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!form) return;
 
 
-  function seedAccountsIfMissing() {
-    const accounts = JSON.parse(localStorage.getItem('accounts')) || null;
-    if (!accounts) {
-      const defaultAccounts = [
-        { username: 'admin', password: 'admin123' },
-        { username: 'admin00', password: 'admin12' }
-      ];
-      localStorage.setItem('accounts', JSON.stringify(defaultAccounts));
-      return defaultAccounts;
-    }
-    return accounts;
-  }
 
-  seedAccountsIfMissing();
 
   function getCurrentUsername() {
     try {
