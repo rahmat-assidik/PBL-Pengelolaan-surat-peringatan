@@ -40,16 +40,16 @@ document.addEventListener("DOMContentLoaded", () => {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        layout: { padding: 10 },
+        layout: { padding: 0 },
         plugins: {
           title: {
             display: true,
             text: "Distribusi Jenis Surat Peringatan",
-            font: { size: 14 },
+            font: { size: 14, weight: 'normal' },
           },
           legend: {
             position: "bottom",
-            labels: { boxWidth: 12 },
+            labels: { boxWidth: 12, font: { size: 12 } },
           },
         },
       },
@@ -61,17 +61,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const trenChartData = {
       labels: trenLabels,
-      datasets: [{
-        label: "Jumlah Surat per Semester",
-        data: trenValues,
-        borderColor: "#4BC0C0",
-        backgroundColor: "rgba(75, 192, 192, 0.15)",
-        tension: 0.4,
-        fill: true,
-        pointRadius: 5,
-        pointBackgroundColor: "#4BC0C0",
-        borderWidth: 2,
-      }]
+        datasets: [{
+          label: "Jumlah Surat per Semester",
+          data: trenValues,
+          borderColor: "#4BC0C0",
+          backgroundColor: "rgba(75, 192, 192, 0.1)",
+          tension: 0.4,
+          fill: true,
+          pointRadius: 3,
+          pointBackgroundColor: "#4BC0C0",
+          borderWidth: 1,
+        }]
     };
 
     chartTren = new Chart(ctxTren, {
@@ -80,18 +80,21 @@ document.addEventListener("DOMContentLoaded", () => {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        layout: { padding: 10 },
+        layout: { padding: 0 },
         scales: {
           y: {
             beginAtZero: true,
-            ticks: { stepSize: 1 },
+            ticks: { stepSize: 1, font: { size: 12 } },
+          },
+          x: {
+            ticks: { font: { size: 12 } },
           },
         },
         plugins: {
           title: {
             display: true,
             text: "Tren Surat Peringatan per Semester",
-            font: { size: 14 },
+            font: { size: 14, weight: 'normal' },
           },
           legend: { display: false },
         },
