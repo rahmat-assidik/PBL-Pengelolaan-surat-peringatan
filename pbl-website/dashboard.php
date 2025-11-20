@@ -79,7 +79,7 @@ if (!isset($_SESSION['user_id'])) {
                     <div class="list-item">
                         <a href="#" data-target="surat" data-tooltip="Kelola Surat Peringatan">
                             <i class="fas fa-file-circle-exclamation"></i>
-                            <span class="description">Kelola Surat Peringatan</span>
+                            <span class="description">Surat Peringatan</span>
                         </a>
                     </div>
                     <div class="list-item">
