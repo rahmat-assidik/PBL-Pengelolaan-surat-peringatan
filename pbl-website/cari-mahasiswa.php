@@ -1,23 +1,4 @@
 <?php
-/**
- * Halaman Pencarian Surat Peringatan Mahasiswa
- * 
- * File ini menangani:
- * 1. Pencarian data surat peringatan dari database
- * 2. Filter berdasarkan Tingkatan SP
- * 3. API AJAX untuk fetch data
- * 4. Tampilan statistik dan ringkasan data
- * 
- * Database: pengelolaan_sp
- * Tabel: surat_peringatan
- * 
- * Fields: id, nim, nama, ketua_prodi, wali_dosen, tingkatan_sp, alasan_sp, created_at
- * 
- * Keamanan:
- * - Menggunakan prepared statements untuk mencegah SQL Injection
- * - Input validation dan sanitization
- * - Error handling dengan proper error messages
- */
 
 session_start();
 include '../config.php';
