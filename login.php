@@ -43,7 +43,7 @@ body {
 }
 
 .login-header h2 {
-    color: #451f56ff;
+    color: #000000ff;
     font-weight: 700;
     font-size: 2rem;
     margin-bottom: 0.5rem;
@@ -90,35 +90,12 @@ body {
 }
 
 .form-control:focus {
-    border-color: #783595;
+    border-color: #0055ffff;
     box-shadow: 0 0 0 0.2rem rgba(120, 53, 149, 0.15);
 }
 
 .form-control::placeholder {
     color: #adb5bd;
-}
-
-.remember-me {
-    margin-top: 1rem;
-    display: flex;
-    align-items: center;
-}
-
-.remember-me label {
-    color: #6c757d;
-    font-size: 0.9rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    margin: 0;
-}
-
-.remember-me input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    margin-right: 0.5rem;
-    cursor: pointer;
-    accent-color: #783595;
 }
 
 .password-wrapper {
@@ -142,7 +119,7 @@ body {
 .btn-login {
     width: 100%;
     padding: 0.875rem;
-    background-color: #471d5aff;
+    background-color: #006affff;
     color: white;
     font-size: 1.05rem;
     font-weight: 600;
@@ -155,9 +132,9 @@ body {
 }
 
 .btn-login:hover {
-    background-color: #732a90ff;
+    background-color: #1135d5ff;
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(120, 53, 149, 0.3);
+    box-shadow: 0 8px 20px rgba(51, 51, 147, 0.3);
 }
 
 .btn-login:active {
@@ -179,6 +156,7 @@ body {
 <div class="login-container">
     <div class="login-card">
         <div class="login-header">
+            <img src="pbl-website/assets/img/logo.png" alt="Logo" width="100" class="mb-3">
             <h2>Login</h2>
             <p>Silakan masuk ke akun Anda</p>
         </div>
@@ -204,12 +182,6 @@ body {
                     <i class="fa-regular fa-eye password-toggle" id="togglePassword"></i>
                 </div>
                 
-                <div class="remember-me">
-                    <label>
-                        <input type="checkbox" name="remember">
-                        <span>Remember me</span>
-                    </label>
-                </div>
             </div>
             
             <button type="submit" class="btn btn-login">Login</button>
