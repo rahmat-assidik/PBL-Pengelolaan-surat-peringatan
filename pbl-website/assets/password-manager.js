@@ -10,15 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-  function getCurrentUsername() {
-    try {
-      return sessionStorage.getItem('username') || localStorage.getItem('username');
-    } catch (e) {
-      return localStorage.getItem('username');
-    }
-  }
-
-
   document.querySelectorAll('.input-password-wrapper').forEach(wrapper => {
     const input = wrapper.querySelector('input');
     const btn = wrapper.querySelector('.toggle-password-visibility');
@@ -37,16 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     msgEl.textContent = '';
-
-    const username = getCurrentUsername();
-    if (!username) {
-      msgEl.style.color = 'red';
-      msgEl.textContent = 'Tidak ada user yang terdeteksi. Silakan login ulang.';
-      return;
-    }
 
     const current = currentEl.value.trim();
     const next = newEl.value.trim();
@@ -63,35 +47,36 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const accounts = JSON.parse(localStorage.getItem('accounts')) || [];
-    const account = accounts.find(a => a.username === username);
-    
-    if (!account) {
+    try {
+      const response = await fetch('../api/change_password.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          current_password: current,
+          new_password: next
+        })
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        msgEl.style.color = 'green';
+        msgEl.textContent = 'Kata sandi berhasil diubah. Silakan login ulang.';
+        setTimeout(() => {
+          try { sessionStorage.removeItem('username'); } catch (e) {}
+          localStorage.removeItem('loggedIn');
+          window.location.href = '../logout.php';
+        }, 1200);
+      } else {
+        msgEl.style.color = 'red';
+        msgEl.textContent = result.message || 'Terjadi kesalahan saat mengubah kata sandi.';
+      }
+    } catch (error) {
       msgEl.style.color = 'red';
-      msgEl.textContent = 'Akun tidak ditemukan.';
-      return;
+      msgEl.textContent = 'Terjadi kesalahan koneksi. Silakan coba lagi.';
+      console.error('Error:', error);
     }
-
-    if (account.password !== current) {
-      msgEl.style.color = 'red';
-      msgEl.textContent = 'Kata sandi saat ini salah.';
-      return;
-    }
-
-    const idx = accounts.findIndex(a => a.username === username);
-
-
-    accounts[idx].password = next;
-    localStorage.setItem('accounts', JSON.stringify(accounts));
-
-    msgEl.style.color = 'green';
-    msgEl.textContent = 'Kata sandi berhasil diubah. Silakan login ulang.';
-
-
-    setTimeout(() => {
-      try { sessionStorage.removeItem('username'); } catch (e) {}
-      localStorage.removeItem('loggedIn');
-      window.location.href = 'login.php';
-    }, 1200);
   });
 });

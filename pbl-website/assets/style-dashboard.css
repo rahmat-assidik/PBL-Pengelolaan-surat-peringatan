@@ -171,7 +171,7 @@ body {
     left: 0;
     width: var(--sidebar-width);
     height: calc(100vh - var(--header-height));
-    background-color: var(--gray-800);
+    background-color: var(--white);
     padding: var(--space-lg) 0;
     overflow-y: auto;
     z-index: 999;
@@ -201,7 +201,7 @@ body {
 .sidebar-header {
     font-size: 0.6875rem;
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--gray-600);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     margin-bottom: var(--space-md);
@@ -226,7 +226,7 @@ body {
     gap: var(--space-md);
     padding: 0.75rem var(--space-lg);
     text-decoration: none;
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--gray-800);
     font-size: 0.875rem;
     font-weight: 400;
     transition: all 0.2s ease;
@@ -235,14 +235,14 @@ body {
 }
 
 .list-item a:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: var(--white);
+    background-color: var(--gray-100);
+    color: var(--gray-800);
     border-left-color: transparent;
 }
 
 .list-item a.active {
     background-color: rgba(0, 123, 255, 0.15);
-    color: var(--white);
+    color: var(--gray-800);
     font-weight: 500;
     border-left-color: var(--primary);
 }
@@ -916,6 +916,19 @@ textarea.form-control {
 
 .fw-bold {
     font-weight: 600;
+}
+
+/* === AUTO-FILL STYLING === */
+.form-control.auto-filled {
+    background-color: var(--accent-green);
+    border-color: var(--success);
+    color: var(--gray-800);
+    cursor: not-allowed;
+}
+
+.form-control.auto-filled:focus {
+    border-color: var(--success);
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
 }
 
 /* === RESPONSIVE === */

@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       form.removeAttribute('data-edit-id');
       form.reset();
+      clearAutoFill();
     }
     // focus pertama
     setTimeout(() => {
@@ -150,6 +151,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  async function loadMahasiswa() {
+    try {
+      const response = await fetch('../api/mahasiswa.php');
+      const data = await response.json();
+      mahasiswaData = data;
+      populateStudentDropdown();
+    } catch (error) {
+      console.error('Error loading mahasiswa:', error);
+      alert('Gagal memuat data mahasiswa');
+    }
+  }
+
   async function saveSP(spData) {
     try {
       const response = await fetch('../api/surat_peringatan.php', {
@@ -222,6 +235,46 @@ document.addEventListener('DOMContentLoaded', () => {
     spData.forEach(sp => addRowToTable(sp));
   }
 
+  function populateStudentDropdown() {
+    const nimDatalist = document.getElementById('nimDatalist');
+    if (!nimDatalist) return;
+    nimDatalist.innerHTML = '';
+    mahasiswaData.forEach(student => {
+      const option = document.createElement('option');
+      option.value = student.nim;
+      option.textContent = `${student.nim} - ${student.nama}`;
+      nimDatalist.appendChild(option);
+    });
+  }
+
+  function autoFillStudentData(nim) {
+    const namaInput = document.getElementById('spNamaInput');
+    const waliInput = document.getElementById('spWaliInput');
+
+    const student = mahasiswaData.find(s => s.nim === nim);
+    if (student) {
+      namaInput.value = student.nama;
+      waliInput.value = student.wali_dosen || '';
+      namaInput.classList.add('auto-filled');
+      waliInput.classList.add('auto-filled');
+      namaInput.readOnly = true;
+      waliInput.readOnly = true;
+    } else {
+      // Clear auto-fill if no student found
+      clearAutoFill();
+    }
+  }
+
+  function clearAutoFill() {
+    const namaInput = document.getElementById('spNamaInput');
+    const waliInput = document.getElementById('spWaliInput');
+
+    namaInput.classList.remove('auto-filled');
+    waliInput.classList.remove('auto-filled');
+    namaInput.readOnly = false;
+    waliInput.readOnly = false;
+  }
+
   // Event listeners
   if (addBtn) addBtn.addEventListener('click', () => openModal());
   if (closeBtn) closeBtn.addEventListener('click', closeModal);
@@ -243,6 +296,17 @@ document.addEventListener('DOMContentLoaded', () => {
       searchTimeout = setTimeout(() => {
         loadSP(e.target.value);
       }, 300);
+    });
+  }
+
+  // Auto-fill functionality for NIM input
+  const nimInput = document.getElementById('spNimInput');
+  if (nimInput) {
+    nimInput.addEventListener('input', (e) => {
+      const nim = e.target.value.trim();
+      if (nim) {
+        autoFillStudentData(nim);
+      }
     });
   }
 
@@ -297,4 +361,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Load initial data
   loadSP();
+  loadMahasiswa();
 });

@@ -286,7 +286,10 @@ if (!isset($_SESSION['user_id'])) {
                             <form id="spForm">
                                 <div class="mb-1 row">
                                     <label for="spNimInput" class="col-sm-3 col-form-label">NIM</label>
-                                    <div class="col-sm-9"><input id="spNimInput" type="text" class="form-control" required placeholder="Masukkan NIM" /></div>
+                                    <div class="col-sm-9">
+                                        <input id="spNimInput" type="text" class="form-control" required placeholder="Masukkan NIM" list="nimDatalist" autocomplete="off">
+                                        <datalist id="nimDatalist"></datalist>
+                                    </div>
                                 </div>
                                 <div class="mb-1 row">
                                     <label for="spNamaInput" class="col-sm-3 col-form-label">Nama</label>
