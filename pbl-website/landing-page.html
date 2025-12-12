@@ -1,9 +1,49 @@
+<?php
+/**
+ * Halaman Landing Page - Portal Utama Sistem Pengelolaan Surat Peringatan
+ * 
+ * File ini menampilkan:
+ * 1. Informasi umum tentang sistem
+ * 2. Fitur-fitur utama
+ * 3. Link ke halaman pencarian surat peringatan
+ * 4. Form kontak untuk feedback
+ */
+
+session_start();
+include '../config.php';
+
+// Fungsi untuk mendapatkan statistik surat peringatan
+function getStatistikSuratPeringatan($conn) {
+    $stats = array();
+    
+    // Total surat peringatan
+    $result = $conn->query("SELECT COUNT(*) as total FROM surat_peringatan");
+    $stats['total'] = $result->fetch_assoc()['total'];
+    
+    // SP1
+    $result = $conn->query("SELECT COUNT(*) as sp1 FROM surat_peringatan WHERE tingkatan_sp = 'SP1'");
+    $stats['sp1'] = $result->fetch_assoc()['sp1'];
+    
+    // SP2
+    $result = $conn->query("SELECT COUNT(*) as sp2 FROM surat_peringatan WHERE tingkatan_sp = 'SP2'");
+    $stats['sp2'] = $result->fetch_assoc()['sp2'];
+    
+    // SP3
+    $result = $conn->query("SELECT COUNT(*) as sp3 FROM surat_peringatan WHERE tingkatan_sp = 'SP3'");
+    $stats['sp3'] = $result->fetch_assoc()['sp3'];
+    
+    return $stats;
+}
+
+// Get statistik
+$stats = getStatistikSuratPeringatan($conn);
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Welcome to Our Platform</title>
+    <title>Sistem Pengelolaan Surat Peringatan Mahasiswa</title>
 
     <!-- Bootstrap -->
     <link
@@ -55,7 +95,7 @@
         <li><a href="#contact" class="menu-link">Kontak</a></li>
         <li style="border-top: 1px solid #e9ecef; margin: 1rem 0"></li>
         <li>
-          <a href="cari-mahasiswa.html" class="menu-link">Cari Mahasiswa</a>
+          <a href="cari-mahasiswa.php" class="menu-link">Cari Surat Peringatan</a>
         </li>
       </ul>
     </div>
@@ -93,17 +133,58 @@
       </div>
     </section>
 
+    <!-- Statistics Section -->
+    <section class="bg-light py-5">
+      <div class="container">
+        <h2 class="text-center mb-5">Statistik Sistem</h2>
+        <div class="row g-4 text-center">
+          <div class="col-md-3">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <h3 class="text-primary"><?php echo $stats['total']; ?></h3>
+                <p class="text-muted">Total Surat Peringatan</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <h3 class="text-info"><?php echo $stats['sp1']; ?></h3>
+                <p class="text-muted">SP1</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <h3 class="text-warning"><?php echo $stats['sp2']; ?></h3>
+                <p class="text-muted">SP2</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <h3 class="text-danger"><?php echo $stats['sp3']; ?></h3>
+                <p class="text-muted">SP3</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Search Section -->
     <section class="search-section">
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-md-8 text-center">
-            <h2 class="mb-4">Cari Informasi Mahasiswa</h2>
+            <h2 class="mb-4">Cari Informasi Surat Peringatan</h2>
             <p class="text-muted mb-4">
-              Untuk mencari informasi mahasiswa, silakan kunjungi halaman
-              pencarian.
+              Untuk mencari informasi surat peringatan mahasiswa, silakan kunjungi halaman
+              pencarian kami.
             </p>
-            <a href="cari-mahasiswa.html" class="btn btn-primary btn-lg">
+            <a href="cari-mahasiswa.php" class="btn btn-primary btn-lg">
               Ke Halaman Pencarian
             </a>
           </div>
@@ -123,7 +204,7 @@
               </div>
               <h3>Pencatatan Digital</h3>
               <p>
-                Sistem pencatatan surat peringatan secara digital yang aman.
+                Sistem pencatatan surat peringatan secara digital yang aman dan terorganisir.
               </p>
             </div>
           </div>
@@ -132,8 +213,8 @@
               <div class="feature-icon">
                 <img src="assets/img/monitoring.png" alt="Monitoring Icon" />
               </div>
-              <h3>Monitoring</h3>
-              <p>Pantau status dan riwayat surat peringatan dengan mudah.</p>
+              <h3>Monitoring Real-time</h3>
+              <p>Pantau status dan riwayat surat peringatan dengan mudah dan cepat.</p>
             </div>
           </div>
           <div class="col-md-4">
@@ -144,8 +225,8 @@
                   alt="Notifikasi Icon"
                 />
               </div>
-              <h3>Notifikasi</h3>
-              <p>Sistem notifikasi otomatis untuk setiap pembaruan status.</p>
+              <h3>Notifikasi Otomatis</h3>
+              <p>Sistem notifikasi otomatis untuk setiap pembaruan status surat peringatan.</p>
             </div>
           </div>
         </div>
