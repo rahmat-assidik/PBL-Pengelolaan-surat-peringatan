@@ -11,38 +11,6 @@ const filterStatus = document.getElementById("filterStatus");
 const searchPreview = document.getElementById("searchPreview");
 const resultContainer = document.getElementById("resultContainer");
 const emptyState = document.getElementById("emptyState");
-
-// ===== DUMMY DATA (Contoh) =====
-const mahasiswaData = [
-  {
-    nama: "Rina Amelia",
-    nim: "220102001",
-    kelas: "TI-2A",
-    prodi: "Teknik Informatika",
-    status: "Aktif",
-    sp: "SP1",
-    wali: "Dr. Ahmad Fadli",
-  },
-  {
-    nama: "Budi Santoso",
-    nim: "220102002",
-    kelas: "SI-3B",
-    prodi: "Sistem Informasi",
-    status: "Cuti",
-    sp: "SP2",
-    wali: "Siti Handayani, M.Kom",
-  },
-  {
-    nama: "Lina Putri",
-    nim: "220102003",
-    kelas: "TE-1C",
-    prodi: "Teknik Elektro",
-    status: "Aktif",
-    sp: "SP3",
-    wali: "Dr. Bambang Siregar",
-  },
-];
-
 // ===== HAMBURGER MENU =====
 hamburgerBtn.addEventListener("click", () => {
   hamburgerBtn.classList.toggle("active");
