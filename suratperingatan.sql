@@ -60,7 +60,7 @@ CREATE TABLE `surat_peringatan` (
   `wali_dosen` varchar(100) DEFAULT NULL,
   `tingkatan_sp` enum('SP1','SP2','SP3') NOT NULL,
   `alasan_sp` text NOT NULL,
-  `tanggal` date DEFAULT NULL,
+  `tanggal` date DEFAULT curdate(),
   `status` enum('Aktif','Tidak Aktif') DEFAULT 'Aktif',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()

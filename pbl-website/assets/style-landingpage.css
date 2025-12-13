@@ -1,11 +1,6 @@
 :root {
   --primary-color: #0d6efd;
   --transition-speed: 0.3s;
-  --gradient-purple: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --gradient-blue: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.12);
-  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.15);
 }
 
 body {
@@ -13,38 +8,14 @@ body {
   line-height: 1.6;
 }
 
-/* ===== ANIMATIONS ===== */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 /* ===== NAVBAR ===== */
 .navbar {
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 0.5rem 1rem;
   background-color: white !important;
   height: 80px;
   display: flex;
   align-items: center;
-  animation: slideInDown 0.5s ease-out;
 }
 
 .navbar-brand {
@@ -220,43 +191,15 @@ body {
 
 /* === LOGIN BUTTON === */
 .login-btn-nav {
-  font-size: 0.875rem !important;
-  padding: 0.5rem 1rem !important;
-  border-radius: 6px !important;
+  font-size: 0.9rem; /* perkecil ukuran font */
+  padding: 6px 14px; /* kurangi padding */
+  border-radius: 8px;
   margin-left: 12px;
-  font-weight: 600 !important;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-  border: none !important;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2) !important;
-  transition: all 0.3s ease;
-  color: white !important;
-  text-decoration: none;
-  display: inline-block;
-  line-height: 1.2;
-}
-
-.login-btn-nav:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.3) !important;
-  color: white !important;
-  text-decoration: none;
-}
-
-.login-btn-nav:focus {
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.3) !important;
-  color: white !important;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-}
-
-/* Override Bootstrap btn-sm */
-.login-btn-nav.btn-sm {
-  font-size: 0.875rem !important;
-  padding: 0.5rem 1rem !important;
 }
 
 /* ===== HERO SECTION ===== */
 .hero-section {
-  background: linear-gradient(135deg, #fafbfc 0%, #f5f7fc 100%);
+  background-color: white;
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -294,38 +237,24 @@ body {
 .hero-section h1 {
   font-weight: 700;
   margin-bottom: 1.5rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: fadeInUp 0.6s ease-out;
 }
 
 .hero-section .lead {
   font-size: 1.25rem;
   margin-bottom: 2rem;
-  color: #6b7280;
-  animation: fadeInUp 0.6s ease-out 0.1s both;
 }
 
 .btn-primary {
-  background: var(--gradient-purple);
+  background-color: var(--primary-color);
   border: none;
-  padding: 12px 32px;
-  font-weight: 600;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: var(--shadow-md);
-  animation: fadeInUp 0.6s ease-out 0.2s both;
+  padding: auto 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-lg);
-  opacity: 0.95;
-}
-
-.btn-primary:active {
-  transform: translateY(-1px);
+  background-color: #0b5ed7;
+  transform: translateY(-2px);
 }
 
 /* ===== FEATURE CARDS ===== */
@@ -337,9 +266,6 @@ body {
   align-items: center;
   justify-content: center;
   transition: transform 0.3s ease;
-  background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
-  border-radius: 12px;
-  animation: fadeInUp 0.6s ease-out;
 }
 
 .feature-icon img {
@@ -354,110 +280,25 @@ body {
 
 .feature-card {
   text-align: center;
-  animation: fadeInUp 0.6s ease-out;
-}
-
-.feature-card h3 {
-  color: #1f2937;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  transition: color 0.3s ease;
-}
-
-.feature-card p {
-  color: #6b7280;
-  font-size: 0.95rem;
-}
-
-.feature-card:hover h3 {
-  color: #667eea;
 }
 
 .card {
   background-color: white;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #e9ecef;
   border-radius: 12px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  animation: fadeInUp 0.6s ease-out;
+  transition: all 0.3s ease;
 }
 
 .card:hover {
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transform: translateY(-4px);
-  border-color: #667eea;
-}
-
-.card-body {
-  padding: 2rem 1.5rem;
-}
-
-.card-body h3 {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.card-body p {
-  color: #6b7280;
-  font-weight: 500;
 }
 
 /* ===== FOOTER ===== */
 footer {
-  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  background-color: #212529;
   color: white;
   padding: 2rem 0;
-  margin-top: 3rem;
-}
-
-/* ===== ACCORDION / FAQ ===== */
-.accordion-item {
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  margin-bottom: 12px;
-  transition: all 0.3s ease;
-  animation: fadeInUp 0.6s ease-out;
-}
-
-.accordion-item:hover {
-  border-color: #667eea;
-  box-shadow: var(--shadow-sm);
-}
-
-.accordion-button {
-  background-color: white;
-  color: #1f2937;
-  font-weight: 600;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: none;
-  padding: 1.5rem;
-}
-
-.accordion-button:not(.collapsed) {
-  background: linear-gradient(135deg, #fafbfc 0%, #f5f7fc 100%);
-  color: #667eea;
-  box-shadow: none;
-}
-
-.accordion-button::after {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23667eea' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
-  transition: transform 0.3s ease;
-}
-
-.accordion-button:focus {
-  border-color: #667eea;
-  box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
-}
-
-.accordion-body {
-  color: #6b7280;
-  padding: 1.5rem;
-  background-color: #f9fafb;
-  line-height: 1.8;
 }
 
 /* ===== RESPONSIVE ===== */
@@ -481,23 +322,5 @@ footer {
 
   .hero-section .btn {
     margin-top: 1rem;
-  }
-
-  .hero-section h1 {
-    font-size: 2rem;
-  }
-
-  .feature-card {
-    margin-bottom: 1.5rem;
-  }
-
-  .accordion-button {
-    padding: 1.25rem;
-    font-size: 0.95rem;
-  }
-
-  .accordion-body {
-    padding: 1rem;
-    font-size: 0.9rem;
   }
 }
