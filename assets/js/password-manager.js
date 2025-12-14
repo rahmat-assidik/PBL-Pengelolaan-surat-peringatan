@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      const response = await fetch('../api/change_password.php', {
+      const response = await fetch('../crud/change_password.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
           try { sessionStorage.removeItem('username'); } catch (e) {}
           localStorage.removeItem('loggedIn');
-          window.location.href = '../logout.php';
+          window.location.href = '../auth/logout.php';
         }, 1200);
       } else {
         msgEl.style.color = 'red';

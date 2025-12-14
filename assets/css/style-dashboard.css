@@ -443,10 +443,7 @@ body {
     font-weight: 500;
 }
 
-#mahasiswaChange,
-#suratPeringatanChange {
-    color: var(--success);
-}
+
 
 /* === CHARTS === */
 .chart-grid {

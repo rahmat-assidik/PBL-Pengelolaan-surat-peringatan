@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../config.php';
+include 'config/config.php';
 
 // Fungsi untuk mendapatkan data surat peringatan dari database
 /**
@@ -129,7 +129,7 @@ $tingkatanList = getTingkatanSPList($conn);
     />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="assets/cari-mahasiswa.css?v=3.0" />
+    <link rel="stylesheet" href="assets/css/cari-mahasiswa.css" />
   </head>
 
   <body>

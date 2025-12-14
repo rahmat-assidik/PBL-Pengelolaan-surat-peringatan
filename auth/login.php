@@ -156,7 +156,7 @@ body {
 <div class="login-container">
     <div class="login-card">
         <div class="login-header">
-            <img src="pbl-website/assets/img/logo.png" alt="Logo" width="100" class="mb-3">
+            <img src="assets/img/logo.png" alt="Logo" width="100" class="mb-3">
             <h2>Login</h2>
             <p>Silakan masuk ke akun Anda</p>
         </div>

@@ -4,12 +4,27 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 header('Access-Control-Allow-Headers: Content-Type');
 
-include '../config.php';
+include '../config/config.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
 
 switch ($method) {
     case 'GET':
+        // Get SP aktif by NIM (untuk cek tingkatan SP yang sudah ada)
+        if (isset($_GET['check_nim']) && !empty($_GET['check_nim'])) {
+            $nim = $_GET['check_nim'];
+            $stmt = $conn->prepare("SELECT tingkatan_sp FROM surat_peringatan WHERE nim = ? AND status = 'Aktif' ORDER BY tingkatan_sp");
+            $stmt->bind_param("s", $nim);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $sp_list = [];
+            while ($row = $result->fetch_assoc()) {
+                $sp_list[] = $row['tingkatan_sp'];
+            }
+            echo json_encode(['sp_aktif' => $sp_list]);
+            break;
+        }
+        
         // Get all surat peringatan or search
         if (isset($_GET['search']) && !empty($_GET['search'])) {
             $search = $_GET['search'];
@@ -29,23 +44,41 @@ switch ($method) {
         break;
 
     case 'POST':
-        // Create new surat peringatan
+        // Create atau REPLACE surat peringatan - 1 NIM = 1 RECORD SAJA
+        // Jika sudah ada untuk NIM yang sama, maka REPLACE (UPDATE) seluruhnya
         $data = json_decode(file_get_contents('php://input'), true);
-        $nim = $data['nim'];
-        $nama = $data['nama'];
+        $nim = $data['nim'] ?? '';
+        $nama = $data['nama'] ?? '';
         $ketua_prodi = $data['ketua_prodi'] ?? '';
         $wali_dosen = $data['wali_dosen'] ?? '';
-        $tingkatan_sp = $data['tingkatan_sp'];
-        $alasan_sp = $data['alasan_sp'];
+        $tingkatan_sp = $data['tingkatan_sp'] ?? '';
+        $alasan_sp = $data['alasan_sp'] ?? '';
 
-        $stmt = $conn->prepare("INSERT INTO surat_peringatan (nim, nama, ketua_prodi, wali_dosen, tingkatan_sp, alasan_sp) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssss", $nim, $nama, $ketua_prodi, $wali_dosen, $tingkatan_sp, $alasan_sp);
-
-        if ($stmt->execute()) {
-            echo json_encode(['success' => true, 'id' => $conn->insert_id]);
-        } else {
-            echo json_encode(['success' => false, 'error' => $stmt->error]);
+        // Validasi input
+        if (empty($nim) || empty($tingkatan_sp)) {
+            echo json_encode(['success' => false, 'error' => 'NIM dan Tingkatan SP harus diisi']);
+            break;
         }
+
+        // REPLACE: Jika NIM sudah ada, maka UPDATE (replace) seluruh record
+        // Jika NIM belum ada, maka INSERT baru
+        $stmt = $conn->prepare("REPLACE INTO surat_peringatan (nim, nama, ketua_prodi, wali_dosen, tingkatan_sp, alasan_sp) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssss", $nim, $nama, $ketua_prodi, $wali_dosen, $tingkatan_sp, $alasan_sp);
+        
+        if ($stmt->execute()) {
+            // Cek apakah ini INSERT atau UPDATE
+            $check_query = $conn->query("SELECT id FROM surat_peringatan WHERE nim = '$nim'");
+            $record_id = $check_query->fetch_assoc()['id'] ?? null;
+            
+            echo json_encode([
+                'success' => true, 
+                'id' => $record_id,
+                'message' => 'Data SP berhasil disimpan (diperbarui untuk NIM ini)'
+            ]);
+        } else {
+            echo json_encode(['success' => false, 'error' => 'Gagal menyimpan: ' . $stmt->error]);
+        }
+        $stmt->close();
         break;
 
     case 'PUT':

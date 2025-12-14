@@ -7,7 +7,7 @@
 // Function to refresh dashboard cards from database
 async function refreshCardsFromDatabase() {
   try {
-    const response = await fetch('../api/dashboard_stats.php');
+    const response = await fetch('../crud/dashboard_stats.php');
     const stats = await response.json();
 
     const totalMahasiswaEl = document.getElementById('totalMahasiswa');
@@ -20,11 +20,6 @@ async function refreshCardsFromDatabase() {
     if (jumlahSuratBulanIniEl) jumlahSuratBulanIniEl.textContent = stats.spBulanIni;
     if (userEl) userEl.textContent = localStorage.getItem('username') || 'User';
 
-    // Update change indicators
-    const suratChangeNodes = document.querySelectorAll('#suratPeringatanChange');
-    suratChangeNodes.forEach(n => n.textContent = `+${stats.spBulanIni} bulan ini`);
-    const mahasiswaChangeNodes = document.querySelectorAll('#mahasiswaChange');
-    mahasiswaChangeNodes.forEach(n => n.textContent = `+${stats.totalMahasiswa} total`);
 
     // Trigger chart update
     if (window.updateCharts) {

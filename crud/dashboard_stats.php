@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 
-include '../config.php';
+include '../config/config.php';
 
 // Get total mahasiswa
 $stmt = $conn->prepare("SELECT COUNT(*) as total FROM mahasiswa");

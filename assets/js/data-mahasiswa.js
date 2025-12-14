@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // API functions
   async function loadMahasiswa(search = '') {
     try {
-      const url = search ? `../api/mahasiswa.php?search=${encodeURIComponent(search)}` : '../api/mahasiswa.php';
+      const url = search ? `../crud/mahasiswa.php?search=${encodeURIComponent(search)}` : '../crud/mahasiswa.php';
       const response = await fetch(url);
       const data = await response.json();
       mahasiswaData = data;
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function saveMahasiswa(studentData) {
     try {
-      const response = await fetch('../api/mahasiswa.php', {
+      const response = await fetch('../crud/mahasiswa.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
   async function updateMahasiswa(id, studentData) {
     try {
       const data = { id, ...studentData };
-      const response = await fetch('../api/mahasiswa.php', {
+      const response = await fetch('../crud/mahasiswa.php', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function deleteMahasiswa(id) {
     try {
-      const response = await fetch(`../api/mahasiswa.php?id=${id}`, {
+      const response = await fetch(`../crud/mahasiswa.php?id=${id}`, {
         method: 'DELETE',
       });
       const result = await response.json();

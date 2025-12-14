@@ -15,6 +15,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let spData = [];
   let rowCounter = 1;
+  let mahasiswaData = [];
+  let activeSPList = []; // Untuk menyimpan SP yang sudah aktif
+
+  async function checkActiveSP(nim) {
+    try {
+      const response = await fetch(`../crud/surat_peringatan.php?check_nim=${encodeURIComponent(nim)}`);
+      const data = await response.json();
+      activeSPList = data.sp_aktif || [];
+      updateTingkatanOptions();
+    } catch (error) {
+      console.error('Error checking active SP:', error);
+      activeSPList = [];
+    }
+  }
+
+  function updateTingkatanOptions() {
+    const tingkatanSelect = document.getElementById('spTingkatanInput');
+    if (!tingkatanSelect) return;
+    
+    const options = tingkatanSelect.querySelectorAll('option:not([value=""])');
+    options.forEach(option => {
+      if (activeSPList.includes(option.value)) {
+        option.disabled = true;
+        option.textContent = option.textContent.split(' - ')[0] + ' - Sudah ada (Pilih tingkatan lain)';
+      } else {
+        option.disabled = false;
+        option.textContent = option.textContent.split(' - ')[0];
+      }
+    });
+  }
 
   function openModal(editData) {
     if (!modal) return;
@@ -32,10 +62,21 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('spWaliInput').value = editData.wali_dosen || '';
       document.getElementById('spTingkatanInput').value = editData.tingkatan_sp;
       document.getElementById('spAlasanInput').value = editData.alasan_sp;
+      
+      // Check active SP untuk nim ini (ketika edit)
+      checkActiveSP(editData.nim);
     } else {
       form.removeAttribute('data-edit-id');
       form.reset();
       clearAutoFill();
+      activeSPList = []; // Reset list SP aktif
+      const tingkatanSelect = document.getElementById('spTingkatanInput');
+      if (tingkatanSelect) {
+        tingkatanSelect.querySelectorAll('option:not([value=""])').forEach(option => {
+          option.disabled = false;
+          option.textContent = option.textContent.split(' - ')[0];
+        });
+      }
     }
     // focus pertama
     setTimeout(() => {
@@ -75,6 +116,22 @@ document.addEventListener('DOMContentLoaded', () => {
     tr.appendChild(createCell(sp.wali_dosen));
     tr.appendChild(createCell(sp.tingkatan_sp));
     tr.appendChild(createCell(sp.alasan_sp));
+
+    // Status cell dengan badge styling
+    const statusTd = document.createElement('td');
+    const statusBadge = document.createElement('span');
+    statusBadge.className = 'status-badge';
+    
+    if (sp.status === 'Aktif') {
+      statusBadge.classList.add('status-aktif');
+      statusBadge.innerHTML = '<i class="ri-check-circle-line"></i> Aktif';
+    } else {
+      statusBadge.classList.add('status-tidak-aktif');
+      statusBadge.innerHTML = '<i class="ri-close-circle-line"></i> Tidak Aktif';
+    }
+    
+    statusTd.appendChild(statusBadge);
+    tr.appendChild(statusTd);
 
     const actionTd = document.createElement('td');
     actionTd.className = 'table-actions';
@@ -140,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // API functions
   async function loadSP(search = '') {
     try {
-      const url = search ? `../api/surat_peringatan.php?search=${encodeURIComponent(search)}` : '../api/surat_peringatan.php';
+      const url = search ? `../crud/surat_peringatan.php?search=${encodeURIComponent(search)}` : '../crud/surat_peringatan.php';
       const response = await fetch(url);
       const data = await response.json();
       spData = data;
@@ -153,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function loadMahasiswa() {
     try {
-      const response = await fetch('../api/mahasiswa.php');
+      const response = await fetch('../crud/mahasiswa.php');
       const data = await response.json();
       mahasiswaData = data;
       populateStudentDropdown();
@@ -165,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function saveSP(spData) {
     try {
-      const response = await fetch('../api/surat_peringatan.php', {
+      const response = await fetch('../crud/surat_peringatan.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -177,7 +234,15 @@ document.addEventListener('DOMContentLoaded', () => {
         await loadSP();
         return true;
       } else {
-        alert('Gagal menyimpan data: ' + result.error);
+        // Handle error - check jika duplicate entry
+        if (result.error && result.error.includes('Duplicate entry')) {
+          alert(`Tingkatan ${spData.tingkatan_sp} sudah ada untuk mahasiswa ini. Data akan diperbarui otomatis.`);
+          // Reload data untuk tampilkan perubahan
+          await loadSP();
+          return true;
+        } else {
+          alert('Gagal menyimpan data: ' + result.error);
+        }
         return false;
       }
     } catch (error) {
@@ -190,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
   async function updateSP(id, spData) {
     try {
       const data = { id, ...spData };
-      const response = await fetch('../api/surat_peringatan.php', {
+      const response = await fetch('../crud/surat_peringatan.php', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -214,7 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function deleteSP(id) {
     try {
-      const response = await fetch(`../api/surat_peringatan.php?id=${id}`, {
+      const response = await fetch(`../crud/surat_peringatan.php?id=${id}`, {
         method: 'DELETE',
       });
       const result = await response.json();
@@ -306,6 +371,17 @@ document.addEventListener('DOMContentLoaded', () => {
       const nim = e.target.value.trim();
       if (nim) {
         autoFillStudentData(nim);
+        // Check SP aktif untuk nim ini
+        checkActiveSP(nim);
+      } else {
+        activeSPList = [];
+        const tingkatanSelect = document.getElementById('spTingkatanInput');
+        if (tingkatanSelect) {
+          tingkatanSelect.querySelectorAll('option:not([value=""])').forEach(option => {
+            option.disabled = false;
+            option.textContent = option.textContent.split(' - ')[0];
+          });
+        }
       }
     });
   }
@@ -336,6 +412,13 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      // VALIDASI TAMBAHAN: Cek jika tidak dalam edit mode dan tingkatan sudah ada
+      const editId = form.getAttribute('data-edit-id');
+      if (!editId && activeSPList.includes(tingkatan)) {
+        alert(`Tingkatan ${tingkatan} sudah ada untuk mahasiswa ini. Pilih tingkatan lain!`);
+        return;
+      }
+
       const sp = {
         nim,
         nama,
@@ -345,7 +428,6 @@ document.addEventListener('DOMContentLoaded', () => {
         alasan_sp: alasan
       };
 
-      const editId = form.getAttribute('data-edit-id');
       let success = false;
       if (editId) {
         success = await updateSP(editId, sp);

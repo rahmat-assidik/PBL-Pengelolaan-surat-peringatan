@@ -1,5 +1,5 @@
 <?php
-include '../config.php';
+include 'config/config.php';
 
 // Get statistics
 $stats = [
@@ -53,7 +53,7 @@ $conn->close();
     />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="assets/style-landingpage.css?v=3.0" />
+    <link rel="stylesheet" href="assets/css/style-landingpage.css" />
   </head>
   <body>
     <!-- Navigation -->
@@ -78,7 +78,7 @@ $conn->close();
             <div class="hamburger-line"></div>
           </button>
           <a
-            href="#"
+            href="auth/login.php"
             class="btn btn-primary btn-sm login-btn-nav"
             id="loginButton"
           >
@@ -325,6 +325,6 @@ $conn->close();
 
     <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/landing-page.js"></script>
+    <script src="assets/js/landing-page.js"></script>
   </body>
 </html>
