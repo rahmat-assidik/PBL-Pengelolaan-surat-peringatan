@@ -1,16 +1,15 @@
 <?php
-
 session_start();
 include '../config.php';
 
 // Fungsi untuk mendapatkan data surat peringatan dari database
 /**
  * Mengambil data surat peringatan dengan filter pencarian
- * 
+
  * @param mysqli $conn - Koneksi database
  * @param string $search - Keyword pencarian (NIM atau Nama)
  * @param string $tingkatan - Filter Tingkatan SP
- * @return array - Array data surat peringatan
+ * @return array - Array data surat peringatan (deduplicated by NIM, latest record)
  */
 function getSuratPeringatan($conn, $search = '', $tingkatan = '') {
     $query = "SELECT * FROM surat_peringatan WHERE 1=1";
@@ -130,7 +129,7 @@ $tingkatanList = getTingkatanSPList($conn);
     />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="assets/cari-mahasiswa.css" />
+    <link rel="stylesheet" href="assets/cari-mahasiswa.css?v=3.0" />
   </head>
 
   <body>
@@ -182,20 +181,6 @@ $tingkatanList = getTingkatanSPList($conn);
 
     <!-- Menu Overlay -->
     <div class="menu-overlay" id="menuOverlay"></div>
-
-    <!-- Hero Sub Section -->
-    <section
-      class="hero-sub-section text-center py-5 bg-white"
-      style="margin-top: 80px"
-    >
-      <div class="container fade-scroll">
-        <h1 class="fw-bold text-primary mb-3">Cari Surat Peringatan Mahasiswa</h1>
-        <p class="lead text-muted">
-          Temukan informasi surat peringatan dengan cepat dan mudah melalui sistem
-          terintegrasi kami.
-        </p>
-      </div>
-    </section>
 
     <!-- Ilustrasi + Penjelasan -->
     <section class="search-page">
@@ -270,8 +255,7 @@ $tingkatanList = getTingkatanSPList($conn);
           <img
             src="assets/img/search-icon.png"
             alt="Cari Surat Peringatan"
-            style="max-width: 50px"
-            class="mb-3"
+            class="search-icon mb-3"
           />
           <p>Ketik nama atau NIM mahasiswa untuk memulai pencarian.</p>
         </div>
@@ -358,6 +342,9 @@ $tingkatanList = getTingkatanSPList($conn);
     }
 
     // ===== FILTER DATA =====
+    let currentSearchData = []; // Data yang sudah di-filter berdasarkan tingkatan (untuk preview)
+    let currentAllData = []; // Semua data tanpa filter tingkatan (untuk detail)
+    
     async function filterData() {
       const query = searchInput.value.trim();
       const selectedTingkatan = filterTingkatan.value;
@@ -366,6 +353,8 @@ $tingkatanList = getTingkatanSPList($conn);
         searchPreview.style.display = "none";
         resultContainer.innerHTML = "";
         emptyState.style.display = "block";
+        currentSearchData = [];
+        currentAllData = [];
         return;
       }
 
@@ -375,7 +364,8 @@ $tingkatanList = getTingkatanSPList($conn);
         const formData = new FormData();
         formData.append('action', 'search');
         formData.append('search', query);
-        formData.append('tingkatan', selectedTingkatan);
+        // Jangan kirim filter tingkatan ke backend, ambil SEMUA data
+        formData.append('tingkatan', '');
 
         const response = await fetch('cari-mahasiswa.php', {
           method: 'POST',
@@ -390,13 +380,27 @@ $tingkatanList = getTingkatanSPList($conn);
         
         if (data.error) {
           resultContainer.innerHTML = `<div class="alert alert-danger">${data.error}</div>`;
+          currentSearchData = [];
+          currentAllData = [];
           return;
         }
         
-        displayPreview(data);
+        // Simpan semua data tanpa filter
+        currentAllData = data;
+        
+        // Filter data berdasarkan tingkatan yang dipilih untuk preview
+        if (selectedTingkatan) {
+          currentSearchData = data.filter(item => item.tingkatan_sp === selectedTingkatan);
+        } else {
+          currentSearchData = data;
+        }
+        
+        displayPreview(currentSearchData);
       } catch (error) {
         console.error('Error:', error);
         resultContainer.innerHTML = '<div class="alert alert-danger">Terjadi kesalahan saat mengambil data</div>';
+        currentSearchData = [];
+        currentAllData = [];
       }
     }
 
@@ -408,14 +412,28 @@ $tingkatanList = getTingkatanSPList($conn);
         return;
       }
 
-      const previewHTML = data
+      // Group by mahasiswa (nim + nama) dan hitung jumlah SP
+      const groupedByStudent = {};
+      data.forEach(item => {
+        const key = item.nim; // Group by NIM
+        if (!groupedByStudent[key]) {
+          groupedByStudent[key] = {
+            nim: item.nim,
+            nama: item.nama,
+            count: 0,
+            latestTingkatan: item.tingkatan_sp
+          };
+        }
+        groupedByStudent[key].count++;
+      });
+
+      // Buat preview HTML dari grouped data
+      const previewHTML = Object.values(groupedByStudent)
         .map(
-          (item) => `
-            <div class="preview-item" onclick='selectSuratPeringatan(${JSON.stringify(
-              item
-            )})'>
-              <strong>${escapeHtml(item.nama)}</strong> <br />
-              <small>${escapeHtml(item.nim)} - ${escapeHtml(item.tingkatan_sp || 'N/A')}</small>
+          (student) => `
+            <div class="preview-item" onclick='selectSuratPeringatan("${escapeHtml(student.nim)}")'>
+              <strong>${escapeHtml(student.nama)}</strong> <br />
+              <small>${escapeHtml(student.nim)} - ${student.count} SP (${escapeHtml(student.latestTingkatan)})</small>
             </div>
           `
         )
@@ -426,30 +444,102 @@ $tingkatanList = getTingkatanSPList($conn);
     }
 
     // ===== SELECT SURAT PERINGATAN =====
-    function selectSuratPeringatan(item) {
+    function selectSuratPeringatan(nim) {
+      // Cari SEMUA item dengan NIM yang sama dari currentAllData (tanpa filter)
+      const itemsWithSameNim = currentAllData.filter(item => item.nim === nim);
+      
+      if (itemsWithSameNim.length === 0) {
+        resultContainer.innerHTML = '<div class="alert alert-warning">Data tidak ditemukan</div>';
+        return;
+      }
+      
+      // Urutkan berdasarkan created_at DESC (terbaru di atas)
+      itemsWithSameNim.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      const firstItem = itemsWithSameNim[0];
+
       // isi kolom pencarian secara otomatis
-      searchInput.value = `${item.nama} (${item.nim})`;
+      searchInput.value = `${firstItem.nama} (${firstItem.nim})`;
 
       // sembunyikan elemen yang tidak perlu
       emptyState.style.display = "none";
       searchPreview.style.display = "none";
 
-      // tampilkan hasil detail
-      const tingkatanBadge = `<span class="badge bg-${item.tingkatan_sp === 'SP1' ? 'info' : (item.tingkatan_sp === 'SP2' ? 'warning' : 'danger')}">${escapeHtml(item.tingkatan_sp || 'N/A')}</span>`;
-      
-      const createdDate = new Date(item.created_at).toLocaleDateString('id-ID');
-      
-      resultContainer.innerHTML = `
-        <div class="card shadow-sm p-3 mb-4 fade-scroll visible">
-          <h4 class="text-primary mb-2">${escapeHtml(item.nama)}</h4>
-          <p><strong>NIM:</strong> ${escapeHtml(item.nim)}</p>
-          <p><strong>Tingkat Peringatan:</strong> ${tingkatanBadge}</p>
-          <p><strong>Ketua Program Studi:</strong> ${escapeHtml(item.ketua_prodi || 'N/A')}</p>
-          <p><strong>Dosen Wali:</strong> ${escapeHtml(item.wali_dosen || 'N/A')}</p>
-          <p><strong>Alasan:</strong> ${escapeHtml(item.alasan_sp || 'N/A')}</p>
-          <p><strong>Tanggal Surat:</strong> ${createdDate}</p>
+      // Buat card header dengan info mahasiswa
+      const headerCard = `
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15); color: white; animation: fadeInUp 0.5s ease-out;">
+          <h3 style="margin: 0 0 12px 0; font-weight: 600; font-size: 22px;">${escapeHtml(firstItem.nama)}</h3>
+          <p style="margin: 0; font-size: 14px; opacity: 0.95;"><strong>NIM:</strong> ${escapeHtml(firstItem.nim)}</p>
+          <p style="margin: 8px 0 0 0; font-size: 13px; opacity: 0.85;">Total Surat Peringatan: <strong>${itemsWithSameNim.length}</strong></p>
         </div>
       `;
+
+      // Buat kartu untuk setiap SP
+      const spCards = itemsWithSameNim.map((item, index) => {
+        const tingkatanColor = item.tingkatan_sp === 'SP1' ? '#3b82f6' : (item.tingkatan_sp === 'SP2' ? '#f59e0b' : '#ef4444');
+        const tingkatanBgLight = item.tingkatan_sp === 'SP1' ? '#eff6ff' : (item.tingkatan_sp === 'SP2' ? '#fffbeb' : '#fef2f2');
+        const createdDate = new Date(item.created_at).toLocaleDateString('id-ID');
+        const badge = index === 0 ? `<span style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-left: 8px;">Terbaru</span>` : '';
+        const delayTime = (index * 0.1) + 0.5;
+        
+        return `
+          <div style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); border-left: 5px solid ${tingkatanColor}; transition: all 0.3s ease; animation: fadeInUp 0.5s ease-out ${delayTime}s both; cursor: pointer;" onmouseover="this.style.boxShadow='0 8px 24px rgba(0, 0, 0, 0.15)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.08)'; this.style.transform='translateY(0)';">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+              <h5 style="margin: 0; font-size: 16px; font-weight: 600; color: #1f2937;">Surat Peringatan ${index + 1}</h5>
+              <div>
+                <span style="background: ${tingkatanBgLight}; color: ${tingkatanColor}; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; border: 1px solid ${tingkatanColor};">${escapeHtml(item.tingkatan_sp || 'N/A')}</span>
+                ${badge}
+              </div>
+            </div>
+            
+            <div style="display: grid; gap: 12px; font-size: 14px; color: #374151;">
+              <div>
+                <span style="color: #6b7280; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Tingkat Peringatan</span><br>
+                <span style="font-weight: 600; color: ${tingkatanColor}; font-size: 15px;">${escapeHtml(item.tingkatan_sp || 'N/A')}</span>
+              </div>
+              
+              <div style="border-top: 1px solid #e5e7eb; padding-top: 12px;">
+                <span style="color: #6b7280; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Ketua Program Studi</span><br>
+                <span style="color: #1f2937;">${escapeHtml(item.ketua_prodi || 'N/A')}</span>
+              </div>
+              
+              <div>
+                <span style="color: #6b7280; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Dosen Wali</span><br>
+                <span style="color: #1f2937;">${escapeHtml(item.wali_dosen || 'N/A')}</span>
+              </div>
+              
+              <div style="border-top: 1px solid #e5e7eb; padding-top: 12px;">
+                <span style="color: #6b7280; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Alasan Surat Peringatan</span><br>
+                <span style="color: #1f2937; line-height: 1.6;">${escapeHtml(item.alasan_sp || 'N/A')}</span>
+              </div>
+              
+              <div style="background: ${tingkatanBgLight}; padding: 10px 12px; border-radius: 8px; margin-top: 4px;">
+                <span style="color: ${tingkatanColor}; font-size: 13px; font-weight: 500;">${createdDate}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      
+      // Tambahkan CSS animasi jika belum ada
+      if (!document.getElementById('sp-animations')) {
+        const style = document.createElement('style');
+        style.id = 'sp-animations';
+        style.textContent = `
+          @keyframes fadeInUp {
+            from {
+              opacity: 0;
+              transform: translateY(20px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+        `;
+        document.head.appendChild(style);
+      }
+      
+      resultContainer.innerHTML = headerCard + spCards;
     }
 
     // ===== EVENT LISTENERS =====
