@@ -1,6 +1,9 @@
 <?php
 session_start(); // Start the session
-include 'config.php'; // Include your database connection file
+
+// Determine correct path based on current location
+$base_path = (basename(__DIR__) === 'auth') ? '../' : './auth/';
+include $base_path . 'config/config.php'; // Include your database connection file
 
 
 
@@ -29,7 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 setcookie('username', $username, time() + (30 * 24 * 60 * 60), '/');
             }
             
-            header("Location: pbl-website/dashboard.php"); // Redirect to a protected page
+            // Redirect to dashboard
+            header("Location: ../pages/dashboard-index.php");
             exit();
         } else {
             $error_message = "Password yang Anda masukkan salah";

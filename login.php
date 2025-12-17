@@ -1,4 +1,4 @@
-<?php include ('login_proc.php'); ?>
+<?php include 'login_proc.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -156,7 +156,7 @@ body {
 <div class="login-container">
     <div class="login-card">
         <div class="login-header">
-            <img src="pbl-website/assets/img/logo.png" alt="Logo" width="100" class="mb-3">
+            <img src="../assets/img/logo polibatam.png" alt="Logo" width="100" class="mb-3">
             <h2>Login</h2>
             <p>Silakan masuk ke akun Anda</p>
         </div>
@@ -169,7 +169,7 @@ body {
         </div>
         <?php endif; ?>
 
-        <form action="" method="post">
+        <form action="login.php" method="post">
             <div class="form-group">
                 <label class="form-label">Username</label>
                 <input type="text" name="username" id="username" placeholder="Masukkan username anda" class="form-control" required>
