@@ -97,3 +97,4 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
 
         <!-- CONTENT AREA -->
         <main class="content" id="content">
+        <script src="../assets/js/logout-handler.js"></script>

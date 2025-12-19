@@ -39,5 +39,4 @@ async function refreshCardsFromDatabase() {
   }
 }
 
-// Do initial refresh so the page reflects the database values immediately
 refreshCardsFromDatabase();
