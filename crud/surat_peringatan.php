@@ -10,21 +10,6 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 switch ($method) {
     case 'GET':
-        // Get SP aktif by NIM (untuk cek tingkatan SP yang sudah ada)
-        if (isset($_GET['check_nim']) && !empty($_GET['check_nim'])) {
-            $nim = $_GET['check_nim'];
-            $stmt = $conn->prepare("SELECT tingkatan_sp FROM surat_peringatan WHERE nim = ? AND status = 'Aktif' ORDER BY tingkatan_sp");
-            $stmt->bind_param("s", $nim);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $sp_list = [];
-            while ($row = $result->fetch_assoc()) {
-                $sp_list[] = $row['tingkatan_sp'];
-            }
-            echo json_encode(['sp_aktif' => $sp_list]);
-            break;
-        }
-        
         // Get all surat peringatan or search
         if (isset($_GET['search']) && !empty($_GET['search'])) {
             $search = $_GET['search'];

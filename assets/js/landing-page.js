@@ -27,7 +27,7 @@ menuLinks.forEach((link) => {
 // ===== LOGIN BUTTON =====
 document.getElementById("loginButton").addEventListener("click", function (e) {
   e.preventDefault();
-  window.location.href = "../login.php";
+  window.location.href = "auth/login.php";
 });
 
 // Smooth scroll untuk anchor links

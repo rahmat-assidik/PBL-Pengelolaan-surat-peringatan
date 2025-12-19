@@ -39,7 +39,6 @@ include 'shared-layout.php';
                                         <th>Wali Dosen</th>
                                         <th>Tingkatan SP</th>
                                         <th>Alasan SP</th>
-                                        <th>Status</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>

@@ -18,11 +18,6 @@ include 'shared-layout.php';
                         <p class="card-value" id="totalMahasiswa">0</p>
                     </div>
                     <div class="card-container">
-                        <i class="fas fa-file-circle-exclamation card-icon"></i>
-                        <h3 class="card-title">Total surat peringatan aktif</h3>
-                        <p class="card-value" id="totalSuratPeringatanAktif">0</p>
-                    </div>
-                    <div class="card-container">
                         <i class="fas fa-calendar-alt card-icon"></i>
                         <h3 class="card-title">Jumlah surat peringatan bulan ini</h3>
                         <p class="card-value" id="jumlahSuratPeringatanBulanIni">0</p>

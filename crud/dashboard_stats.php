@@ -10,12 +10,6 @@ $stmt->execute();
 $result = $stmt->get_result();
 $totalMahasiswa = $result->fetch_assoc()['total'];
 
-// Get total surat peringatan aktif
-$stmt = $conn->prepare("SELECT COUNT(*) as total FROM surat_peringatan WHERE status = 'Aktif'");
-$stmt->execute();
-$result = $stmt->get_result();
-$totalSPAktif = $result->fetch_assoc()['total'];
-
 // Get surat peringatan bulan ini
 $currentMonth = date('m');
 $currentYear = date('Y');

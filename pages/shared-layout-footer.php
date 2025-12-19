@@ -3,7 +3,7 @@
 ?>
         </main>
 
-        <script src="../assets/js/layout.js"></script>
+        
         <?php if (isset($extra_scripts)): ?>
             <?php echo $extra_scripts; ?>
         <?php endif; ?>

@@ -1,25 +1,18 @@
 // chart-dashboard.js with database integration
 document.addEventListener("DOMContentLoaded", () => {
-  const ctxDistribusi = document.getElementById("suratPeringatanChart");
-  const ctxTren = document.getElementById("trenSuratSemester");
+   ctxDistribusi = document.getElementById("suratPeringatanChart");
+   ctxTren = document.getElementById("trenSuratSemester");
 
   let chartDistribusi = null;
   let chartTren = null;
 
-  // Function to update charts with database data
+
   window.updateCharts = function(stats) {
-    // Hapus chart sebelumnya
+  
     if (chartDistribusi) chartDistribusi.destroy();
     if (chartTren) chartTren.destroy();
 
-    // Bersihkan tampilan chart jika belum ada data
-    const chartContainers = [ctxDistribusi.parentElement, ctxTren.parentElement];
-    chartContainers.forEach(container => {
-      const existingMsg = container.querySelector(".no-data-msg");
-      if (existingMsg) existingMsg.remove();
-    });
-
-    // 4️⃣ Chart Distribusi SP (Pie)
+    // Chart Distribusi
     const distribusiData = {
       labels: ["SP1", "SP2", "SP3"],
       datasets: [{
@@ -55,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
       },
     });
 
-    // 5️⃣ Chart Tren SP per Semester (Line)
+    // Chart tren SP per semester
     const trenLabels = stats.trenSP.map(item => item.period);
     const trenValues = stats.trenSP.map(item => item.count);
 
@@ -101,14 +94,4 @@ document.addEventListener("DOMContentLoaded", () => {
       },
     });
   };
-
-  // Function to show "no data" message
-  function showNoDataMessage(container, message) {
-    const msg = document.createElement("div");
-    msg.classList.add("no-data-msg");
-    msg.textContent = message;
-    container.appendChild(msg);
-  }
-
-  // Initial load - charts will be updated when dashboard-display-card.js calls updateCharts
 });

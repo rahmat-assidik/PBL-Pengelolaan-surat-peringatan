@@ -46,9 +46,6 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
         <!-- HEADER -->
         <header class="header-container">
             <div class="header-left">
-                <button class="toggle-sidebar" id="toggleSidebar">
-                    <i class="fas fa-bars"></i>
-                </button>
                 <div class="logo-text">
                     <img src="../assets/img/logo polibatam.png" class="logo-dashboard" alt="Logo">
                     <h1 class="header-text">Dashboard Pengelolaan Surat Peringatan</h1>
