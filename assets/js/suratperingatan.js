@@ -33,10 +33,34 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('spWaliInput').value = editData.wali_dosen || '';
       document.getElementById('spTingkatanInput').value = editData.tingkatan_sp;
       document.getElementById('spAlasanInput').value = editData.alasan_sp;
+      
+      // Set tanggal if exists
+      const tanggalInput = document.getElementById('spTanggalInput');
+      if (editData.tanggal) {
+        // Convert YYYY-MM-DD format to YYYY-MM-DD for date input
+        const date = new Date(editData.tanggal);
+        if (!isNaN(date.getTime())) {
+          const year = date.getFullYear();
+          const month = String(date.getMonth() + 1).padStart(2, '0');
+          const day = String(date.getDate()).padStart(2, '0');
+          tanggalInput.value = `${year}-${month}-${day}`;
+        } else {
+          tanggalInput.value = editData.tanggal;
+        }
+      } else {
+        tanggalInput.value = '';
+      }
     } else {
       form.removeAttribute('data-edit-id');
       form.reset();
       clearAutoFill();
+      
+      // Set default tanggal to today for new records
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const day = String(today.getDate()).padStart(2, '0');
+      document.getElementById('spTanggalInput').value = `${year}-${month}-${day}`;
     }
     // focus pertama
     setTimeout(() => {
@@ -75,6 +99,19 @@ document.addEventListener('DOMContentLoaded', () => {
     tr.appendChild(createCell(sp.ketua_prodi));
     tr.appendChild(createCell(sp.wali_dosen));
     tr.appendChild(createCell(sp.tingkatan_sp));
+    
+    // Format tanggal untuk display
+    let tanggalText = '';
+    if (sp.tanggal) {
+      const date = new Date(sp.tanggal);
+      if (!isNaN(date.getTime())) {
+        tanggalText = date.toLocaleDateString('id-ID'); // Format DD/MM/YYYY
+      } else {
+        tanggalText = sp.tanggal;
+      }
+    }
+    tr.appendChild(createCell(tanggalText));
+    
     tr.appendChild(createCell(sp.alasan_sp));
 
     const actionTd = document.createElement('td');
@@ -345,13 +382,22 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      const tanggal = (document.getElementById('spTanggalInput') || {}).value?.trim();
+
+      // Validate tanggal
+      if (!tanggal) {
+        alert('Tanggal surat harus diisi.');
+        return;
+      }
+
       const sp = {
         nim,
         nama,
         ketua_prodi: kaprodi,
         wali_dosen: wali,
         tingkatan_sp: tingkatan,
-        alasan_sp: alasan
+        alasan_sp: alasan,
+        tanggal: tanggal
       };
 
       let success = false;

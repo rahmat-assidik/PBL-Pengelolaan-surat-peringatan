@@ -38,6 +38,7 @@ include 'shared-layout.php';
                                         <th>Ketua Prodi</th>
                                         <th>Wali Dosen</th>
                                         <th>Tingkatan SP</th>
+                                        <th>Tanggal Surat</th>
                                         <th>Alasan SP</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -93,6 +94,12 @@ include 'shared-layout.php';
                                     <label for="spAlasanInput" class="col-sm-3 col-form-label">Alasan SP</label>
                                     <div class="col-sm-9">
                                         <textarea id="spAlasanInput" class="form-control" required placeholder="Masukkan alasan terkena SP" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <div class="mb-1 row">
+                                    <label for="spTanggalInput" class="col-sm-3 col-form-label">Tanggal Surat</label>
+                                    <div class="col-sm-9">
+                                        <input id="spTanggalInput" type="date" class="form-control" required placeholder="Pilih tanggal surat" />
                                     </div>
                                 </div>
                                 <div style="display:flex;justify-content:flex-end;gap:0.5rem;margin-top:1rem;">

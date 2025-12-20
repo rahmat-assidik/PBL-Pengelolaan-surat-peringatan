@@ -38,17 +38,18 @@ switch ($method) {
         $wali_dosen = $data['wali_dosen'] ?? '';
         $tingkatan_sp = $data['tingkatan_sp'] ?? '';
         $alasan_sp = $data['alasan_sp'] ?? '';
+        $tanggal = $data['tanggal'] ?? '';
 
         // Validasi input
-        if (empty($nim) || empty($tingkatan_sp)) {
-            echo json_encode(['success' => false, 'error' => 'NIM dan Tingkatan SP harus diisi']);
+        if (empty($nim) || empty($tingkatan_sp) || empty($tanggal)) {
+            echo json_encode(['success' => false, 'error' => 'NIM, Tingkatan SP, dan Tanggal harus diisi']);
             break;
         }
 
         // REPLACE: Jika NIM sudah ada, maka UPDATE (replace) seluruh record
         // Jika NIM belum ada, maka INSERT baru
-        $stmt = $conn->prepare("REPLACE INTO surat_peringatan (nim, nama, ketua_prodi, wali_dosen, tingkatan_sp, alasan_sp) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssss", $nim, $nama, $ketua_prodi, $wali_dosen, $tingkatan_sp, $alasan_sp);
+        $stmt = $conn->prepare("REPLACE INTO surat_peringatan (nim, nama, ketua_prodi, wali_dosen, tingkatan_sp, alasan_sp, tanggal) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssss", $nim, $nama, $ketua_prodi, $wali_dosen, $tingkatan_sp, $alasan_sp, $tanggal);
         
         if ($stmt->execute()) {
             // Cek apakah ini INSERT atau UPDATE
@@ -76,9 +77,16 @@ switch ($method) {
         $wali_dosen = $data['wali_dosen'] ?? '';
         $tingkatan_sp = $data['tingkatan_sp'];
         $alasan_sp = $data['alasan_sp'];
+        $tanggal = $data['tanggal'] ?? '';
 
-        $stmt = $conn->prepare("UPDATE surat_peringatan SET nim=?, nama=?, ketua_prodi=?, wali_dosen=?, tingkatan_sp=?, alasan_sp=? WHERE id=?");
-        $stmt->bind_param("ssssssi", $nim, $nama, $ketua_prodi, $wali_dosen, $tingkatan_sp, $alasan_sp, $id);
+        // Validasi input
+        if (empty($nim) || empty($tingkatan_sp) || empty($tanggal)) {
+            echo json_encode(['success' => false, 'error' => 'NIM, Tingkatan SP, dan Tanggal harus diisi']);
+            break;
+        }
+
+        $stmt = $conn->prepare("UPDATE surat_peringatan SET nim=?, nama=?, ketua_prodi=?, wali_dosen=?, tingkatan_sp=?, alasan_sp=?, tanggal=? WHERE id=?");
+        $stmt->bind_param("sssssssi", $nim, $nama, $ketua_prodi, $wali_dosen, $tingkatan_sp, $alasan_sp, $tanggal, $id);
 
         if ($stmt->execute()) {
             echo json_encode(['success' => true]);
