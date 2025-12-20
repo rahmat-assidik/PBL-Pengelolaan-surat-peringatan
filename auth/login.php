@@ -161,7 +161,7 @@ body {
             <p>Silakan masuk ke akun Anda</p>
         </div>
 
-        <!-- Error Message - tampilkan dengan class 'show' jika ada errorr -->
+        <!-- Error Message - tampilkan dengan class 'show' jika ada eerrorr -->
         <?php if(isset($error_message) && !empty($error_message)): ?>
         <div class="msg show">
             <i class="fa-solid fa-circle-exclamation"></i>

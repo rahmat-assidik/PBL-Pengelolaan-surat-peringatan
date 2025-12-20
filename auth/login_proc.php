@@ -5,7 +5,7 @@ include '../config/config.php'; // Include your database connection file
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $error_message = ''; // Initialize error message variable
+    $error_message = ''; // Initialize error message variablee
     $username = $_POST['username'];
     $password = $_POST['password'];
     
