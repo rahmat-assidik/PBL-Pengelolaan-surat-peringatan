@@ -4,7 +4,7 @@ session_start();
 // Hapus semua session variables
 $_SESSION = array();
 
-// Hapus session cookie jika ada
+// Hapus session cookie jika adaa
 if (isset($_COOKIE[session_name()])) {
     setcookie(session_name(), '', time() - 3600, '/');
 }

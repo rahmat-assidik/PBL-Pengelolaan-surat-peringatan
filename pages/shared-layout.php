@@ -27,6 +27,7 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
         <title><?php echo isset($page_title) ? $page_title . ' - ' : ''; ?>Pengelolaan Surat Peringatan</title>
         <link rel="stylesheet" href="../assets/css/style-dashboard.css?v=<?php echo time(); ?>">
         <link rel="stylesheet" href="../assets/css/style-data-mahasiswa.css?v=<?php echo time(); ?>">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
         <link
             href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
             rel="stylesheet">
