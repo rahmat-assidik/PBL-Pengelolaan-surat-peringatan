@@ -1,6 +1,7 @@
 // Surat Peringatan management with database integration
 // Features: open/close modal, add row, edit row, delete row, empty placeholder toggle
 
+
 document.addEventListener('DOMContentLoaded', () => {
   const addBtn = document.getElementById('addSPBtn');
   const modal = document.getElementById('spModal');
@@ -145,9 +146,40 @@ document.addEventListener('DOMContentLoaded', () => {
     downloadBtn.title = 'Unduh PDF';
     downloadBtn.innerHTML = '<i class="ri-download-2-line"></i>';
     downloadBtn.addEventListener('click', () => {
-      // Download logic here
-      alert('Mengunduh surat peringatan dalam format PDF...');
-    });
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Judul Surat
+    doc.setFontSize(18);
+    doc.text("SURAT PERINGATAN", 105, 20, { align: "center" });
+    
+    // Garis Pemisah
+    doc.line(20, 25, 190, 25);
+
+    // Isi Surat
+    doc.setFontSize(12);
+    doc.text(`Nomor Surat : SP/${sp.tingkatan_sp}/${sp.id}/${new Date().getFullYear()}`, 20, 40);
+    doc.text(`Tanggal     : ${sp.tanggal}`, 20, 50);
+    
+    doc.text("Diberikan kepada:", 20, 70);
+    doc.text(`Nama        : ${sp.nama}`, 30, 80);
+    doc.text(`NIM         : ${sp.nim}`, 30, 90);
+    doc.text(`Tingkatan   : ${sp.tingkatan_sp}`, 30, 100);
+    
+    doc.text("Alasan Pelanggaran:", 20, 120);
+    // text-wrap agar alasan yang panjang tidak keluar kertas
+    const alasanSplit = doc.splitTextToSize(sp.alasan_sp, 160);
+    doc.text(alasanSplit, 20, 130);
+
+    doc.text("Demikian surat ini dibuat agar dapat diperhatikan.", 20, 160);
+
+    // Tanda Tangan (Contoh Kaprodi)
+    doc.text("Ketua Program Studi,", 140, 180);
+    doc.text(`(${sp.ketua_prodi})`, 140, 210);
+
+    // Simpan file
+    doc.save(`Surat_Peringatan_${sp.nim}.pdf`);
+});
 
     // Delete button
     const delBtn = document.createElement('button');
