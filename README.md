@@ -15,10 +15,7 @@ Sistem ini adalah aplikasi digital untuk **mempermudah pengelolaan surat peringa
   - Filter berdasarkan tingkat surat peringatan, program studi, atau semester.  
 
 - **Laporan**
-  - Laporan bulanan, semesteran, atau tahunan.  
-
-- **Notifikasi dan Pengingat**
-  - Pengingat otomatis untuk tindak lanjut surat peringatan.  
+  - Laporan bulanan, dan semesteran. 
 
 - **Ekspor dan Dokumentasi**
   - Ekspor data ke PDF untuk administrasi dan arsip.  
