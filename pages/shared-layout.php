@@ -42,11 +42,79 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
             localStorage.setItem('loggedIn', 'true');
             localStorage.setItem('username', '<?php echo htmlspecialchars($_SESSION['username']); ?>');
         </script>
+        <style>
+    /* --- PENGATURAN DESKTOP (Web) --- */
+    
+    /* Sidebar default muncul di desktop */
+    .sidebar-container {
+        position: fixed;
+        left: 0;
+        top: 60px; /* Sesuaikan tinggi header */
+        width: 250px;
+        height: calc(100vh - 60px);
+        transition: transform 0.3s ease;
+        z-index: 1000;
+        background: #fff;
+    }
+
+    /* Konten default tergeser ke kanan */
+    .content {
+        margin-left: 250px;
+        transition: margin-left 0.3s ease;
+        padding: 20px;
+    }
+
+    /* KETIKA HAMBURGER DIKLIK (DESKTOP) */
+    /* Sidebar sembunyi ke kiri */
+    .sidebar-container.hide-sidebar {
+        transform: translateX(-100%);
+    }
+    /* Konten jadi full ke kiri */
+    .content.full-width {
+        margin-left: 0;
+    }
+
+    /* --- PENGATURAN MOBILE (Layar < 1024px) --- */
+    @media (max-width: 1024px) {
+        .sidebar-container {
+            top: 0;
+            height: 100vh;
+            transform: translateX(-100%); /* Sembunyi default di mobile */
+        }
+
+        /* Konten di mobile selalu full */
+        .content {
+            margin-left: 0;
+        }
+
+        /* KETIKA HAMBURGER DIKLIK (MOBILE) */
+        .sidebar-container.show {
+            transform: translateX(0);
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 998;
+        }
+    }
+
+    /* Pastikan tombol hamburger selalu nampak & di atas */
+    .hamburger-btn {
+        z-index: 1001;
+        position: relative;
+    }
+</style>
     </head>
     <body>
         <!-- HEADER -->
         <header class="header-container">
             <div class="header-left">
+                <button id="hamburgerBtn" class="hamburger-btn" style="background:none; border:none; color:black; font-size:1.5rem; margin-right:15px; cursor:pointer;">
+            <i class="fas fa-bars"></i>
+        </button>
                 <div class="logo-text">
                     <img src="../assets/img/logo polibatam.png" class="logo-dashboard" alt="Logo">
                     <h1 class="header-text">Dashboard Pengelolaan Surat Peringatan</h1>
@@ -99,3 +167,37 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
         <!-- CONTENT AREA -->
         <main class="content" id="content">
         <script src="../assets/js/logout-handler.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+    const hamburger = document.getElementById('hamburgerBtn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const content = document.getElementById('content');
+
+    if (hamburger) {
+        hamburger.addEventListener('click', function() {
+            const isMobile = window.innerWidth <= 1024;
+
+            if (isMobile) {
+                // Logika Mobile: Munculkan Sidebar + Overlay
+                sidebar.classList.toggle('show');
+                overlay.classList.toggle('active');
+            } else {
+                // Logika Desktop: Geser Sidebar keluar + Lebarkan Konten
+                sidebar.classList.toggle('hide-sidebar');
+                content.classList.toggle('full-width');
+            }
+        });
+    }
+
+    // Klik overlay untuk menutup (khusus mobile)
+    if (overlay) {
+        overlay.addEventListener('click', function() {
+            sidebar.classList.remove('show');
+            overlay.classList.remove('active');
+        });
+    }
+});
+        </script>
+</body>
+</html>
