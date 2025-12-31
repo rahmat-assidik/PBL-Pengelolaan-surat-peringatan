@@ -67,15 +67,15 @@ include 'shared-layout.php';
                                 </div>
                                 <div class="mb-1 row">
                                     <label for="prodiInput" class="col-sm-3 col-form-label">Prodi</label>
-                                    <div class="col-sm-9"><input id="prodiInput" type="text" class="form-control" placeholder="Masukkan Prodi" /></div>
+                                    <div class="col-sm-9"><input id="prodiInput" type="text" class="form-control" required placeholder="Masukkan Prodi" /></div>
                                 </div>
                                 <div class="mb-1 row">
                                     <label for="semesterInput" class="col-sm-3 col-form-label">Semester</label>
-                                    <div class="col-sm-9"><input id="semesterInput" type="number" min="1" class="form-control" placeholder="Masukkan Semester" /></div>
+                                    <div class="col-sm-9"><input id="semesterInput" type="number" min="1" class="form-control" required placeholder="Masukkan Semester" /></div>
                                 </div>
                                 <div class="mb-1 row">
                                     <label for="waliInput" class="col-sm-3 col-form-label">Wali Dosen</label>
-                                    <div class="col-sm-9"><input id="waliInput" type="text" class="form-control" placeholder="Masukkan nama wali dosen" /></div>
+                                    <div class="col-sm-9"><input id="waliInput" type="text" class="form-control" required placeholder="Masukkan nama wali dosen" /></div>
                                 </div>
                                 <div style="display:flex;justify-content:flex-end;gap:0.5rem;margin-top:1rem;">
                                     <button type="button" class="btn btn-ghost" id="cancelBtn">Batal</button>
