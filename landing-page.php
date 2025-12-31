@@ -135,40 +135,66 @@ $conn->close();
     </section>
 
     <!-- Statistics Section -->
-    <section class="bg-light py-5">
+    <section class="stats-section py-5">
       <div class="container">
-        <h2 class="text-center mb-5">Statistik Sistem</h2>
-        <div class="row g-4 text-center">
-          <div class="col-md-3">
-            <div class="card shadow-sm">
-              <div class="card-body">
-                <h3 class="text-primary"><?php echo $stats['total']; ?></h3>
-                <p class="text-muted">Total Surat Peringatan</p>
+        <h2 class="text-center mb-5 section-title">Statistik Sistem</h2>
+        <div class="row g-4">
+          <!-- Total Card -->
+          <div class="col-md-3 col-sm-6">
+            <div class="stat-card stat-total">
+              <div class="stat-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                  <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
               </div>
+              <div class="stat-number"><?php echo $stats['total']; ?></div>
+              <div class="stat-label">Total Surat Peringatan</div>
             </div>
           </div>
-          <div class="col-md-3">
-            <div class="card shadow-sm">
-              <div class="card-body">
-                <h3 class="text-info"><?php echo $stats['sp1']; ?></h3>
-                <p class="text-muted">SP1</p>
+          <!-- SP1 Card -->
+          <div class="col-md-3 col-sm-6">
+            <div class="stat-card stat-sp1">
+              <div class="stat-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
               </div>
+              <div class="stat-number"><?php echo $stats['sp1']; ?></div>
+              <div class="stat-label">SP1 (Peringatan Pertama)</div>
             </div>
           </div>
-          <div class="col-md-3">
-            <div class="card shadow-sm">
-              <div class="card-body">
-                <h3 class="text-warning"><?php echo $stats['sp2']; ?></h3>
-                <p class="text-muted">SP2</p>
+          <!-- SP2 Card -->
+          <div class="col-md-3 col-sm-6">
+            <div class="stat-card stat-sp2">
+              <div class="stat-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                  <line x1="12" y1="9" x2="12" y2="13"></line>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
               </div>
+              <div class="stat-number"><?php echo $stats['sp2']; ?></div>
+              <div class="stat-label">SP2 (Peringatan Kedua)</div>
             </div>
           </div>
-          <div class="col-md-3">
-            <div class="card shadow-sm">
-              <div class="card-body">
-                <h3 class="text-danger"><?php echo $stats['sp3']; ?></h3>
-                <p class="text-muted">SP3</p>
+          <!-- SP3 Card -->
+          <div class="col-md-3 col-sm-6">
+            <div class="stat-card stat-sp3">
+              <div class="stat-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
               </div>
+              <div class="stat-number"><?php echo $stats['sp3']; ?></div>
+              <div class="stat-label">SP3 (Peringatan Ketiga)</div>
             </div>
           </div>
         </div>
