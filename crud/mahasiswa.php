@@ -3,29 +3,102 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Credentials: true');
 
 include '../config/config.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
 
+// Pagination settings
+$limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10;
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($page - 1) * $limit;
+
 switch ($method) {
     case 'GET':
-        // Get all mahasiswa or search
-        if (isset($_GET['search']) && !empty($_GET['search'])) {
-            $search = $_GET['search'];
-            $stmt = $conn->prepare("SELECT * FROM mahasiswa WHERE nim LIKE ? OR nama LIKE ? OR prodi LIKE ? ORDER BY created_at DESC");
+        // Get all mahasiswa with optional search and filters
+        $search = $_GET['search'] ?? '';
+        $prodi = $_GET['prodi'] ?? '';
+        $semester = $_GET['semester'] ?? '';
+        
+        error_log("=== Mahasiswa Filter Debug ===");
+        error_log("search: " . $search);
+        error_log("prodi: " . $prodi);
+        error_log("semester: " . $semester);
+        error_log("================================");
+        
+        $whereConditions = [];
+        $params = [];
+        $types = '';
+        
+        // Search condition
+        if (!empty($search)) {
+            $whereConditions[] = "(nim LIKE ? OR nama LIKE ? OR prodi LIKE ?)";
             $searchTerm = "%$search%";
-            $stmt->bind_param("sss", $searchTerm, $searchTerm, $searchTerm);
-        } else {
-            $stmt = $conn->prepare("SELECT * FROM mahasiswa ORDER BY created_at DESC");
+            $params[] = $searchTerm;
+            $params[] = $searchTerm;
+            $params[] = $searchTerm;
+            $types .= 'sss';
         }
+        
+        // Prodi filter
+        if (!empty($prodi)) {
+            $whereConditions[] = "prodi = ?";
+            $params[] = $prodi;
+            $types .= 's';
+        }
+        
+        // Semester filter
+        if (!empty($semester)) {
+            $whereConditions[] = "semester = ?";
+            $params[] = $semester;
+            $types .= 'i';
+        }
+        
+        // Build WHERE clause
+        $whereClause = count($whereConditions) > 0 ? "WHERE " . implode(" AND ", $whereConditions) : "";
+        
+        // Get total count
+        $countSql = "SELECT COUNT(*) as total FROM mahasiswa $whereClause";
+        if (count($params) > 0) {
+            $countStmt = $conn->prepare($countSql);
+            $countStmt->bind_param($types, ...$params);
+            $countStmt->execute();
+            $countResult = $countStmt->get_result();
+        } else {
+            $countResult = $conn->query($countSql);
+        }
+        $totalRow = $countResult->fetch_assoc();
+        $totalData = $totalRow['total'];
+        $totalPages = ceil($totalData / $limit);
+        
+        // Get paginated data
+        $sql = "SELECT * FROM mahasiswa $whereClause ORDER BY created_at DESC LIMIT ? OFFSET ?";
+        $stmt = $conn->prepare($sql);
+        
+        // Build complete param types: filter params + limit + offset
+        $allTypes = $types . "ii";
+        $allParams = array_merge($params, [$limit, $offset]);
+        $stmt->bind_param($allTypes, ...$allParams);
+        
         $stmt->execute();
         $result = $stmt->get_result();
         $mahasiswa = [];
         while ($row = $result->fetch_assoc()) {
             $mahasiswa[] = $row;
         }
-        echo json_encode($mahasiswa);
+        
+        echo json_encode([
+            'data' => $mahasiswa,
+            'pagination' => [
+                'page' => $page,
+                'limit' => $limit,
+                'total_data' => $totalData,
+                'total_pages' => $totalPages,
+                'has_next' => $page < $totalPages,
+                'has_prev' => $page > 1
+            ]
+        ]);
         break;
 
     case 'POST':

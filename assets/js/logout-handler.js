@@ -1,7 +1,7 @@
 /*
   Logout Handler
   - Handles the logout button click event
-  - Redirects to logout.php
+  - Shows confirmation before redirecting to logout.php
 */
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -10,8 +10,10 @@ document.addEventListener('DOMContentLoaded', function() {
     if (logoutButton) {
         logoutButton.addEventListener('click', function(e) {
             e.preventDefault();
-            // Redirect to logout.php
-            window.location.href = '../auth/logout.php';
+            if (confirm('Apakah Anda yakin ingin keluar?')) {
+                window.location.href = '../auth/logout.php';
+            }
         });
     }
 });
+

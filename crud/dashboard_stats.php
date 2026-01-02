@@ -10,6 +10,12 @@ $stmt->execute();
 $result = $stmt->get_result();
 $totalMahasiswa = $result->fetch_assoc()['total'];
 
+// Get total surat peringatan
+$stmt = $conn->prepare("SELECT COUNT(*) as total FROM surat_peringatan");
+$stmt->execute();
+$result = $stmt->get_result();
+$totalSP = $result->fetch_assoc()['total'];
+
 // Get surat peringatan bulan ini
 $currentMonth = date('m');
 $currentYear = date('Y');
@@ -18,6 +24,12 @@ $stmt->bind_param("ii", $currentMonth, $currentYear);
 $stmt->execute();
 $result = $stmt->get_result();
 $spBulanIni = $result->fetch_assoc()['total'];
+
+// Get total SP3
+$stmt = $conn->prepare("SELECT COUNT(*) as total FROM surat_peringatan WHERE tingkatan_sp = 'SP3'");
+$stmt->execute();
+$result = $stmt->get_result();
+$totalSP3 = $result->fetch_assoc()['total'];
 
 // Get distribusi SP
 $stmt = $conn->prepare("SELECT tingkatan_sp, COUNT(*) as count FROM surat_peringatan GROUP BY tingkatan_sp");
@@ -49,8 +61,9 @@ for ($i = 5; $i >= 0; $i--) {
 
 $response = [
     'totalMahasiswa' => $totalMahasiswa,
-    'totalSPAktif' => $totalSPAktif,
+    'totalSP' => $totalSP,
     'spBulanIni' => $spBulanIni,
+    'totalSP3' => $totalSP3,
     'distribusiSP' => $distribusiSP,
     'trenSP' => $trenSP
 ];

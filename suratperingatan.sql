@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 07, 2025 at 05:44 PM
+-- Generation Time: Jan 02, 2026 at 02:38 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `pengelolaan_sp`
+-- Database: `suratperingatan`
 --
 
 -- --------------------------------------------------------
@@ -43,8 +43,9 @@ CREATE TABLE `mahasiswa` (
 --
 
 INSERT INTO `mahasiswa` (`id`, `nim`, `nama`, `prodi`, `semester`, `wali_dosen`, `created_at`, `updated_at`) VALUES
-(6, '3312501073', 'Rahmat Assidik', 'Teknik Informatika', 1, 'Nur Zahrati', '2025-12-07 16:25:38', '2025-12-07 16:25:38'),
-(7, '3312501075', 'Darren Hafidz Najendra', 'Teknik Informatika', 1, 'Nur Zahrati', '2025-12-07 16:35:03', '2025-12-07 16:35:03');
+(12, '3312501073', 'Rahmat Assidik', 'Teknik Informatika', 1, 'Nur Zahrati', '2025-12-20 10:03:44', '2025-12-20 10:03:44'),
+(15, '3312501072', 'Darren Hafidz Najendra', 'Teknik Informatika', 1, 'Nur Zahrati', '2026-01-02 11:28:13', '2026-01-02 11:28:13'),
+(16, '3312501074', 'Martini Angel Theresia', 'Teknik Informatika', 1, 'Nur Zahrati', '2026-01-02 11:45:18', '2026-01-02 11:45:18');
 
 -- --------------------------------------------------------
 
@@ -60,11 +61,19 @@ CREATE TABLE `surat_peringatan` (
   `wali_dosen` varchar(100) DEFAULT NULL,
   `tingkatan_sp` enum('SP1','SP2','SP3') NOT NULL,
   `alasan_sp` text NOT NULL,
-  `tanggal` date DEFAULT NULL,
+  `tanggal` date DEFAULT curdate(),
   `status` enum('Aktif','Tidak Aktif') DEFAULT 'Aktif',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `surat_peringatan`
+--
+
+INSERT INTO `surat_peringatan` (`id`, `nim`, `nama`, `ketua_prodi`, `wali_dosen`, `tingkatan_sp`, `alasan_sp`, `tanggal`, `status`, `created_at`, `updated_at`) VALUES
+(39, '3312501074', 'Martini Angel Theresia', 'a', 'Nur Zahrati', 'SP1', 'a', '2026-01-02', 'Aktif', '2026-01-02 13:25:39', '2026-01-02 13:25:39'),
+(40, '3312501074', 'Martini Angel Theresia', 'a', 'Nur Zahrati', 'SP3', 'a', '2026-01-02', 'Aktif', '2026-01-02 13:25:48', '2026-01-02 13:25:48');
 
 -- --------------------------------------------------------
 
@@ -83,7 +92,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`) VALUES
-(1, 'admin', '$2y$10$qYEb3hFUaQHgS2ROGkvCxu3iY83hCl7ezzlfCziPhTg3yA9rO9xL.');
+(1, 'admin', '$2y$10$01EqJrOFKSORwkqpayPAUuN9cGedaHerNKQLDHCNlpbfL5DrbxVk.');
 
 --
 -- Indexes for dumped tables
@@ -102,6 +111,7 @@ ALTER TABLE `mahasiswa`
 --
 ALTER TABLE `surat_peringatan`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_nim_sp` (`nim`,`tingkatan_sp`),
   ADD KEY `idx_sp_nim` (`nim`),
   ADD KEY `idx_sp_tanggal` (`tanggal`),
   ADD KEY `idx_sp_status` (`status`);
@@ -121,13 +131,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `mahasiswa`
 --
 ALTER TABLE `mahasiswa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `surat_peringatan`
 --
 ALTER TABLE `surat_peringatan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `users`

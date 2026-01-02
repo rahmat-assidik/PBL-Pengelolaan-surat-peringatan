@@ -11,13 +11,15 @@ async function refreshCardsFromDatabase() {
     const stats = await response.json();
 
     const totalMahasiswaEl = document.getElementById('totalMahasiswa');
-    const totalSuratAktifEl = document.getElementById('totalSuratPeringatanAktif');
     const jumlahSuratBulanIniEl = document.getElementById('jumlahSuratPeringatanBulanIni');
+    const totalSPEl = document.getElementById('totalSP');
+    const totalSP3El = document.getElementById('totalSP3');
     const userEl = document.getElementById('userName');
 
     if (totalMahasiswaEl) totalMahasiswaEl.textContent = stats.totalMahasiswa;
-    if (totalSuratAktifEl) totalSuratAktifEl.textContent = stats.totalSPAktif;
     if (jumlahSuratBulanIniEl) jumlahSuratBulanIniEl.textContent = stats.spBulanIni;
+    if (totalSPEl) totalSPEl.textContent = stats.totalSP;
+    if (totalSP3El) totalSP3El.textContent = stats.totalSP3;
     if (userEl) userEl.textContent = localStorage.getItem('username') || 'User';
 
 
@@ -39,4 +41,13 @@ async function refreshCardsFromDatabase() {
   }
 }
 
-refreshCardsFromDatabase();
+window.refreshCardsFromDatabase = refreshCardsFromDatabase;
+
+// Check if dashboard needs refresh from other pages
+const needsRefresh = localStorage.getItem('dashboardNeedsRefresh');
+if (needsRefresh) {
+  localStorage.removeItem('dashboardNeedsRefresh');
+  refreshCardsFromDatabase();
+} else {
+  refreshCardsFromDatabase();
+}
