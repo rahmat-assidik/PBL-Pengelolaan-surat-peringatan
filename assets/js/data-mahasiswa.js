@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var mahasiswaData = [];
     var modalInstance = null;
+    var detailModalInstance = null;
     var currentPage = 1;
     var paginationData = null;
     
@@ -25,6 +26,15 @@ document.addEventListener('DOMContentLoaded', function() {
     if (modalEl) {
         modalInstance = new bootstrap.Modal(modalEl, {
             backdrop: 'static',
+            keyboard: true
+        });
+    }
+
+    // Initialize detail modal
+    var detailModalEl = document.getElementById('mahasiswaDetailModal');
+    if (detailModalEl) {
+        detailModalInstance = new bootstrap.Modal(detailModalEl, {
+            backdrop: true,
             keyboard: true
         });
     }
@@ -63,6 +73,19 @@ document.addEventListener('DOMContentLoaded', function() {
             var firstInput = form.querySelector('input');
             if (firstInput) firstInput.focus();
         }, 100);
+    }
+
+    function openDetailModal(student) {
+        if (!detailModalInstance) return;
+
+        // Populate detail fields
+        document.getElementById('detailMhsNim').textContent = student.nim || '-';
+        document.getElementById('detailMhsNama').textContent = student.nama || '-';
+        document.getElementById('detailMhsProdi').textContent = student.prodi || '-';
+        document.getElementById('detailMhsSemester').textContent = student.semester || '-';
+        document.getElementById('detailMhsWali').textContent = student.wali_dosen || '-';
+
+        detailModalInstance.show();
     }
 
     function updateEmptyState() {
@@ -118,11 +141,21 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Actions
         var actionTd = document.createElement('td');
-        actionTd.className = 'text-end';
+        actionTd.className = 'table-actions';
         
+        // Detail button
+        var detailBtn = document.createElement('button');
+        detailBtn.className = 'action-btn detail';
+        detailBtn.type = 'button';
+        detailBtn.title = 'Detail';
+        detailBtn.innerHTML = '<i class="fas fa-eye"></i>';
+        detailBtn.addEventListener('click', function() {
+            openDetailModal(student);
+        });
+
         // Edit button
         var editBtn = document.createElement('button');
-        editBtn.className = 'btn btn-sm btn-outline-primary me-1';
+        editBtn.className = 'action-btn edit';
         editBtn.type = 'button';
         editBtn.title = 'Edit';
         editBtn.innerHTML = '<i class="fas fa-edit"></i>';
@@ -132,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Delete button
         var delBtn = document.createElement('button');
-        delBtn.className = 'btn btn-sm btn-outline-danger';
+        delBtn.className = 'action-btn delete';
         delBtn.type = 'button';
         delBtn.title = 'Hapus';
         delBtn.innerHTML = '<i class="fas fa-trash"></i>';
@@ -142,6 +175,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
+        actionTd.appendChild(detailBtn);
         actionTd.appendChild(editBtn);
         actionTd.appendChild(delBtn);
         tr.appendChild(actionTd);

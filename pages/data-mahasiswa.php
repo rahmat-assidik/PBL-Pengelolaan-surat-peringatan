@@ -78,7 +78,7 @@ include 'shared-layout.php';
                                         <th>Prodi</th>
                                         <th>Semester</th>
                                         <th>Wali Dosen</th>
-                                        <th class="text-end" style="width: 100px;">Aksi</th>
+                                        <th class="text-end" style="width: 130px;">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -119,11 +119,29 @@ include 'shared-layout.php';
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label for="prodiInput" class="form-label">Prodi</label>
-                                        <input id="prodiInput" type="text" class="form-control" required placeholder="Masukkan Prodi" />
+                                        <select id="prodiInput" class="form-select" required>
+                                            <option value="">Pilih Prodi</option>
+                                            <option value="Teknik Informatika">Teknik Informatika</option>
+                                            <option value="Teknik Elektro">Teknik Elektro</option>
+                                            <option value="Teknik Mesin">Teknik Mesin</option>
+                                            <option value="Teknik Kimia">Teknik Kimia</option>
+                                            <option value="Akuntansi">Akuntansi</option>
+                                            <option value="Administrasi Bisnis">Administrasi Bisnis</option>
+                                        </select>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="semesterInput" class="form-label">Semester</label>
-                                        <input id="semesterInput" type="number" class="form-control" min="1" required placeholder="Masukkan Semester" />
+                                        <select id="semesterInput" class="form-select" required>
+                                            <option value="">Pilih Semester</option>
+                                            <option value="1">Semester 1</option>
+                                            <option value="2">Semester 2</option>
+                                            <option value="3">Semester 3</option>
+                                            <option value="4">Semester 4</option>
+                                            <option value="5">Semester 5</option>
+                                            <option value="6">Semester 6</option>
+                                            <option value="7">Semester 7</option>
+                                            <option value="8">Semester 8</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="mb-3">
@@ -139,6 +157,55 @@ include 'shared-layout.php';
                                 </button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Detail Mahasiswa -->
+            <div class="modal fade" id="mahasiswaDetailModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header bg-primary text-white">
+                            <h5 class="modal-title">
+                                <i class="fas fa-user-graduate me-2"></i>
+                                Detail Data Mahasiswa
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">NIM</label>
+                                    <p id="detailMhsNim" class="form-control-static">-</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Nama</label>
+                                    <p id="detailMhsNama" class="form-control-static">-</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Program Studi</label>
+                                    <p id="detailMhsProdi" class="form-control-static">-</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Semester</label>
+                                    <p id="detailMhsSemester" class="form-control-static">-</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <label class="form-label fw-bold">Wali Dosen</label>
+                                    <p id="detailMhsWali" class="form-control-static">-</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                <i class="fas fa-times me-1"></i>
+                                Tutup
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

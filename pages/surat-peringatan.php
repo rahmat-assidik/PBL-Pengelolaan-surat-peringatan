@@ -150,6 +150,65 @@ include 'shared-layout.php';
                 </div>
             </div>
 
+            <!-- Modal Detail Surat Peringatan -->
+            <div class="modal fade" id="spDetailModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-info text-white">
+                            <h5 class="modal-title">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Detail Surat Peringatan
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">NIM</label>
+                                    <p id="detailNim" class="form-control-static">-</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Nama Mahasiswa</label>
+                                    <p id="detailNama" class="form-control-static">-</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Tingkat SP</label>
+                                    <p id="detailTingkat" class="form-control-static">-</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Tanggal Surat</label>
+                                    <p id="detailTanggal" class="form-control-static">-</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Ketua Prodi</label>
+                                    <p id="detailKaprodi" class="form-control-static">-</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Wali Dosen</label>
+                                    <p id="detailWali" class="form-control-static">-</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <label class="form-label fw-bold">Alasan SP</label>
+                                    <div id="detailAlasan" class="form-control-static p-3 bg-light rounded">-</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                <i class="fas fa-times me-1"></i>
+                                Tutup
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 <?php
 $extra_scripts = '<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="../assets/js/suratperingatan.js"></script>';

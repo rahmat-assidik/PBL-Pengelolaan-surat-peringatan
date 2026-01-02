@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let spData = [];
   let mahasiswaData = [];
   let modalInstance = null;
+  let detailModalInstance = null;
   let currentPage = 1;
   let paginationData = null;
   
@@ -31,6 +32,15 @@ document.addEventListener('DOMContentLoaded', () => {
   if (modalEl) {
     modalInstance = new bootstrap.Modal(modalEl, {
       backdrop: 'static',
+      keyboard: true
+    });
+  }
+
+  // Initialize detail modal
+  const detailModalEl = document.getElementById('spDetailModal');
+  if (detailModalEl) {
+    detailModalInstance = new bootstrap.Modal(detailModalEl, {
+      backdrop: true,
       keyboard: true
     });
   }
@@ -97,6 +107,37 @@ document.addEventListener('DOMContentLoaded', () => {
     modalInstance.hide();
     form.removeAttribute('data-edit-id');
     clearAutoFill();
+  }
+
+  function openDetailModal(sp) {
+    if (!detailModalInstance) return;
+
+    // Populate detail fields
+    document.getElementById('detailNim').textContent = sp.nim || '-';
+    document.getElementById('detailNama').textContent = sp.nama || '-';
+    
+    // Tingkat SP with badge
+    const tingkatTd = document.getElementById('detailTingkat');
+    const badgeClass = sp.tingsp === 'SP1' ? 'bg-primary' : 
+                       sp.tingsp === 'SP2' ? 'bg-warning' : 'bg-danger';
+    tingkatTd.innerHTML = `<span class="badge ${badgeClass}">${sp.tingsp || '-'}</span>`;
+    
+    // Tanggal
+    document.getElementById('detailTanggal').textContent = formatDate(sp.tgl_sp);
+    document.getElementById('detailKaprodi').textContent = sp.ketua_prodi || '-';
+    document.getElementById('detailWali').textContent = sp.wali_dosen || '-';
+    
+    // Alasan SP
+    const alasanEl = document.getElementById('detailAlasan');
+    if (sp.alasan_sp) {
+      alasanEl.textContent = sp.alasan_sp;
+      alasanEl.style.display = 'block';
+    } else {
+      alasanEl.textContent = '-';
+      alasanEl.style.display = 'block';
+    }
+
+    detailModalInstance.show();
   }
 
   function updateEmptyState() {
@@ -169,6 +210,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const actionTd = document.createElement('td');
     actionTd.className = 'table-actions';
     
+    // Detail button
+    const detailBtn = document.createElement('button');
+    detailBtn.className = 'action-btn detail';
+    detailBtn.type = 'button';
+    detailBtn.title = 'Detail';
+    detailBtn.innerHTML = '<i class="fas fa-eye"></i>';
+    detailBtn.addEventListener('click', () => {
+      openDetailModal(sp);
+    });
+    
     // Download PDF button
     const downloadBtn = document.createElement('button');
     downloadBtn.className = 'action-btn download';
@@ -201,6 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    actionTd.appendChild(detailBtn);
     actionTd.appendChild(downloadBtn);
     actionTd.appendChild(editBtn);
     actionTd.appendChild(delBtn);
