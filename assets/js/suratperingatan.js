@@ -490,33 +490,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  async function saveSP(spDataToSave) {
+async function saveSP(spDataToSave) {
     try {
-      const response = await fetch('../crud/surat_peringatan.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(spDataToSave),
-      });
-      const result = await response.json();
-      console.log('Save response:', result); // Debug log
-      
-      if (result.success) {
-        await loadSP();
-        return true;
-      } else {
-        if (result.error && result.error.includes('Duplicate entry')) {
-          alert(`Tingkat ${spDataToSave.tingsp} sudah ada untuk mahasiswa ini.`);
+        const response = await fetch('../crud/surat_peringatan.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(spDataToSave),
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            await loadSP();
+            return true;
         } else {
-          alert('Gagal menyimpan data: ' + (result.error || 'Unknown error'));
+            alert('Gagal menyimpan data: ' + (result.error || 'Unknown error'));
+            return false;
         }
-        return false;
-      }
     } catch (error) {
-      console.error('Error saving SP:', error);
-      alert('Gagal menyimpan data surat peringatan: ' + error.message);
-      return false;
+        console.error('Error saving SP:', error);
+        alert('Gagal menyimpan data surat peringatan: ' + error.message);
+        return false;
     }
-  }
+}
 
   async function updateSP(id, spDataToUpdate) {
     try {
